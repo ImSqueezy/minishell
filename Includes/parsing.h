@@ -16,30 +16,9 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <stdlib.h>
+# include <stdbool.h>
 
 # include <termios.h>
-
-typedef struct s_env t_env;
-
-typedef enum e_token_type
-{
-	t_word,
-	t_pipe,
-	t_less
-}	t_type;
-
-typedef struct s_fd
-{
-	int	fd1;
-	int	fd2;
-}	t_fd;
-
-typedef struct s_env
-{
-	char	*key;
-	char	*val;
-	char	index;
-	t_env	*env;
-}	t_env;
 
 #endif
