@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   spacing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aouaalla <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/08 13:23:19 by aouaalla          #+#    #+#             */
+/*   Updated: 2025/05/08 13:23:19 by aouaalla         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Includes/parsing.h"
-#include "../Libraries/Libft/libft.h"
 
 int	isred(char c)
 {
@@ -11,120 +22,84 @@ int	isop(char c)
 	return (c == '>' || c == '<' || c == '|');
 }
 
-// string additional length
-//	> returns additional length of strings if a space will be added to it (might check quoting syntax errors here)
-//	> example: "ls>a", if the string would be "ls > a" 2 chars will be added then
-//    the additional length will return 6 as the new length of the string to be returned
+/*
+	- string additional length
+	> returns additional length of strings if a space will be added to it
+		(might check quoting syntax errors here)
+	> example: "ls>a", if the string would be "ls > a"
+		2 chars will be added then
+    	the additional length will return 6 as the new length of the string
+*/
 
-size_t	straddlen(const char *p, size_t old_len);
+static void	space_reds(char *res, const char *c, size_t *i, t_pdata *data)
+{
+	if (isop(*c) && data->prev == *c && *c != '|')
+	{
+		res[(*i)++] = *c;
+		if (*(c + 1) && *(c + 1) != ' ')
+			res[(*i)++] = ' ';
+	}
+	else if (isop(*c) && *c == '|')
+	{
+		res[(*i)++] = ' ';
+		res[(*i)++] = *c;
+		if (*(c + 1) && *(c + 1) != ' ')
+			res[(*i)++] = ' ';
+	}
+	else if (!isop(*c) && *c != ' ')
+	{
+		res[(*i)++] = ' ';
+		res[(*i)++] = *c;
+	}
+	if (*c == ' ')
+		res[(*i)++] = *c;
+}
 
-char	*space_it(const char *p)
+char	*spacing(const char *p, t_pdata *data)
 {
 	size_t	i;
-	char	quote;
 	char	*res;
-	char	prev;
 
-	res = malloc(straddlen(p, ft_strlen(p)) * sizeof(char) + 1);
+	res = malloc(straddlen(p, ft_strlen(p), data) * sizeof(char) + 1);
 	if (!res)
 		return (NULL);
-	(1) && (i = 0, quote = 0, prev = 0);
+	(1) && (i = 0, data->quote = 0, data->prev = 0);
 	while (*p)
 	{
-		// quoting_traffic();
-		if (!quote && (*p == '\'' || *p == '"'))
-			quote = *p;
-		else if (quote && *p == quote)
-			quote = 0;
-		if (isop(*p) && !quote)
+		quoting_traffic(*p, data);
+		if (isop(*p) && !data->quote)
 		{
-			if (prev && prev != ' ' && !isop(prev))
+			if (data->prev && data->prev != ' ' && !isop(data->prev))
 				res[i++] = ' ';
-			res[i++] = *p; // fill current
-			prev = *p++; // sat what ever operator
+			(1) && (res[i++] = *p, data->prev = *p++);
 			if (!*p)
 				break ;
-			if (isop(*p) && prev == *p && *p != '|') // setting it to red if it's red, and also set his next to space if it's not
-			{
-				res[i++] = *p;
-				if (*(p + 1) && *(p + 1) != 32)
-					res[i++] = ' ';
-			}
-			else if (isop(*p) && *p == '|') // setting curr to pipe 
-			{
-				res[i++] = ' ';
-				res[i++] = *p;
-				if (*(p + 1) && *(p + 1) != 32)
-					res[i++] = ' ';
-			}
-			else if (!isop(*p) && *p != ' ') // setting the next to space if it's not space
-			{
-				res[i++] = ' ';
-				res[i++] = *p;	
-			}
-			if (*p == ' ')
-				res[i++] = *p;
+			space_reds(res, p, &i, data);
 		}
 		else
 			res[i++] = *p;
-		(1) && (prev = *p, p++);
+		(1) && (data->prev = *p, p++);
 	}
 	res[i] = '\0';
 	return (res);
 }
 
-
-size_t	straddlen(const char *p, size_t old_len)
-{
-	size_t	new_len;
-	size_t	i;
-	char	quote;
-	char	prev;
-
-	quote = 0;
-	new_len = 0;
-	prev = 0;
-	while (*p)
-	{
-		if (!quote && (*p == '\'' || *p == '"'))
-			quote = *p;
-		else if (quote && *p == quote)
-			quote = 0;
-		if (isop(*p) && !quote)
-		{
-			if (prev && prev != ' ' && !isop(prev)) // if previous char is not OPERATOR and it is not SPACE increment and move to next char
-				new_len++;
-			prev = *p++; // in all cases prev is derefrenced since we need to check coming character
-			if (!*p)
-				break ;
-			if (!isop(*p) && *p && *p != ' ') // if then the next char is not OPERATOR, neither a '\0' or SPACE > increment
-				new_len++;
-			else if (prev == *p && isop(*p) && *p == '|') // else it's going to an OPERATOR, a PIPE has the advantage over redirections, the length and the address is incremented
-														// and the next is checked if it's not a space, if so increment
-			{
-				(1) && (new_len++, p++);
-				if (*p && *p != 32)
-					new_len++;
-			}
-			else if (prev == *p && isop(*p) && *(p + 1) != ' ') // else it's going to be at the same type and next is not SPACE (ignore if not at the same type) 
-				new_len++;
-		}
-		(1) && (prev = *p, p++);
-	}
-	return (old_len + new_len);
-}
+/*
 
 int main(int ac, char **av)
 {
+	t_pdata	pdata;
 	// char *p = "ls| cat<< e|cat>file1| cat file1";
 	// char *p = "\'ls>>a\' || > | && &&cat>>a || \"cat>a\"";
 	// char *p = "ls>ls>"; //><<>>|||";
-	// char *p = ">><<>>|||";
-	char *p = " ls| cat<< e";
+	char *p = ">><<>>|||";
+	// char *p = " ls| cat<< e";
 
-	printf("%zu becomes %zu\n", ft_strlen(p), straddlen(p, ft_strlen(p)));
-	char *new = space_it(p);
-	printf("%s.\n- len = %zu", new, ft_strlen(new));
+	printf("%zu becomes %zu\n", ft_strlen(p), straddlen(p, ft_strlen(p), &pdata));
+	char *new = spacing(p, &pdata);
+	printf("%s.\n- len = %zu\n", new, ft_strlen(new));
 	free(new);
 	return (0);
 }
+
+*/

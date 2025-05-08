@@ -9,12 +9,18 @@ ft_memcpy.o ft_memmove.o ft_strlcpy.o ft_strlcat.o ft_toupper.o ft_tolower.o ft_
 ft_memchr.o ft_memcmp.o ft_strnstr.o ft_atoi.o ft_strdup.o ft_calloc.o ft_substr.o ft_substr.o ft_strjoin.o ft_strtrim.o \
 ft_split.o ft_itoa.o ft_strmapi.o ft_striteri.o ft_putchar_fd.o ft_putstr_fd.o ft_putendl_fd.o ft_putnbr_fd.o)
 
-COMPILE = cc -g -c $< -o $@
+FS = -fsanitize=address
+# to be removed later
+
+FLAGS = -Wall -Wextra -Werror -g
+COMPILE = cc $(FLAGS) -c $< -o $@
+
 LIBFT_PREFIX = Libraries/Libft/
 LIBFT = Libraries/Libft/libft.a
+
+PARSING_OBJS = $(addprefix Parsing/, spacing.o parser.o straddlen.o)
 OBJS = $(PARSING_OBJS) \
-	main.o Parsing/spacing.o
-PARSING_OBJS = $(addprefix Parsing/, )
+	main.o
 
 all: $(NAME)
 
@@ -22,7 +28,7 @@ $(NAME): $(LIBFT) $(OBJS)
 	cc -g $(OBJS) $(LIBFT) -o $(NAME)
 
 $(LIBFT):
-	make -C Libraries/Libft/
+	make -C $(LIBFT_PREFIX)
 
 %.o: %.c
 	$(COMPILE)
