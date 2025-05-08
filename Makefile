@@ -13,7 +13,7 @@ COMPILE = cc -g -c $< -o $@
 LIBFT_PREFIX = Libraries/Libft/
 LIBFT = Libraries/Libft/libft.a
 OBJS = $(PARSING_OBJS) \
-	main.o Parsing/space.o
+	main.o Parsing/spacing.o
 PARSING_OBJS = $(addprefix Parsing/, )
 
 all: $(NAME)
