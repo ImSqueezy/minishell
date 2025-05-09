@@ -13,33 +13,30 @@
 #ifndef PARSING_H
 # define PARSING_H
 
+/*
+    - Libft has:
+        * unistd
+        * stdlib
+        * limits
+*/
+# include "../Libraries/Libft/libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-
+# include <stdbool.h>
 # include <termios.h>
 
-typedef struct s_env t_env;
-
-typedef enum e_token_type
+typedef struct parsing
 {
-	t_word,
-	t_pipe,
-	t_less
-}	t_type;
+	bool	traffic;
+	char	quote;
+	char	prev;
+}	t_pdata;
 
-typedef struct s_fd
-{
-	int	fd1;
-	int	fd2;
-}	t_fd;
-
-typedef struct s_env
-{
-	char	*key;
-	char	*val;
-	char	index;
-	t_env	*env;
-}	t_env;
+char	*spacing(const char *p, t_pdata *data);
+size_t	straddlen(const char *p, size_t old_len, t_pdata *data);
+void	quoting_traffic(char c, t_pdata *data);
+int		isred(char c);
+int		isop(char c);
 
 #endif
