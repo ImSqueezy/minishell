@@ -90,31 +90,3 @@ char	*spacing(const char *p, t_pdata *data)
 	res[i] = '\0';
 	return (res);
 }
-
-// int main(int ac, char **av)
-// {
-// 	t_pdata	pdata;
-
-// 	char *p = "ls\t|\t|\ts";
-// 	// char *p = "ls| cat<< e|cat>file1| cat file1";
-// 	// char *p = "<>";
-// 	// char *p = "><";
-// 	// char *p = "\'ls>>a\' || > | && &&cat>>a || \"cat>a\"";
-// 	// char *p = "ls>ls>"; //><<>>|||";
-// 	// char *p = ">><<>>|||";
-// 	// char *p = " ls| cat<< e";
-// 	// char *p = "<>||\\|";
-
-// 	printf("%zu becomes %zu\n", ft_strlen(p), straddlen(p, ft_strlen(p), &pdata));
-// 	char *new = spacing(p, &pdata);
-// 	printf("%s.\n- len = %zu\n", new, ft_strlen(new));
-// 	char **splitted = ft_split(new);
-// 	int i = 0;
-// 	while (splitted[i])
-// 	{
-// 		printf("%s\n", splitted[i]);
-// 		i++;
-// 	}
-// 	free(new);
-// 	return (0);
-// }

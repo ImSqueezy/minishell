@@ -23,17 +23,23 @@ int	count_words(const char *p)
 	size_t	len;
 	int		words;
 	char	var;
+	char	previous;
 
-	(1) && (i = 0, var = 0, words = 0, len = ft_strlen(p));
+	i = 0;
+	var = 0;
+	words = 0;
+	previous = p[i];
+	len = ft_strlen(p);
 	while (i <= len)
 	{
 		if (!var && (p[i] == '\'' || p[i] == '"'))
 			var = p[i];
-		else if (var && p[i] == var)
+		else if (p[i] == var)
 			var = 0;
-		if ((is_whitespace(p[i]) || p[i] == '\0') && !var)
+        if (!var && (is_whitespace(p[i]) || p[i] == '\0') && !is_whitespace(previous))
 			words++;
-		i++;
+		previous = p[i];
+		i++;	
 	}
 	return (words);
 }
