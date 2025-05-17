@@ -26,7 +26,7 @@ all: $(NAME)
 $(NAME): $(LIBFT) $(OBJS)
 	cc $(FS) -g $(OBJS) $(LIBFT) -o $(NAME) -lreadline
 
-$(LIBFT):
+$(LIBFT): $(LIBFT_OBJS)
 	make -C $(LIBFT_PREFIX)
 
 %.o: %.c
