@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Includes/parsing.h"
+#include "../../Includes/parsing.h"
 
 int	is_whitespace(char c)
 {
@@ -38,6 +38,7 @@ int	isop(char c)
 
 static void	space_reds(char *res, const char *c, size_t *i, t_pdata *data)
 {
+	quoting_traffic(*c, data);
 	if (isop(*c) && *c != '|')
 	{
 		if (*c != data->prev)

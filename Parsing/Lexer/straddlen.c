@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Includes/parsing.h"
+#include "../../Includes/parsing.h"
 
 int	quoting_traffic(char c, t_pdata *data)
 {
@@ -60,6 +60,7 @@ size_t	straddlen(const char *p, size_t old_len, t_pdata *data)
 			if (data->prev && !is_whitespace(data->prev) && !isop(data->prev))
 				new_len++;
 			data->prev = *p++;
+			quoting_traffic(*p, data);
 			if (isop(*p))
 				new_len += redirections_count(p, data);
 			else if (*p != '\0' && !isop(*p) && !is_whitespace(*p))
@@ -77,16 +78,17 @@ size_t	straddlen(const char *p, size_t old_len, t_pdata *data)
 // {
 // 	t_pdata	pdata;
 
-// 	// char *p = "ls\t|\t|\ts";
-// 	// char *p = "ls| cat<< e|cat>file1| cat file1";
-// 	// char *p = "<>";
-// 	// char *p = "><";
-// 	// char *p = "\'ls>>a\' || >a | && &&cat>>a || \"cat>a\"";
-// 	// char *p = "ls>ls>"; //><<>>|||";
+// 	char *p = "ls\t|\t|\ts";
+// 	char *p = "ls| cat<< e|cat>file1| cat file1";
+// 	char *p = "<>";
+// 	char *p = "><";
+// 	char *p = "\'ls>>a\' || >a | && &&cat>>a || \"cat>a\"";
+// 	char *p = "ls>ls>"; //><<>>|||";
 // 	char *p = ">><<>>|||";
-// 	// char *p = " ls| cat<< e";
-// 	// char *p = "<>||\\|";
-// 	// char *p = "><|b";
+// 	char *p = " ls| cat<< e";
+// 	char *p = "<>||\\|";
+// 	char *p = "><|b";
+// 	char *p = "ls>|\"wc<a\"";
 
 // 	// printf("%zu becomes %zu\n", ft_strlen(p), straddlen(p, ft_strlen(p), &pdata));
 // 	char *new = spacing(p, &pdata);
