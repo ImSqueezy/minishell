@@ -1,16 +1,25 @@
 #include "Includes/parsing.h"
 
-int main(int argc, char **argv, char **envp)
+int	parser(char *input, t_pdata *data)
 {
-	t_env			*envr;
-	char			*str;
-	struct	termios	term;
+	char	*newinput;
 
-	if (argc != 1 || argv[1])
-		return (printf("main's args"), 1);
-	tcgetattr(0, &term); // set the attributes in term
-	// the envr variable must be set
-	// the signals must be handled
-	// then read from the prompt
+	add_history(input);
+	lexer(input, data);
+	return (1);
+}
+
+int main()
+{
+	t_pdata pdata;
+	char	*read;
+
+	while (1)
+	{
+		read = readline("$");
+		if (!read)
+			return (0);
+		parser(read, &pdata);
+	}
 	return (0);
 }

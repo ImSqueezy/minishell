@@ -6,13 +6,18 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 15:05:25 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/08 22:01:23 by aouaalla         ###   ########.fr       */
+/*   Updated: 2024/11/09 19:11:31 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	count_words(const char *p, char sep)
+static int is_whitespace(char c)
+{
+	return (c == 32 || (c >= 9 && c <= 13));
+}
+
+int	count_words(const char *p)
 {
 	size_t	i;
 	size_t	len;
@@ -26,14 +31,14 @@ int	count_words(const char *p, char sep)
 			var = p[i];
 		else if (var && p[i] == var)
 			var = 0;
-		if ((p[i] == sep || p[i] == '\0') && !var)
+		if ((is_whitespace(p[i]) || p[i] == '\0') && !var)
 			words++;
 		i++;
 	}
 	return (words);
 }
 
-static char	*initilazing(char const *s, char c, bool in_quote, char quote_char)
+static char	*initilazing(char const *s, bool in_quote, char quote_char)
 {
 	char	*p;
 	int		i;
@@ -49,7 +54,7 @@ static char	*initilazing(char const *s, char c, bool in_quote, char quote_char)
 			else if (s[len] == quote_char)
 				in_quote = false;
 		}
-		else if (s[len] == c && !in_quote)
+		else if (is_whitespace(s[len]) && !in_quote)
 			break ;
 		len++;
 	}
@@ -72,7 +77,7 @@ static void	ft_free(char **p)
 	free(p);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char const *s)
 {
 	size_t		words;
 	size_t		i;
@@ -82,15 +87,17 @@ char	**ft_split(char const *s, char c)
 
 	if (!s)
 		return (0);
-	(1) && (i = -1, words = count_words(s, c), quote = 0, quote_char = 0);
+	(1) && (i = -1, words = count_words(s));
+	quote = 0;
+	quote_char = 0;
 	p = (char **)malloc((words + 1) * sizeof(char *));
 	if (p == NULL)
 		return (0);
 	while (++i < words)
 	{
-		while (*s == c)
+		while (is_whitespace(*s))
 			s++;
-		p[i] = initilazing(s, c, quote, quote_char);
+		p[i] = initilazing(s, quote, quote_char);
 		if (p[i] == NULL)
 			return (ft_free(p), NULL);
 		s += ft_strlen(p[i]);

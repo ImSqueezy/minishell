@@ -12,6 +12,11 @@
 
 #include "../Includes/parsing.h"
 
+int	is_whitespace(char c)
+{
+	return (c == 32 || (c >= 9 && c <= 13));
+}
+
 int	isred(char c)
 {
 	return (c == '>' || c == '<');
@@ -33,25 +38,27 @@ int	isop(char c)
 
 static void	space_reds(char *res, const char *c, size_t *i, t_pdata *data)
 {
-	if (isop(*c) && data->prev == *c && *c != '|')
+	if (isop(*c) && *c != '|')
 	{
+		if (*c != data->prev)
+			res[(*i)++] = ' ';
 		res[(*i)++] = *c;
-		if (*(c + 1) && *(c + 1) != ' ')
+		if (*(c + 1) && !is_whitespace(*(c + 1)))
 			res[(*i)++] = ' ';
 	}
 	else if (isop(*c) && *c == '|')
 	{
 		res[(*i)++] = ' ';
 		res[(*i)++] = *c;
-		if (*(c + 1) && *(c + 1) != ' ')
+		if (*(c + 1) && !is_whitespace(*(c + 1)))
 			res[(*i)++] = ' ';
 	}
-	else if (!isop(*c) && *c != ' ')
+	else if (!isop(*c) && !is_whitespace(*c))
 	{
 		res[(*i)++] = ' ';
 		res[(*i)++] = *c;
 	}
-	if (*c == ' ')
+	if (is_whitespace(*c))
 		res[(*i)++] = *c;
 }
 
@@ -69,7 +76,7 @@ char	*spacing(const char *p, t_pdata *data)
 		quoting_traffic(*p, data);
 		if (isop(*p) && !data->quote)
 		{
-			if (data->prev && data->prev != ' ' && !isop(data->prev))
+			if (data->prev && !is_whitespace(data->prev) && !isop(data->prev))
 				res[i++] = ' ';
 			(1) && (res[i++] = *p, data->prev = *p++);
 			if (!*p)
@@ -84,22 +91,30 @@ char	*spacing(const char *p, t_pdata *data)
 	return (res);
 }
 
-/*
+// int main(int ac, char **av)
+// {
+// 	t_pdata	pdata;
 
-int main(int ac, char **av)
-{
-	t_pdata	pdata;
-	// char *p = "ls| cat<< e|cat>file1| cat file1";
-	// char *p = "\'ls>>a\' || > | && &&cat>>a || \"cat>a\"";
-	// char *p = "ls>ls>"; //><<>>|||";
-	char *p = ">><<>>|||";
-	// char *p = " ls| cat<< e";
+// 	char *p = "ls\t|\t|\ts";
+// 	// char *p = "ls| cat<< e|cat>file1| cat file1";
+// 	// char *p = "<>";
+// 	// char *p = "><";
+// 	// char *p = "\'ls>>a\' || > | && &&cat>>a || \"cat>a\"";
+// 	// char *p = "ls>ls>"; //><<>>|||";
+// 	// char *p = ">><<>>|||";
+// 	// char *p = " ls| cat<< e";
+// 	// char *p = "<>||\\|";
 
-	printf("%zu becomes %zu\n", ft_strlen(p), straddlen(p, ft_strlen(p), &pdata));
-	char *new = spacing(p, &pdata);
-	printf("%s.\n- len = %zu\n", new, ft_strlen(new));
-	free(new);
-	return (0);
-}
-
-*/
+// 	printf("%zu becomes %zu\n", ft_strlen(p), straddlen(p, ft_strlen(p), &pdata));
+// 	char *new = spacing(p, &pdata);
+// 	printf("%s.\n- len = %zu\n", new, ft_strlen(new));
+// 	char **splitted = ft_split(new);
+// 	int i = 0;
+// 	while (splitted[i])
+// 	{
+// 		printf("%s\n", splitted[i]);
+// 		i++;
+// 	}
+// 	free(new);
+// 	return (0);
+// }

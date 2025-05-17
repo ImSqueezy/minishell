@@ -1,18 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   mem_related.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aouaalla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/15 22:16:07 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/15 22:16:08 by aouaalla         ###   ########.fr       */
+/*   Created: 2025/05/15 21:48:18 by aouaalla          #+#    #+#             */
+/*   Updated: 2025/05/15 21:48:18 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../Includes/parsing.h"
 
-# include "Includes/parsing.h"
+void	twod_free(char **p)
+{
+	int	i;
 
-#endif
+	i = 0;
+	while (p[i])
+		free(p[i++]);
+	free(p);
+}
+
+void	del(void *ptr)
+{
+	free(ptr);
+}
