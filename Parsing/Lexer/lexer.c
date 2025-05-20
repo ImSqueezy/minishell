@@ -30,12 +30,14 @@ static int	print_serror(t_token *curr, int op, int state)
 	4) at the end, checking weither red is at the beginning or the end
 */
 
-static int	syntax_checker(t_pdata *data)
+static int	syntax_checker(t_pdata *data, int quoting_flag)
 {
 	t_token	*curr;
 
+	if (quoting_flag)
+		printf("minishell: syntax error `quoting'\n");
 	curr = data->token;
-	while (curr)
+	while (curr && quoting_flag != 1)
 	{
 		if (curr->type == PIPE && (curr->prev == NULL || curr->next == NULL))
 			return (print_serror(curr->next, PIPE, 1), 0);
@@ -53,77 +55,68 @@ static int	syntax_checker(t_pdata *data)
 	return (1);
 }
 
-static void	token_type(t_token *token)
-{
-	if (ft_strlen(token->word) == 1) // a pipe a redirection or other
-	{
-		if (!ft_strncmp(token->word, "<", 1)
-			|| !ft_strncmp(token->word, ">", 1))
-			token->type = redirection;
-		else if (!ft_strncmp(token->word, "|", 1))
-			token->type = PIPE;
-		else
-			token->type = word;
-	}
-	else if (ft_strlen(token->word) == 2) // append, herdoce or other
-	{
-		if (!ft_strncmp(token->word, ">>", 2)
-			|| !ft_strncmp(token->word, "<<", 2))
-			token->type = redirection;
-		else
-			token->type = word;
-	}
-	else
-		token->type = word;
-}
+// temporary (debug)
+void	print_tokens(char *world, int type);
 
-static void	token_definer(char **tokens, t_pdata *data)
-{
-	int		i;
-	t_token	*new_token;
-
-	data->token = NULL;
-	i = 0;
-	while (tokens[i])
-	{
-		new_token = malloc(sizeof(t_token));
-		if (!new_token)
-			return ;
-		new_token->word = tokens[i];
-		new_token->next = NULL;
-		new_token->prev = NULL;
-		token_type(new_token);
-		token_add_back(&data->token, new_token);
-		i++;
-	}
-	t_token *curr;
-	curr = data->token;
-	while (curr)
-	{
-		printf("%s\n", curr->word);
-		curr = curr->next;
-	}	
-}
-
-void	lexer(char *input, t_pdata *data)
+void	lexer(char *input, t_pdata *data, t_gdata *gptr)
 {
 	char	*processed_input;
 	char	**tokens;
 
 	processed_input = spacing(input, data);
-	if (data->traffic)
-	{
-		printf("minishell: syntax error `quoting'\n");
-		free(processed_input);
-		return ;
-	}
 	tokens = ft_split(processed_input);
 	token_definer(tokens, data);
-	if (!syntax_checker(data))
+	if (!syntax_checker(data, data->traffic))
 	{
 		free(processed_input);
 		twod_free(tokens);
 		token_lstclear(&data->token, del);
+		// new allocation (t_env in t_pdata)
 		return ;
 	}
+	re_definer(data->token);
+	t_token *curr;
+	curr = data->token;
+	while (curr)
+	{
+		print_tokens(curr->word, curr->type);
+		printf("- - - - -\n");
+		curr = curr->next;
+	}
+}
+
+
+/* quick token debuger
+	// t_token *curr;
+	// curr = data->token;
+	// while (curr)
+	// {
+	// 	print_tokens(curr->word, curr->type);
+	// 	printf("- - - - -\n");
+	// 	curr = curr->next;
+	// }
+*/
+
+void	print_tokens(char *word, int type)
+{
+	printf("token: %s\n", word);
+	if (type == 1)
+		printf("of type %s\n", "pipe");
+	else if (type == 3)
+		printf("of type %s\n", "red_in");
+	else if (type == 4)
+		printf("of type %s\n", "red_out");
+	else if (type == 5)
+		printf("of type %s\n", "append");
+	else if (type == 6)
+		printf("of type %s\n", "heredoc");
+	else if (type == 7)
+		printf("of type %s\n", "command");
+	else if (type == 8)
+		printf("of type %s\n", "file");
+	else if (type == 9)
+		printf("of type %s\n", "delimiter");
+	else if (type == 10)
+		printf("it has a $\n");
+	// printf("quoting flag: %d\n", curr->quoting);
 }
