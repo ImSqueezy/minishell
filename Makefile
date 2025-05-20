@@ -12,12 +12,13 @@ ft_split.o ft_itoa.o ft_strmapi.o ft_striteri.o ft_putchar_fd.o ft_putstr_fd.o f
 LIBFT_PREFIX = Libraries/Libft/
 LIBFT = Libraries/Libft/libft.a
 
-FS = #-fsanitize=address
+FS = -fsanitize=address
 # -g to be removed later
 FLAGS = $(FS) -g # -Wall -Wextra -Werror
 COMPILE = cc $(FLAGS) -c $< -o $@
 
-PARSING_OBJS = $(addprefix Parsing/, spacing.o lexer.o dlst.o mem_related.o straddlen.o parser.o)
+LEXER_OBJS = $(addprefix Lexer/, lexer.o dlst.o straddlen.o spacing.o tokenizer.o)
+PARSING_OBJS = $(addprefix Parsing/, $(LEXER_OBJS) mem_related.o parser.o env.o)
 OBJS = $(PARSING_OBJS) \
 	main.o
 
