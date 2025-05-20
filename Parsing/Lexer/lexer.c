@@ -35,9 +35,9 @@ static int	syntax_checker(t_pdata *data, int quoting_flag)
 	t_token	*curr;
 
 	if (quoting_flag)
-		printf("minishell: syntax error `quoting'\n");
+		return (printf("minishell: syntax error `quoting'\n"), 0);
 	curr = data->token;
-	while (curr && quoting_flag != 1)
+	while (curr)
 	{
 		if (curr->type == PIPE && (curr->prev == NULL || curr->next == NULL))
 			return (print_serror(curr->next, PIPE, 1), 0);
@@ -75,14 +75,15 @@ void	lexer(char *input, t_pdata *data, t_gdata *gptr)
 		return ;
 	}
 	re_definer(data->token);
-	t_token *curr;
-	curr = data->token;
-	while (curr)
-	{
-		print_tokens(curr->word, curr->type);
-		printf("- - - - -\n");
-		curr = curr->next;
-	}
+	printf("quoting = %d\n", data->quote);
+	// t_token *curr;
+	// curr = data->token;
+	// while (curr)
+	// {
+	// 	print_tokens(curr->word, curr->type);
+	// 	printf("- - - - -\n");
+	// 	curr = curr->next;
+	// }
 }
 
 
