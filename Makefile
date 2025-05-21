@@ -17,8 +17,9 @@ FS = -fsanitize=address
 FLAGS = $(FS) -g # -Wall -Wextra -Werror
 COMPILE = cc $(FLAGS) -c $< -o $@
 
+EXPANDER_OBJS = $(addprefix Expanding/, expander.o utils.o)
 LEXER_OBJS = $(addprefix Lexer/, lexer.o dlst.o straddlen.o spacing.o tokenizer.o)
-PARSING_OBJS = $(addprefix Parsing/, $(LEXER_OBJS) mem_related.o parser.o env.o)
+PARSING_OBJS = $(addprefix Parsing/, $(LEXER_OBJS) $(EXPANDER_OBJS) mem_related.o parser.o env.o)
 OBJS = $(PARSING_OBJS) \
 	main.o
 

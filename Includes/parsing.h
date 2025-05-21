@@ -100,4 +100,10 @@ void	get_env(t_env **ptr, char **env);
 int		env_size(t_env *env);
 void	print_tokens(char *word, int type);
 
+void	expansions_search(t_pdata *ptr);
+char	*ft_strnjoin(const char *s1, const char *s2, int n);
+int		token_size(t_token *ptr);
+int		ft_strcmp(const char *s1, const char *s2);
+char	*ft_strndup(const char *s1, int n);
+
 #endif
