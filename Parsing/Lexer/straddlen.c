@@ -50,7 +50,8 @@ size_t	straddlen(const char *p, size_t old_len, t_pdata *data)
 {
 	size_t	new_len;
 
-	ft_memset(data, 0, sizeof(t_pdata));
+	data->traffic = 0;
+	data->quote = 0;
 	new_len = 0;
 	while (*p)
 	{
