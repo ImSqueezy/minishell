@@ -42,7 +42,6 @@ typedef enum enum_token_type
 	command, // 7
 	file, // 8
 	delimiter, // 9
-	var, //10
 }	t_etype;
 
 typedef struct s_token
@@ -50,6 +49,7 @@ typedef struct s_token
     char    *word;
     int     type;
 	int		quoting;	
+	int		var;
     t_token *next;
 	t_token	*prev;
 }   t_token;	
@@ -96,6 +96,8 @@ void	token_add_back(t_token **lst, t_token *new);
 void	lexer(char *input, t_pdata *data, t_gdata *ptr);
 void	re_definer(t_token *head);
 void	token_definer(char **tokens, t_pdata *data);
-void	get_env(t_env *ptr, char **env);
+void	get_env(t_env **ptr, char **env);
+int		env_size(t_env *env);
+void	print_tokens(char *word, int type);
 
 #endif

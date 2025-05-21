@@ -16,8 +16,9 @@ static void	token_type(t_token *token)
 {
 	size_t	len;
 
+	token->var = 0;
 	len = ft_strlen(token->word);
-	if (len == 1 && token->type != var) // a pipe a redirection or other
+	if (len == 1) // a pipe a redirection or other
 	{
 		if (!ft_strncmp(token->word, "<", 1)
 			|| !ft_strncmp(token->word, ">", 1))
@@ -27,7 +28,7 @@ static void	token_type(t_token *token)
 		else
 			token->type = word;
 	}
-	else if (len == 2 && token->type != var) // append, herdoce or other
+	else if (len == 2) // append, herdoce or other
 	{
 		if (!ft_strncmp(token->word, ">>", 2)
 			|| !ft_strncmp(token->word, "<<", 2))
@@ -35,7 +36,7 @@ static void	token_type(t_token *token)
 		else
 			token->type = word;
 	}
-	else if (len > 2 && token->type != var)
+	else if (len > 2)
 		token->type = word;
 }
 
@@ -52,7 +53,6 @@ void	token_definer(char **tokens, t_pdata *data)
 		if (!new_token)
 			return ;
 		new_token->word = tokens[i];
-		new_token->quoting = 0;
 		if (ft_strchr(new_token->word, '\''))
 			new_token->quoting = 1;
 		else if (ft_strchr(new_token->word, '\"'))
@@ -88,6 +88,15 @@ static void	ops_definer(t_token *ptr, int *comming_file)
 	}
 }
 
+void	expantion_validator(char *p, int *var)
+{
+	char	*tmp = ft_strchr(p, '$');
+
+	if (*(tmp + 1) == '\0')
+		return ;
+	*var = 1;		
+}
+
 void	re_definer(t_token *head)
 {
 	t_token	*curr;
@@ -108,7 +117,7 @@ void	re_definer(t_token *head)
 			|| curr->prev == NULL || curr->prev->type == file || curr->prev->type == command)
     		curr->type = command;
 		if (ft_strchr(curr->word, '$'))
-			curr->type = var;
+			expantion_validator(curr->word, &curr->var);
     	curr = curr->next;
 	}
 }
