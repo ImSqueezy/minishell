@@ -75,7 +75,6 @@ void	lexer(char *input, t_pdata *data, t_gdata *gptr)
 		return ;
 	}
 	re_definer(data->token);
-	printf("quoting = %d\n", data->quote);
 	// t_token *curr;
 	// curr = data->token;
 	// while (curr)
@@ -101,8 +100,12 @@ void	lexer(char *input, t_pdata *data, t_gdata *gptr)
 void	print_tokens(char *word, int type)
 {
 	printf("token: %s\n", word);
-	if (type == 1)
+	if (type == 0)
+		printf("of type %s\n", "word");
+	else if (type == 1)
 		printf("of type %s\n", "pipe");
+	else if (type == 2)
+		printf("of type %s\n", "redirection");
 	else if (type == 3)
 		printf("of type %s\n", "red_in");
 	else if (type == 4)
@@ -117,7 +120,5 @@ void	print_tokens(char *word, int type)
 		printf("of type %s\n", "file");
 	else if (type == 9)
 		printf("of type %s\n", "delimiter");
-	else if (type == 10)
-		printf("it has a $\n");
 	// printf("quoting flag: %d\n", curr->quoting);
 }

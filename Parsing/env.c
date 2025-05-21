@@ -63,12 +63,12 @@ static char	*get_value(char *p)
 	return (p);
 }
 
-void	get_env(t_env *ptr, char **env)
+void	get_env(t_env **ptr, char **env)
 {
 	int		i;
 	t_env	*new;
 
-	ptr = NULL;
+	*ptr = NULL;
 	i = -1;
 	while (env[++i])
 	{
@@ -78,6 +78,6 @@ void	get_env(t_env *ptr, char **env)
 		new->key = get_key(env[i]);
 		new->value = get_value(env[i]);
 		new->next = NULL;
-		env_add_back(&ptr, new);
+		env_add_back(ptr, new);
 	}
 }
