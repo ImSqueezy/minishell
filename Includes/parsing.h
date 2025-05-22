@@ -106,4 +106,7 @@ int		token_size(t_token *ptr);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strndup(const char *s1, int n);
 
+void	env_lstclear(t_env **head, void (*del)(void *));
+void	env_lstdelone(t_env *node, void (*del)(void *));
+
 #endif

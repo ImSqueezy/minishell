@@ -12,17 +12,32 @@
 
 #include "../Includes/parsing.h"
 
-void	twod_free(char **p)
-{
-	int	i;
-
-	i = 0;
-	while (p[i])
-		free(p[i++]);
-	free(p);
-}
-
 void	del(void *ptr)
 {
-	free(ptr);
+	if (ptr)
+		free(ptr);
+}
+
+void	env_lstclear(t_env **head, void (*del)(void *))
+{
+	t_env	*next;
+
+	if (!head || !del)
+		return ;
+	while (*head)
+	{
+		next = (*head)->next;
+		env_lstdelone(*head, del);
+		*head = next;
+	}
+	*head = NULL;
+}
+
+void	env_lstdelone(t_env *node, void (*del)(void *))
+{
+	if (!node || !del)
+		return ;
+	del(node->key);
+	del(node->value);
+	free(node);
 }
