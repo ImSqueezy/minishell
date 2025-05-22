@@ -20,7 +20,8 @@ void	token_lstdelone(t_token *lst, void (*del)(void *))
 		lst->prev->next = lst->next;
 	if (lst->next)
 		lst->next->prev = lst->prev;
-	del(lst);
+	del(lst->word);
+	free(lst);
 }
 
 void	token_lstclear(t_token **lst, void (*del)(void *))

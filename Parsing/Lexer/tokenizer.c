@@ -53,10 +53,11 @@ void	token_definer(char **tokens, t_pdata *data)
 		if (!new_token)
 			return ;
 		new_token->word = tokens[i];
+		new_token->quoting = 1;
 		if (ft_strchr(new_token->word, '\''))
-			new_token->quoting = 1;
-		else if (ft_strchr(new_token->word, '\"'))
 			new_token->quoting = 2;
+		else if (ft_strchr(new_token->word, '\"'))
+			new_token->quoting = 3;
 		new_token->next = NULL;
 		new_token->prev = NULL;
 		token_type(new_token);

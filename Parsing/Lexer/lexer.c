@@ -65,13 +65,11 @@ void	lexer(char *input, t_pdata *data, t_gdata *gptr)
 
 	processed_input = spacing(input, data);
 	tokens = ft_split(processed_input);
+	free(processed_input);
 	token_definer(tokens, data);
 	if (!syntax_checker(data, data->traffic))
 	{
-		free(processed_input);
-		twod_free(tokens);
 		token_lstclear(&data->token, del);
-		// new allocation (t_env in t_pdata)
 		return ;
 	}
 	re_definer(data->token);
