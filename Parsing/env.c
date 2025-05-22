@@ -60,7 +60,7 @@ static char	*get_value(char *p)
 		i++;
 	}
 	value[i] = '\0';
-	return (p);
+	return (value);
 }
 
 void	get_env(t_env **ptr, char **env)
