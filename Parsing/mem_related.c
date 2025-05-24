@@ -15,7 +15,10 @@
 void	del(void *ptr)
 {
 	if (ptr)
+	{
 		free(ptr);
+		ptr = NULL;
+	}
 }
 
 void	env_lstclear(t_env **head, void (*del)(void *))

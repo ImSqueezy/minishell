@@ -12,10 +12,12 @@
 
 #include "../../Includes/parsing.h"
 
-void	token_lstdelone(t_token *lst, void (*del)(void *))
+void	token_lstdelone(t_token **head, t_token *lst, void (*del)(void *))
 {
 	if (!lst || !del)
 		return ;
+	if (*head == lst)
+		*head = lst->next;
 	if (lst->prev)
 		lst->prev->next = lst->next;
 	if (lst->next)
@@ -27,13 +29,14 @@ void	token_lstdelone(t_token *lst, void (*del)(void *))
 void	token_lstclear(t_token **lst, void (*del)(void *))
 {
 	t_token	*next;
+	t_token **head = lst;
 
 	if (!lst || !del)
 		return ;
 	while (*lst)
 	{
 		next = (*lst)->next;
-		token_lstdelone(*lst, del);
+		token_lstdelone(head, *lst, del);
 		*lst = next;
 	}
 	*lst = NULL;

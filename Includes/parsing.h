@@ -90,7 +90,7 @@ int		is_whitespace(char c);
 
 void	twod_free(char **p);
 void	del(void *ptr);
-void	token_lstdelone(t_token *lst, void (*del)(void *));
+void	token_lstdelone(t_token **head, t_token *lst, void (*del)(void *));
 void	token_lstclear(t_token **lst, void (*del)(void *));
 void	token_add_back(t_token **lst, t_token *new);
 void	lexer(char *input, t_pdata *data, t_gdata *ptr);

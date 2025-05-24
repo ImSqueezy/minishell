@@ -67,20 +67,13 @@ void	lexer(char *input, t_pdata *data, t_gdata *gptr)
 	tokens = ft_split(processed_input);
 	free(processed_input);
 	token_definer(tokens, data);
+	free(tokens);
 	if (!syntax_checker(data, data->traffic))
 	{
 		token_lstclear(&data->token, del);
 		return ;
 	}
 	re_definer(data->token);
-	// t_token *curr;
-	// curr = data->token;
-	// while (curr)
-	// {
-	// 	print_tokens(curr->word, curr->type);
-	// 	printf("- - - - -\n");
-	// 	curr = curr->next;
-	// }
 }
 
 
