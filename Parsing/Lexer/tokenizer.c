@@ -68,14 +68,14 @@ void	token_definer(char **tokens, t_pdata *data)
 
 static void	ops_definer(t_token *ptr, int *comming_file)
 {
-    if (ft_strncmp(ptr->word, ">", 1) == 0)
+    if (ft_strcmp(ptr->word, ">") == 0)
 		ptr->type = red_out;
-    else if (ft_strncmp(ptr->word, "<", 1) == 0)
+    else if (ft_strcmp(ptr->word, "<") == 0)
         ptr->type = red_in;
-    else if (ft_strncmp(ptr->word, ">>", 2) == 0)
+    else if (ft_strcmp(ptr->word, ">>") == 0)
         ptr->type = append;
     *comming_file = 1;
-    if (ft_strncmp(ptr->word, "<<", 2) == 0)
+    if (ft_strcmp(ptr->word, "<<") == 0)
 	{
         ptr->type = heredoc;
 		if (ptr->next->type == word)
@@ -83,10 +83,7 @@ static void	ops_definer(t_token *ptr, int *comming_file)
 		*comming_file = 0;
 	}
 	else if (ft_strncmp(ptr->word, "|", 1) == 0)
-	{
-		ptr->type = PIPE;
 		*comming_file = 0;
-	}
 }
 
 void	expantion_validator(char *p, int *var)
@@ -95,7 +92,7 @@ void	expantion_validator(char *p, int *var)
 
 	if (*(tmp + 1) == '\0')
 		return ;
-	*var = 1;		
+	*var = 1;
 }
 
 void	re_definer(t_token *head)
@@ -105,18 +102,22 @@ void	re_definer(t_token *head)
 
 	curr = head;
 	file_onwards = 0;
+	curr->var = 0;
 	while (curr)
 	{
-		if (curr->type == redirection || curr->type == PIPE)
+		if (_isred(curr->type) || curr->type == PIPE)
 			ops_definer(curr, &file_onwards);
 		else if (file_onwards)
 		{
 			curr->type = file;
 			file_onwards = 0;
 		}
-		else if ((curr->prev && curr->prev->type == PIPE)
-			|| curr->prev == NULL || curr->prev->type == file || curr->prev->type == command)
+		else if ((curr->prev && curr->prev->type == PIPE) || curr->prev == NULL
+			|| curr->prev->type == file || curr->prev->type == command
+			|| curr->prev->type == delimiter)
     		curr->type = command;
+		else if (curr->type != delimiter)
+			curr->type = file;	
 		if (ft_strchr(curr->word, '$'))
 			expantion_validator(curr->word, &curr->var);
     	curr = curr->next;

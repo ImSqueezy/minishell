@@ -72,3 +72,8 @@ int	token_size(t_token *ptr)
 	}
 	return (i);
 }
+
+int	_isred(char c)
+{
+	return (c == 2 ||c == 3 || c == 4 || c == 5 || c == 6);
+}

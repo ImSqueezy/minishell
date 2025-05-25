@@ -32,23 +32,23 @@ typedef struct s_token t_token;
 
 typedef enum enum_token_type
 {
-	word, // 0
-	PIPE, // 1
-	redirection, // 2
-	red_in, // 3
-	red_out, // 4
-	append, // 5
-	heredoc, // 6
-	command, // 7
-	file, // 8
-	delimiter, // 9
+	word,
+	PIPE,
+	redirection,
+	red_in,
+	red_out,
+	append,
+	heredoc,
+	command,
+	file,
+	delimiter,
 }	t_etype;
 
 typedef struct s_token
 {
     char    *word;
     int     type;
-	int		quoting;	
+	int		quoting;
 	int		var;
     t_token *next;
 	t_token	*prev;
@@ -105,6 +105,7 @@ char	*ft_strnjoin(const char *s1, const char *s2, int n);
 int		token_size(t_token *ptr);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strndup(const char *s1, int n);
+int		_isred(char c);
 
 void	env_lstclear(t_env **head, void (*del)(void *));
 void	env_lstdelone(t_env *node, void (*del)(void *));

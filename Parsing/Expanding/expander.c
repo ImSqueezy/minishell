@@ -31,7 +31,7 @@ static char	*getenv_value(const char *str, t_env *env, int *index)
 	li = 0;
 	if (!str[li])
 		return (ft_strdup("$"));
-	while (str[li] && (str[li] != '$' && str[li] != '\'' && str[li] != '\"'))
+	while (str[li] && (str[li] != ' ' && str[li] != '$' && str[li] != '\'' && str[li] != '\"'))
 		li++;
 	key = ft_strndup(str, li);
 	curr = env;
@@ -101,7 +101,6 @@ t_token	*token_addnew(char *word, int type, int quoting, int var)
 	return (new_node);
 }
 
-
 void token_insert_after(t_token *current, t_token *new_node)
 {
     if (!current || !new_node)
@@ -153,11 +152,13 @@ void	expansions_search(t_pdata *ptr)
 		if (curr->var == 1 && curr->type != delimiter)
 		{
 			curr->word = expand(curr->word, &curr->quoting, ptr->env); // null
-			curr = subtokenizer(&ptr->token, curr);
 			if (!curr->word)
-				token_lstdelone(&ptr->token, curr, del);
-			else
-				re_definer(curr);
+			{
+				free(curr->word);
+				curr->word = ft_strdup("");
+			}
+			curr = subtokenizer(&ptr->token, curr);
+			re_definer(curr);
 		}
 		curr = next;
 	}
