@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:05:11 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/21 22:05:12 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:51:50 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/parsing.h"
 
-char    *ft_strnjoin(const char *s1, const char *s2, int n)
+char	*ft_strnjoin(const char *s1, const char *s2, int n)
 {
 	char	*new;
 	size_t	j;
@@ -45,7 +45,7 @@ char	*ft_strndup(const char *s1, int n)
 
 	new = malloc(sizeof(char) * n + 1);
 	if (!new)
-    	return (NULL);
+		return (NULL);
 	i = ft_strlcpy(new, s1, n + 1);
 	return (new);
 }
@@ -62,7 +62,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 
 int	token_size(t_token *ptr)
 {
-	int    i;
+	int	i;
 
 	i = 0;
 	while (ptr)
@@ -75,5 +75,5 @@ int	token_size(t_token *ptr)
 
 int	_isred(char c)
 {
-	return (c == 2 ||c == 3 || c == 4 || c == 5 || c == 6);
+	return (c == 2 || c == 3 || c == 4 || c == 5 || c == 6);
 }

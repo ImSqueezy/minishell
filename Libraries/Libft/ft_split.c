@@ -6,13 +6,13 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 15:05:25 by aouaalla          #+#    #+#             */
-/*   Updated: 2024/11/09 19:11:31 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:03:37 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int is_whitespace(char c)
+static int	is_whitespace(char c)
 {
 	return (c == 32 || (c >= 9 && c <= 13));
 }
@@ -36,10 +36,11 @@ int	count_words(const char *p)
 			var = p[i];
 		else if (p[i] == var)
 			var = 0;
-        if (!var && (is_whitespace(p[i]) || p[i] == '\0') && !is_whitespace(previous))
+		if (!var && (is_whitespace(p[i]) || p[i] == '\0')
+			&& !is_whitespace(previous))
 			words++;
 		previous = p[i];
-		i++;	
+		i++;
 	}
 	return (words);
 }
