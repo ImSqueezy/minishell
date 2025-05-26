@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/04/21 21:39:55 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:07:17 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@
 # include <readline/history.h>
 # include <termios.h>
 
-#define SYNTAX_ERROR "minishell: syntax error near unexpected token"
+# define SYNTAX_ERROR "minishell: syntax error near unexpected token"
 
-typedef struct s_token t_token;
+typedef struct s_token	t_token;
+typedef struct s_env	t_env;
 
 typedef enum enum_token_type
 {
@@ -46,15 +47,13 @@ typedef enum enum_token_type
 
 typedef struct s_token
 {
-    char    *word;
-    int     type;
+	char	*word;
+	int		type;
 	int		quoting;
 	int		var;
-    t_token *next;
+	t_token	*next;
 	t_token	*prev;
-}   t_token;	
-
-typedef struct s_env t_env;
+}	t_token;
 
 typedef struct s_env
 {
@@ -72,13 +71,13 @@ typedef struct parsing
 	t_env	*env;
 }	t_pdata;
 
-typedef	struct minishell
+typedef struct minishell
 {
 	char	*first;
 	char	**cmd;
 	int		fd_in;
 	int		fd_out;
-	t_env 	*env;
+	t_env	*env;
 }	t_gdata;
 
 char	*spacing(const char *p, t_pdata *data);

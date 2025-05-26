@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   blah.c                                             :+:      :+:    :+:   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 21:56:13 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/17 21:56:15 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:58:22 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	token_type(t_token *token)
 
 	token->var = 0;
 	len = ft_strlen(token->word);
-	if (len == 1) // a pipe a redirection or other
+	if (len == 1)
 	{
 		if (!ft_strncmp(token->word, "<", 1)
 			|| !ft_strncmp(token->word, ">", 1))
@@ -28,7 +28,7 @@ static void	token_type(t_token *token)
 		else
 			token->type = word;
 	}
-	else if (len == 2) // append, herdoce or other
+	else if (len == 2)
 	{
 		if (!ft_strncmp(token->word, ">>", 2)
 			|| !ft_strncmp(token->word, "<<", 2))
@@ -68,16 +68,16 @@ void	token_definer(char **tokens, t_pdata *data)
 
 static void	ops_definer(t_token *ptr, int *comming_file)
 {
-    if (ft_strcmp(ptr->word, ">") == 0)
+	if (ft_strcmp(ptr->word, ">") == 0)
 		ptr->type = red_out;
-    else if (ft_strcmp(ptr->word, "<") == 0)
-        ptr->type = red_in;
-    else if (ft_strcmp(ptr->word, ">>") == 0)
-        ptr->type = append;
-    *comming_file = 1;
-    if (ft_strcmp(ptr->word, "<<") == 0)
+	else if (ft_strcmp(ptr->word, "<") == 0)
+		ptr->type = red_in;
+	else if (ft_strcmp(ptr->word, ">>") == 0)
+		ptr->type = append;
+	*comming_file = 1;
+	if (ft_strcmp(ptr->word, "<<") == 0)
 	{
-        ptr->type = heredoc;
+		ptr->type = heredoc;
 		if (ptr->next->type == word)
 			ptr->next->type = delimiter;
 		*comming_file = 0;
@@ -88,8 +88,9 @@ static void	ops_definer(t_token *ptr, int *comming_file)
 
 void	expantion_validator(char *p, int *var)
 {
-	char	*tmp = ft_strchr(p, '$');
+	char	*tmp;
 
+	tmp = ft_strchr(p, '$');
 	if (*(tmp + 1) == '\0')
 		return ;
 	*var = 1;
@@ -115,11 +116,11 @@ void	re_definer(t_token *head)
 		else if ((curr->prev && curr->prev->type == PIPE) || curr->prev == NULL
 			|| curr->prev->type == file || curr->prev->type == command
 			|| curr->prev->type == delimiter)
-    		curr->type = command;
+			curr->type = command;
 		else if (curr->type != delimiter)
-			curr->type = file;	
+			curr->type = file;
 		if (ft_strchr(curr->word, '$'))
 			expantion_validator(curr->word, &curr->var);
-    	curr = curr->next;
+		curr = curr->next;
 	}
 }

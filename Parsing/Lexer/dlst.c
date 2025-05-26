@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dlst.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:51:49 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/15 21:51:49 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:50:29 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ void	token_lstdelone(t_token **head, t_token *lst, void (*del)(void *))
 void	token_lstclear(t_token **lst, void (*del)(void *))
 {
 	t_token	*next;
-	t_token **head = lst;
+	t_token	**head;
 
+	head = lst;
 	if (!lst || !del)
 		return ;
 	while (*lst)
@@ -80,7 +81,7 @@ t_token	*token_addnew(char *word, int type, int quoting, int var)
 void	token_insert_after(t_token *current, t_token *new_node)
 {
 	if (!current || !new_node)
-		return;
+		return ;
 	new_node->prev = current;
 	new_node->next = current->next;
 	if (current->next)

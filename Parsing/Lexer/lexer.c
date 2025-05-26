@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:46:45 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/15 21:46:46 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:54:24 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void	lexer(char *input, t_pdata *data, t_gdata *gptr)
 	re_definer(data->token);
 }
 
-
 /* quick token debuger
 	// t_token *curr;
 	// curr = data->token;
@@ -111,5 +110,4 @@ void	print_tokens(char *word, int type)
 		printf("of type %s\n", "file");
 	else if (type == 9)
 		printf("of type %s\n", "delimiter");
-	// printf("quoting flag: %d\n", curr->quoting);
 }
