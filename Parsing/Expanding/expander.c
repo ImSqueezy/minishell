@@ -20,35 +20,7 @@ static void	squoting_traffic(int *flag)
 		*flag = 0;
 }
 
-static char	*getenv_value(const char *str, t_env *env, int *index)
-{
-	int		li;
-	char	*key;
-	char	*value;
-	t_env	*curr;
-
-	value = NULL;
-	li = 0;
-	if (!str[li])
-		return (ft_strdup("$"));
-	while (str[li] && (str[li] != ' ' && str[li] != '$' && str[li] != '\'' && str[li] != '\"'))
-		li++;
-	key = ft_strndup(str, li);
-	curr = env;
-	while (curr)
-	{
-		if (!ft_strcmp(key ,curr->key))
-		{
-			value = ft_strdup(curr->value);
-			break ;
-		}
-		curr = curr->next;
-	}
-	*index += li;
-	return (free(key), value);
-}
-
-char	*set_newstr(char *dst, char *src, int n)
+static char	*set_newstr(char *dst, char *src, int n)
 {
 	char *tmp = dst;
 
@@ -57,7 +29,7 @@ char	*set_newstr(char *dst, char *src, int n)
 	return (dst);
 }
 
-static char    *expand(char *word, int *quoting, t_env *env)
+static char	*expand(char *word, int *quoting, t_env *env)
 {
 	int		i;
 	char	*after_dollar;
@@ -85,34 +57,7 @@ static char    *expand(char *word, int *quoting, t_env *env)
 	return (free(word), newstr);
 }
 
-t_token	*token_addnew(char *word, int type, int quoting, int var)
-{
-	t_token	*new_node;
-
-	new_node = (t_token *)malloc(sizeof(t_token));
-	if (!new_node)
-		return (NULL);
-	new_node->word = word;
-	new_node->type = type;
-	new_node->quoting = quoting;
-	new_node->var = var;
-	new_node->next = NULL;
-	new_node->prev = NULL;
-	return (new_node);
-}
-
-void token_insert_after(t_token *current, t_token *new_node)
-{
-    if (!current || !new_node)
-        return;
-    new_node->prev = current;
-    new_node->next = current->next;
-    if (current->next)
-        current->next->prev = new_node;
-    current->next = new_node;
-}
-
-t_token	*subtokenizer(t_token **head, t_token *curr)
+static t_token	*subtokenizer(t_token **head, t_token *curr)
 {
 	char	**splittedword;
 	t_token	*new;

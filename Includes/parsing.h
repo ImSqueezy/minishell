@@ -109,5 +109,8 @@ int		_isred(char c);
 
 void	env_lstclear(t_env **head, void (*del)(void *));
 void	env_lstdelone(t_env *node, void (*del)(void *));
+void	token_insert_after(t_token *current, t_token *new_node);
+t_token	*token_addnew(char *word, int type, int quoting, int var);
+char	*getenv_value(const char *str, t_env *env, int *index);
 
 #endif

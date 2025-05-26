@@ -81,3 +81,31 @@ void	get_env(t_env **ptr, char **env)
 		env_add_back(ptr, new);
 	}
 }
+
+char	*getenv_value(const char *str, t_env *env, int *index)
+{
+	int		li;
+	char	*key;
+	char	*value;
+	t_env	*curr;
+
+	value = NULL;
+	li = 0;
+	if (!str[li])
+		return (ft_strdup("$"));
+	while (str[li] && (str[li] != ' ' && str[li] != '$' && str[li] != '\'' && str[li] != '\"'))
+		li++;
+	key = ft_strndup(str, li);
+	curr = env;
+	while (curr)
+	{
+		if (!ft_strcmp(key ,curr->key))
+		{
+			value = ft_strdup(curr->value);
+			break ;
+		}
+		curr = curr->next;
+	}
+	*index += li;
+	return (free(key), value);
+}
