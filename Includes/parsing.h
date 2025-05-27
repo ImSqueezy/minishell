@@ -49,8 +49,8 @@ typedef struct s_token
 {
 	char	*word;
 	int		type;
-	int		quoting;
 	int		var;
+	int		quoting;	
 	t_token	*next;
 	t_token	*prev;
 }	t_token;
@@ -109,7 +109,10 @@ int		_isred(char c);
 void	env_lstclear(t_env **head, void (*del)(void *));
 void	env_lstdelone(t_env *node, void (*del)(void *));
 void	token_insert_after(t_token *current, t_token *new_node);
-t_token	*token_addnew(char *word, int type, int quoting, int var);
+t_token	*token_addnew(char *word, t_token *prev);
 char	*getenv_value(const char *str, t_env *env, int *index);
+
+char	*set_newstr(char *dst, char *src, int n);
+char	*quote_removal(t_token *node, char *previous_address);
 
 #endif

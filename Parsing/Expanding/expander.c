@@ -12,15 +12,15 @@
 
 #include "../../Includes/parsing.h"
 
-static void	squoting_traffic(int *flag)
+static void	squoting_traffic(char quote, char *prev)
 {
-	if (*flag == 0)
-		*flag = 1;
-	else
-		*flag = 0;
+	if (!*prev && (quote == '\'' || quote == '"'))
+		*prev = quote;
+	else if (quote && *prev == quote)
+		*prev = 0;
 }
 
-static char	*set_newstr(char *dst, char *src, int n)
+char	*set_newstr(char *dst, char *src, int n)
 {
 	char	*tmp;
 
@@ -30,26 +30,24 @@ static char	*set_newstr(char *dst, char *src, int n)
 	return (dst);
 }
 
-static char	*expand(char *word, int *quoting, t_env *env)
+static char	*expand(char *word, int quoting, t_env *env)
 {
 	int		i;
-	char	*after_dollar;
+	t_pdata	var;
+	char	*afterd;
 	char	*newstr;
 
-	newstr = NULL;
-	i = 0;
+	(1) && (newstr = NULL, i = 0, var.prev = 0);
 	while (word[i])
 	{
-		if (word[i] == '\'')
-			squoting_traffic(quoting);
-		if (word[i] == '$' && *quoting)
+		squoting_traffic(word[i], &var.prev);
+		if (word[i] == '$' && var.prev != '\'')
 		{
 			i++;
-			after_dollar = getenv_value(&word[i], env, &i);
-			if (after_dollar)
-				newstr = set_newstr(newstr, after_dollar,
-						ft_strlen(after_dollar));
-			free(after_dollar);
+			afterd = getenv_value(&word[i], env, &i);
+			if (afterd)
+				newstr = set_newstr(newstr, afterd, ft_strlen(afterd));
+			free(afterd);
 			i--;
 		}
 		else
@@ -68,21 +66,21 @@ static t_token	*subtokenizer(t_token **head, t_token *curr)
 	int		i;
 
 	splittedword = ft_split(curr->word);
-	if (!splittedword || !splittedword[0])
+	if (!splittedword || !splittedword[0]) // needs testing
 		return (curr);
-	old_curr = curr;
-	i = 0;
+	(1) && (i = 0, old_curr = curr);
 	while (splittedword[i])
 	{
-		new = token_addnew(splittedword[i], 0, 1, 0);
+		new = token_addnew(splittedword[i], curr);
 		if (i == 0)
 			new_curr = new;
 		token_insert_after(curr, new);
-		curr = curr->next;
-		i++;
+		(1) && (i += 1, curr = curr->next);
 	}
 	token_lstdelone(head, old_curr, del);
 	curr = new_curr;
+	if (curr->quoting > 1)
+		curr->word = quote_removal(curr, curr->word);
 	return (free(splittedword), curr);
 }
 
@@ -98,7 +96,7 @@ void	expansions_search(t_pdata *ptr)
 		next = curr->next;
 		if (curr->var == 1 && curr->type != delimiter)
 		{
-			curr->word = expand(curr->word, &curr->quoting, ptr->env);
+			curr->word = expand(curr->word, curr->quoting, ptr->env);
 			if (!curr->word)
 			{
 				free(curr->word);
