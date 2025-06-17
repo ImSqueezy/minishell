@@ -35,10 +35,10 @@ $(LIBFT): $(LIBFT_OBJS)
 	$(COMPILE)
 
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJS) $(LIBFT_OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) $(LIBFT)
 
 re: fclean all
 
