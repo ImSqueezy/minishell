@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-#include "../execution.h"
-=======
-#include "../execution/execution.h"
->>>>>>> master
+#include "execution.h"
 
 char *get_path()
 {

@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-#include "../execution.h"
-=======
-#include "../execution/execution.h"
->>>>>>> master
+
+#include "execution.h"
 
 int check_builtin(char *cmd)
 {
