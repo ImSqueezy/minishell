@@ -1,33 +1,3 @@
-<<<<<<< HEAD
-FILES = builtins/cd.c \
-		builtins/echo.c \
-		builtins/env.c \
-		builtins/exit.c \
-		builtins/export.c \
-		builtins/pwd.c \
-		builtins/unset.c \
-		builtins/utils.c \
-		execution/builtins_check.c \
-		execution/test1.c \
-		execution/utils.c \
-		execution/utils1.c \
-		execution/utils2.c \
-		main.c \
-		utils.c
-
-OBJS = ${FILES:%.c=%.o}
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-NAME = execute
-
-all: $(NAME)
-
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
-
-%.o: %.c execution.h
-	$(CC) $(CFLAGS) -c $< -o $@
-=======
 # relink must be handled
 # compilation must be done with the flags (Werror, Wextra and Wall)
 # -g must be removed
@@ -63,7 +33,6 @@ $(LIBFT): $(LIBFT_OBJS)
 
 %.o: %.c
 	$(COMPILE)
->>>>>>> master
 
 clean:
 	rm -f $(OBJS)
