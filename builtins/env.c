@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #include "../execution.h"
+=======
+#include "../execution/execution.h"
+>>>>>>> master
 
 
 int contains_equal(const char *str)

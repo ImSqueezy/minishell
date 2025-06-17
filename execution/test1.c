@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #include "../execution.h"
+=======
+#include "../execution/execution.h"
+>>>>>>> master
 
 void try_exec_from_directories(char **dirs, t_cmd *cmd, char **envp)
 {

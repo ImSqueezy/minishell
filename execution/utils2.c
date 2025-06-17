@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #include "../execution.h"
+=======
+#include "../execution/execution.h"
+>>>>>>> master
 
 void setup_pipes_and_fork(t_cmd *cmd, int pipe_fd[2], pid_t *pid)
 {

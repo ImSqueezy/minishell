@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #include "../execution.h"
+=======
+#include "../execution/execution.h"
+>>>>>>> master
 #include "../libft/libft.h"
 
 t_env *create_env_node(const char *str)

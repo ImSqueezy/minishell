@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouaalla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 14:41:21 by aouaalla          #+#    #+#             */
-/*   Updated: 2024/11/08 00:46:42 by aouaalla         ###   ########.fr       */
+/*   Created: 2025/05/15 22:16:07 by aouaalla          #+#    #+#             */
+/*   Updated: 2025/05/15 22:16:08 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-char	*ft_strchr(const char *s, int c)
-{
-	if (!s)
-		return (NULL);
-	while (*s)
-	{
-		if (*s == (char )c)
-			return ((char *)s);
-		s++;
-	}
-	if (*s == (char )c)
-		return ((char *)s);
-	return (0);
-}
+# include "Includes/parsing.h"
+
+#endif

@@ -3,43 +3,116 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/04/21 21:39:55 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:07:17 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
+/*
+    - Libft has:
+        * unistd
+        * stdlib
+        * limits
+		* stdbool
+*/
+# include "../Libraries/Libft/libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-
 # include <termios.h>
 
-typedef struct s_env t_env;
+# define SYNTAX_ERROR "minishell: syntax error near unexpected token"
 
-typedef enum e_token_type
-{
-	t_word,
-	t_pipe,
-	t_less
-}	t_type;
+typedef struct s_token	t_token;
+typedef struct s_env	t_env;
 
-typedef struct s_fd
+typedef enum enum_token_type
 {
-	int	fd1;
-	int	fd2;
-}	t_fd;
+	word,
+	PIPE,
+	redirection,
+	red_in,
+	red_out,
+	append,
+	heredoc,
+	command,
+	file,
+	delimiter,
+}	t_etype;
+
+typedef struct s_token
+{
+	char	*word;
+	int		type;
+	int		var;
+	int		quoting;	
+	t_token	*next;
+	t_token	*prev;
+}	t_token;
 
 typedef struct s_env
 {
 	char	*key;
-	char	*val;
-	char	index;
-	t_env	*env;
+	char	*value;
+	t_env	*next;
 }	t_env;
+
+typedef struct parsing
+{
+	bool	traffic;
+	char	quote;
+	char	prev;
+	t_token	*token;
+	t_env	*env;
+}	t_pdata;
+
+typedef struct minishell
+{
+	char	*first;
+	char	**cmd;
+	int		fd_in;
+	int		fd_out;
+	t_env	*env;
+}	t_gdata;
+
+char	*spacing(const char *p, t_pdata *data);
+size_t	straddlen(const char *p, size_t old_len, t_pdata *data);
+int		quoting_traffic(char c, t_pdata *data);
+int		isred(char c);
+int		isop(char c);
+int		is_whitespace(char c);
+
+void	twod_free(char **p);
+void	del(void *ptr);
+void	token_lstdelone(t_token **head, t_token *lst, void (*del)(void *));
+void	token_lstclear(t_token **lst, void (*del)(void *));
+void	token_add_back(t_token **lst, t_token *new);
+void	lexer(char *input, t_pdata *data, t_gdata *ptr);
+void	re_definer(t_token *head);
+void	token_definer(char **tokens, t_pdata *data);
+void	get_env(t_env **ptr, char **env);
+int		env_size(t_env *env);
+void	print_tokens(char *word, int type);
+
+void	expansions_search(t_pdata *ptr);
+char	*ft_strnjoin(const char *s1, const char *s2, int n);
+int		token_size(t_token *ptr);
+int		ft_strcmp(const char *s1, const char *s2);
+char	*ft_strndup(const char *s1, int n);
+int		_isred(char c);
+
+void	env_lstclear(t_env **head, void (*del)(void *));
+void	env_lstdelone(t_env *node, void (*del)(void *));
+void	token_insert_after(t_token *current, t_token *new_node);
+t_token	*token_addnew(char *word, t_token *prev);
+char	*getenv_value(const char *str, t_env *env, int *index);
+
+char	*set_newstr(char *dst, char *src, int n);
+char	*quote_removal(t_token *node, char *previous_address);
 
 #endif
