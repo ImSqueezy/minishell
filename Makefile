@@ -1,34 +1,38 @@
-# relink must be handled
+FILES = builtins/cd.c \
+		builtins/echo.c \
+		builtins/env.c \
+		builtins/exit.c \
+		builtins/export.c \
+		builtins/pwd.c \
+		builtins/unset.c \
+		builtins/utils.c \
+		execution/builtins_check.c \
+		execution/test1.c \
+		execution/utils.c \
+		execution/utils1.c \
+		execution/utils2.c \
+		main.c \
+		utils.c
 
-NAME = minishell
-
-LIBFT_OBJS = $(addprefix Libraries/Libft/, ft_isalpha.o ft_isdigit.o ft_isalnum.o ft_isascii.o ft_isprint.o ft_strlen.o ft_memset.o ft_bzero.o \
-ft_memcpy.o ft_memmove.o ft_strlcpy.o ft_strlcat.o ft_toupper.o ft_tolower.o ft_strchr.o ft_strrchr.o ft_strncmp.o \
-ft_memchr.o ft_memcmp.o ft_strnstr.o ft_atoi.o ft_strdup.o ft_calloc.o ft_substr.o ft_substr.o ft_strjoin.o ft_strtrim.o \
-ft_split.o ft_itoa.o ft_strmapi.o ft_striteri.o ft_putchar_fd.o ft_putstr_fd.o ft_putendl_fd.o ft_putnbr_fd.o)
-
-COMPILE = cc -Wall -Werror -Wextra -c $< -o $@
-LIBFT_PREFIX = Libraries/Libft/
-LIBFT = Libraries/Libft/libft.a
-OBJS = $(PARSING_OBJS) \
-	main.o
-PARSING_OBJS = $(addprefix Parsing/, )
+OBJS = ${FILES:%.c=%.o}
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
+NAME = execute
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJS)
-	cc $(OBJS) $(LIBFT) -o $(NAME)
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-$(LIBFT):
-	make -C Libraries/Libft/
-
-%.o: %.c
-	$(COMPILE)
+%.o: %.c execution.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(LIBFT_OBJS)
+	rm -f $(OBJS)
 
 fclean: clean
-	rm -f $(NAME) $(LIBFT)
+	rm -f $(NAME)
 
-re: clean all
+re: fclean all
+
+.PHONY: all clean fclean re
