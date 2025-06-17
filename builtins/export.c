@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-#include "../execution.h"
-=======
 #include "../execution/execution.h"
->>>>>>> master
 
 int is_valid_identifier(const char *arg)
 {

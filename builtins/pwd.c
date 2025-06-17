@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-#include "../execution.h"
-=======
 #include "../execution/execution.h"
->>>>>>> master
-
 
 int pwd_command(void)
 {
