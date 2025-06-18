@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:51:49 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/26 18:50:29 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:19:02 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_token	*token_addnew(char *word, t_token *prev)
 	new_node->word = word;
 	new_node->type = 0;
 	new_node->quoting = prev->quoting;
-	new_node->var = 0;
+	new_node->var = 3;
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	return (new_node);

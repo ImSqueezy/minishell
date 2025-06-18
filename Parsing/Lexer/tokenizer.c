@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 21:56:13 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/26 18:58:22 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:19:42 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	token_definer(char **tokens, t_pdata *data)
 		if (!new_token)
 			return ;
 		new_token->word = tokens[i];
+		new_token->var = 0;
 		new_token->quoting = 1;
 		if (ft_strchr(new_token->word, '\''))
 			new_token->quoting = 2;
@@ -103,7 +104,6 @@ void	re_definer(t_token *head)
 
 	curr = head;
 	file_onwards = 0;
-	curr->var = 0;
 	while (curr)
 	{
 		if (_isred(curr->type) || curr->type == PIPE)
