@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yettalib <yettalib@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:46:06 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/17 16:17:29 by yettalib         ###   ########.fr       */
+/*   Updated: 2025/06/22 16:01:49 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,14 @@ int	parser(char *input, t_pdata *pdata)
 	add_history(input);
 	lexer(input, pdata, gdata);
 	expansions_search(pdata);
+	t_token *curr1;
+	curr1 = pdata->token;
+	while (curr1)
+	{
+		if (curr1->var != 3)
+			curr1->word = quote_removal(curr1, curr1->word);
+		curr1 = curr1->next;
+	}
 	token_lstclear(&pdata->token, del);
 	return (1);
 }
