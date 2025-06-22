@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/26 19:07:17 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/22 18:03:51 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,6 @@ typedef struct parsing
 	t_env	*env;
 }	t_pdata;
 
-typedef struct minishell
-{
-	char	*first;
-	char	**cmd;
-	int		fd_in;
-	int		fd_out;
-	t_env	*env;
-}	t_gdata;
-
 char	*spacing(const char *p, t_pdata *data);
 size_t	straddlen(const char *p, size_t old_len, t_pdata *data);
 int		quoting_traffic(char c, t_pdata *data);
@@ -110,7 +101,7 @@ void	env_lstclear(t_env **head, void (*del)(void *));
 void	env_lstdelone(t_env *node, void (*del)(void *));
 void	token_insert_after(t_token *current, t_token *new_node);
 t_token	*token_addnew(char *word, t_token *prev);
-char	*getenv_value(const char *str, t_env *env, int *index);
+char	*getenv_value(const char *str, t_pdata *ptr, int *index);
 
 char	*set_newstr(char *dst, char *src, int n);
 char	*quote_removal(t_token *node, char *previous_address);

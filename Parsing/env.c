@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:46:15 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/26 18:47:36 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/22 18:02:52 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,33 +92,4 @@ void	get_env(t_env **ptr, char **env)
 		new->next = NULL;
 		env_add_back(ptr, new);
 	}
-}
-
-char	*getenv_value(const char *str, t_env *env, int *index)
-{
-	int		li;
-	char	*key;
-	char	*value;
-	t_env	*curr;
-
-	value = NULL;
-	li = 0;
-	if (!str[li])
-		return (ft_strdup("$"));
-	while (str[li] && (str[li] != ' ' && str[li] != '$'
-			&& str[li] != '\'' && str[li] != '\"'))
-		li++;
-	key = ft_strndup(str, li);
-	curr = env;
-	while (curr)
-	{
-		if (!ft_strcmp(key, curr->key))
-		{
-			value = ft_strdup(curr->value);
-			break ;
-		}
-		curr = curr->next;
-	}
-	*index += li;
-	return (free(key), value);
 }
