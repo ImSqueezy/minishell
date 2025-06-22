@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:01:37 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/26 18:53:33 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/22 17:52:20 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,7 @@ static void	squoting_traffic(char quote, char *prev)
 		*prev = 0;
 }
 
-char	*set_newstr(char *dst, char *src, int n)
-{
-	char	*tmp;
-
-	tmp = dst;
-	dst = ft_strnjoin(tmp, src, n);
-	free(tmp);
-	return (dst);
-}
-
-static char	*expand(char *word, int quoting, t_env *env)
+static char	*expand(char *word, int quoting, t_pdata *ptr)
 {
 	int		i;
 	t_pdata	var;
@@ -44,7 +34,7 @@ static char	*expand(char *word, int quoting, t_env *env)
 		if (word[i] == '$' && var.prev != '\'')
 		{
 			i++;
-			afterd = getenv_value(&word[i], env, &i);
+			afterd = getenv_value(&word[i], ptr, &i);
 			if (afterd)
 				newstr = set_newstr(newstr, afterd, ft_strlen(afterd));
 			free(afterd);
@@ -96,7 +86,7 @@ void	expansions_search(t_pdata *ptr)
 		next = curr->next;
 		if (curr->var == 1 && curr->type != delimiter)
 		{
-			curr->word = expand(curr->word, curr->quoting, ptr->env);
+			curr->word = expand(curr->word, curr->quoting, ptr);
 			if (!curr->word)
 			{
 				free(curr->word);
