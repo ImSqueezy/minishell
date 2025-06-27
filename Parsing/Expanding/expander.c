@@ -56,7 +56,7 @@ static t_token	*subtokenizer(t_token **head, t_token *curr)
 	int		i;
 
 	splittedword = ft_split(curr->word);
-	if (!splittedword || !splittedword[0]) // needs testing
+	if (!splittedword || !splittedword[0])
 		return (curr);
 	(1) && (i = 0, old_curr = curr);
 	while (splittedword[i])
@@ -74,12 +74,71 @@ static t_token	*subtokenizer(t_token **head, t_token *curr)
 	return (free(splittedword), curr);
 }
 
+int	ft_is_symbol(char c) // $, + and _ aren't included
+{
+	return (c == '!' || c == '@' || c == '#' || c == '%'
+	|| c == '^' || c == '&' || c == '*' || c == '('
+	|| c == ')' || c == '-' || c == '=');
+}
+
+int	check_sybols(char *key)
+{
+	int	i;
+
+	i = 0;
+	while (key[i])
+	{
+		if (ft_is_symbol(key[i]) || (key[i] == '+' && key[i + 1] != '\0'))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	checkinvalid_identifier(char *key)
+{
+	if (ft_isdigit(*key) || check_sybols(key));
+}
+
+void	preserve_export(t_token *exp_tok)
+{
+	char	*key;
+
+	exp_tok = exp_tok->next;
+	while (exp_tok)
+	{
+		key = get_key(exp_tok->word);
+		if (checkinvalid_identifier(key))
+			printf(INVALID_IDENTIFIER, exp_tok->word);
+		if (exp_tok->next && ft_strchr(exp_tok->next->word, '='))
+			printf(INVALID_IDENTIFIER, exp_tok->next->word);
+		exp_tok = exp_tok->next;
+	}
+}
+
+void	export_threater(t_token	*head)
+{
+	t_token	*curr;
+	int		count;
+	
+	count = 0;
+	curr = head;
+	while (curr)
+	{
+		if (!ft_strcmp(curr->word, "export") && count == 0)
+			preserve_export(curr);
+		count++;
+		curr = curr->next;
+	}
+}
+
 void	expansions_search(t_pdata *ptr)
 {
 	t_token	*curr;
 	t_token	*next;
 	char	*new;
 
+	export_threater(ptr->token);
 	curr = ptr->token;
 	while (curr)
 	{
