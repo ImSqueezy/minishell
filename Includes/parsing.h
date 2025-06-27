@@ -27,6 +27,7 @@
 # include <termios.h>
 
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token"
+# define INVALID_IDENTIFIER "minishell: export: '%s': not a valid identifier\n"
 
 typedef struct s_token	t_token;
 typedef struct s_env	t_env;
@@ -44,6 +45,14 @@ typedef enum enum_token_type
 	file,
 	delimiter,
 }	t_etype;
+
+typedef struct s_gdata	t_gdata;
+
+// temporary for error silencing
+typedef struct s_gdata
+{
+	int	blah;	
+}	t_gdata;
 
 typedef struct s_token
 {
@@ -97,6 +106,7 @@ int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strndup(const char *s1, int n);
 int		_isred(char c);
 
+char	*get_key(char *p);
 void	env_lstclear(t_env **head, void (*del)(void *));
 void	env_lstdelone(t_env *node, void (*del)(void *));
 void	token_insert_after(t_token *current, t_token *new_node);

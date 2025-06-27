@@ -12,7 +12,7 @@
 
 #include "../Includes/parsing.h"
 
-static char	*get_key(char *p)
+char	*get_key(char *p)
 {
 	char	*key;
 	int		i;
