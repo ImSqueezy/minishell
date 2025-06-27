@@ -106,6 +106,7 @@ int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strndup(const char *s1, int n);
 int		_isred(char c);
 
+char	*get_value(char *p);
 char	*get_key(char *p);
 void	env_lstclear(t_env **head, void (*del)(void *));
 void	env_lstdelone(t_env *node, void (*del)(void *));

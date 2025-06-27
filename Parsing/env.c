@@ -50,7 +50,7 @@ static void	env_add_back(t_env **head, t_env *new)
 	ptr->next = new;
 }
 
-static char	*get_value(char *p)
+char	*get_value(char *p)
 {
 	char	*value;
 	int		i;
