@@ -100,45 +100,54 @@ int	checkinvalid_identifier(char *key)
 	if (ft_isdigit(*key) || check_sybols(key));
 }
 
-void	preserve_export(t_token *exp_tok)
+t_token	*key_validator(t_token *exp_tok)
 {
 	char	*key;
 
 	exp_tok = exp_tok->next;
-	while (exp_tok)
+	key = get_key(exp_tok->word);
+	if (checkinvalid_identifier(key))
 	{
-		key = get_key(exp_tok->word);
-		if (checkinvalid_identifier(key))
-			printf(INVALID_IDENTIFIER, exp_tok->word);
-		if (exp_tok->next && ft_strchr(exp_tok->next->word, '='))
-			printf(INVALID_IDENTIFIER, exp_tok->next->word);
-		exp_tok = exp_tok->next;
+		printf(INVALID_IDENTIFIER, exp_tok->word);
+		return (free(key), exp_tok->next);
 	}
+	free(key);
+	return (exp_tok->next);
 }
 
-void	export_threater(t_token	*head)
+int	export_threater(t_token	*head)
 {
 	t_token	*curr;
 	int		count;
+	bool	invalid_found;
 	
-	count = 0;
-	curr = head;
+	(1) && (count = 0, invalid_found = 0, curr = head);
 	while (curr)
 	{
 		if (!ft_strcmp(curr->word, "export") && count == 0)
-			preserve_export(curr);
-		count++;
-		curr = curr->next;
+		{	
+			curr = key_validator(curr);
+			while (curr && curr->type != PIPE && !ft_strchr(curr->prev->word, '='))
+			{
+				printf(INVALID_IDENTIFIER, curr->word);
+				(1) && (curr = curr->next, invalid_found = 1);
+			}
+			if (invalid_found || !curr)
+				return (0);
+		}
+		(1) && (count++, curr = curr->next);
 	}
+	return (1);
 }
 
-void	expansions_search(t_pdata *ptr)
+int	expansions_search(t_pdata *ptr)
 {
 	t_token	*curr;
 	t_token	*next;
 	char	*new;
 
-	export_threater(ptr->token);
+	if (!export_threater(ptr->token))
+		return (printf("left export_threater!\n"), 0); // debug to be removed later
 	curr = ptr->token;
 	while (curr)
 	{
@@ -156,4 +165,5 @@ void	expansions_search(t_pdata *ptr)
 		}
 		curr = next;
 	}
+	return (1);
 }
