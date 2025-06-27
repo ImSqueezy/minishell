@@ -38,7 +38,7 @@ char	*getenv_value(const char *str, t_pdata *ptr, int *index)
 	else if (str[li] == '\0')
 		return (ft_strdup("$"));
 	while (str[li] && (str[li] != ' ' && str[li] != '$'
-			&& str[li] != '\'' && str[li] != '\"'))
+			&& str[li] != '\'' && str[li] != '\"') && str[li] != '=')
 		li++;
 	key = ft_strndup(str, li);
 	curr = ptr->env;
