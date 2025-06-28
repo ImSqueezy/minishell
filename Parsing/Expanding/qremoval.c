@@ -25,6 +25,20 @@ char	*get_middlequoted(char target, char *str, int *index)
 	return (middlequoted);
 }
 
+int	check_mate(char *str, char c)
+{
+	int	i;
+
+	i = 1;
+	while (str[i])
+	{
+		if (str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 char	*quote_removal(t_token *node, char *previous_address)
 {
 	char	*new;
@@ -34,7 +48,8 @@ char	*quote_removal(t_token *node, char *previous_address)
 	(1) && (new = NULL, mq = NULL, i = 0);
 	while (node->word[i])
 	{
-		if (node->word[i] == '\'' || node->word[i] == '"')
+		if ((node->word[i] == '\'' || node->word[i] == '"')
+			&& check_mate(&node->word[i], node->word[i]))
 		{
 			mq = get_middlequoted(node->word[i], &node->word[i + 1], &i);
 			if (mq)
