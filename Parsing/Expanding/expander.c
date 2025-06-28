@@ -81,14 +81,14 @@ int	ft_is_symbol(char c) // $, + and _ aren't included
 	|| c == ')' || c == '-' || c == '=');
 }
 
-int	check_sybols(char *key)
+int	check_symbols(char *key)
 {
 	int	i;
 
 	i = 0;
 	while (key[i])
 	{
-		if (ft_is_symbol(key[i]) || (key[i] == '+' && key[i + 1] != '\0'))
+		if (ft_is_symbol(key[i]) || (key[i] == '+' && key[i + 1] != '='))
 			return (1);
 		i++;
 	}
@@ -97,7 +97,9 @@ int	check_sybols(char *key)
 
 int	checkinvalid_identifier(char *key)
 {
-	if (ft_isdigit(*key) || check_sybols(key));
+	if (ft_isdigit(*key) || check_symbols(key))
+		return (1);
+	return (0);
 }
 
 int	error_checker(t_token *export)
@@ -122,33 +124,28 @@ int	error_checker(t_token *export)
 	return (error_occurance);
 }
 
-char	*preserve_value(char *str)
+char	*preserve_value(char *str, int *quoting)
 {
 	char	*new;
-	int	i;
-	int	j;
 	bool	equal_exists;
+	int		i;
+	int		j;
 
 	new = malloc(ft_strlen(str) + 3);
 	if (!new)
 		return (NULL);
-	equal_exists = false;
-	i = 0;
-	j = 0;
+	(1) && (equal_exists = false, i = 0, j = 0);
 	while (str[i])
 	{
 		if (str[i] == '=' && !equal_exists)
-		{
-			new[j++] = str[i++];
-			new[j++] = '\"';
-			equal_exists = true;
-		}
+			(1) && (equal_exists = true, new[j++] = str[i++], new[j++] = '\'');
 		else
 			new[j++] = str[i++];
 	}
 	if (equal_exists)
-		new[j++] = '\"';
+		new[j++] = '\'';
 	new[j] = '\0';
+	*quoting = -1;
 	return (free(str), new);
 }
 
@@ -156,52 +153,44 @@ void	value_preserver(t_token *export)
 {
 	t_token	*curr;
 	char	*key;
-	char	*new_word;
 
 	curr = export->next;
 	while (curr)
 	{
 		key = get_key(curr->word);
-		if (!ft_strchr(key, '\"') && !ft_strchr(key, '\'') && !ft_strchr(key, '$'))
-		{
-			new_word = preserve_value(curr->word);
-			curr->word = new_word;
-			printf("curr: %s\n", curr->word);
-		}
+		if (!ft_strchr(key, '\"') && !ft_strchr(key, '\'')
+			&& !ft_strchr(key, '$'))
+				curr->word = preserve_value(curr->word, &curr->quoting);
 		free(key);
 		curr = curr->next;
 	}
 }
 
-int	export_threater(t_token	*head)
+void	export_threater(t_token	*head)
 {
 	t_token	*curr;
 	int		count;
-	
+
 	(1) && (count = 0, curr = head);
 	while (curr)
 	{
 		if (!ft_strcmp(curr->word, "export"))
 			if (error_checker(curr))
-				return (0);
 		if (!ft_strcmp(curr->word, "export") && count == 0)
-		{
 			value_preserver(curr);
-			printf("%s\n", curr->next->word);
-		}
+		if (count > 0)
+			return ;
 		(1) && (count++, curr = curr->next);
 	}
-	return (1);
 }
 
-int	expansions_search(t_pdata *ptr)
+void	expansions_search(t_pdata *ptr)
 {
 	t_token	*curr;
 	t_token	*next;
 	char	*new;
 
-	if (!export_threater(ptr->token))	
-		return (0);
+	export_threater(ptr->token);
 	curr = ptr->token;
 	while (curr)
 	{
@@ -209,7 +198,6 @@ int	expansions_search(t_pdata *ptr)
 		if (curr->var == 1 && curr->type != delimiter)
 		{
 			curr->word = expand(curr->word, curr->quoting, ptr);
-			printf("expanded >> %s\n", curr->word);
 			if (!curr->word)
 			{
 				free(curr->word);
@@ -220,5 +208,4 @@ int	expansions_search(t_pdata *ptr)
 		}
 		curr = next;
 	}
-	return (1);
 }
