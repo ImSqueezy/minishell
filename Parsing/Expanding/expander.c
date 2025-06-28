@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:01:37 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/22 17:52:20 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/28 20:36:41 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,11 +175,9 @@ void	export_threater(t_token	*head)
 	while (curr)
 	{
 		if (!ft_strcmp(curr->word, "export"))
-			if (error_checker(curr))
+			error_checker(curr);
 		if (!ft_strcmp(curr->word, "export") && count == 0)
 			value_preserver(curr);
-		if (count > 0)
-			return ;
 		(1) && (count++, curr = curr->next);
 	}
 }
