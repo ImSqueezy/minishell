@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/22 18:03:51 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/29 15:29:09 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ int		env_size(t_env *env);
 void	print_tokens(char *word, int type);
 
 void	expansions_search(t_pdata *ptr);
+void	export_threater(t_token	*head);
+void	equoting_traffic(char quote, char *prev);
 char	*ft_strnjoin(const char *s1, const char *s2, int n);
 int		token_size(t_token *ptr);
 int		ft_strcmp(const char *s1, const char *s2);
