@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:01:37 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/29 15:21:24 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/29 15:23:44 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,56 +72,6 @@ static t_token	*subtokenizer(t_token **head, t_token *curr)
 	if (curr->quoting > 1)
 		curr->word = quote_removal(curr, curr->word);
 	return (free(splittedword), curr);
-}
-
-int	ft_is_symbol(char c) // $, + and _ aren't included
-{
-	return (c == '!' || c == '@' || c == '#' || c == '%'
-	|| c == '^' || c == '&' || c == '*' || c == '('
-	|| c == ')' || c == '-' || c == '=');
-}
-
-int	check_symbols(char *key)
-{
-	int	i;
-
-	i = 0;
-	while (key[i])
-	{
-		if (ft_is_symbol(key[i]) || (key[i] == '+' && key[i + 1] != '='))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	checkinvalid_identifier(char *key)
-{
-	if (ft_isdigit(*key) || check_symbols(key))
-		return (1);
-	return (0);
-}
-
-int	error_checker(t_token *export)
-{
-	char	*key;
-	bool	error_occurance;
-	t_token	*curr;
-
-	curr = export->next;
-	error_occurance = 0;
-	while (curr)
-	{
-		key = get_key(curr->word);
-		if (checkinvalid_identifier(key) || *curr->word == '=')
-		{
-			error_occurance = 1;
-			printf(INVALID_IDENTIFIER, curr->word);
-		}
-		free(key);
-		curr = curr->next;
-	}
-	return (error_occurance);
 }
 
 int	count_dollar(char *s)
@@ -210,10 +160,10 @@ void	export_threater(t_token	*head)
 	(1) && (count = 0, curr = head);
 	while (curr)
 	{
-		if (!ft_strcmp(curr->word, "export"))
-			error_checker(curr);
 		if (!ft_strcmp(curr->word, "export") && count == 0)
 			value_preserver(curr);
+		if (count > 0)
+			return ;
 		(1) && (count++, curr = curr->next);
 	}
 }
