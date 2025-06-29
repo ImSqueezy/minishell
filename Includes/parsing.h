@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/29 15:29:09 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/29 20:50:25 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ int		token_size(t_token *ptr);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strndup(const char *s1, int n);
 int		_isred(char c);
+void	surpress_emptytokens(t_token **head);
 
 char	*get_value(char *p);
 char	*get_key(char *p);

@@ -9,7 +9,6 @@ static char	*specials_expander(int *index, t_pdata *ptr)
 	return (value);
 }
 
-
 static int	is_specialparam(char c)
 {
 	return (c == '$' || c == '-' || c == '?');
@@ -53,4 +52,19 @@ char	*getenv_value(const char *str, t_pdata *ptr, int *index)
 	}
 	*index += li;
 	return (free(key), value);
+}
+
+void	surpress_emptytokens(t_token **head)
+{
+	t_token	*curr;
+	t_token	*next;
+
+	curr = *head;
+	while (curr)
+	{
+		next = curr->next;
+		if (!ft_strcmp(curr->word, "") && curr->type != file)
+			token_lstdelone(head, curr, del);
+		curr = next;
+	}
 }
