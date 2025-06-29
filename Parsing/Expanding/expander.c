@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:01:37 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/29 20:50:30 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/29 20:57:11 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,5 @@ void	expansions_search(t_pdata *ptr)
 		}
 		curr = next;
 	}
-	surpress_emptytokens(&ptr->token);
+	suppress_emptytokens(&ptr->token);
 }

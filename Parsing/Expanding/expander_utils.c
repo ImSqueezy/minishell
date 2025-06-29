@@ -54,7 +54,7 @@ char	*getenv_value(const char *str, t_pdata *ptr, int *index)
 	return (free(key), value);
 }
 
-void	surpress_emptytokens(t_token **head)
+void	suppress_emptytokens(t_token **head)
 {
 	t_token	*curr;
 	t_token	*next;
