@@ -6,11 +6,11 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:46:15 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/22 18:02:52 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/30 19:45:48 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Includes/parsing.h"
+#include "../minishell.h"
 
 char	*get_key(char *p)
 {

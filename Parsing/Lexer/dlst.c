@@ -6,11 +6,11 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:51:49 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/18 15:19:02 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/30 19:48:34 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Includes/parsing.h"
+#include "../../minishell.h"
 
 void	token_lstdelone(t_token **head, t_token *lst, void (*del)(void *))
 {

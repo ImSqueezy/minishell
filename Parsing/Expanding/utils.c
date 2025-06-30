@@ -6,11 +6,11 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:05:11 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/26 18:51:50 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/30 19:48:34 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Includes/parsing.h"
+#include "../../minishell.h"
 
 char	*ft_strnjoin(const char *s1, const char *s2, int n)
 {

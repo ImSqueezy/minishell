@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   mem_related.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:48:18 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/15 21:48:18 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/30 19:45:32 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Includes/parsing.h"
+#include "../minishell.h"
 
 void	del(void *ptr)
 {

@@ -6,11 +6,11 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:32:15 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/26 18:55:14 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/30 19:48:01 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Includes/parsing.h"
+#include "../../minishell.h"
 
 int	quoting_traffic(char c, t_pdata *data)
 {

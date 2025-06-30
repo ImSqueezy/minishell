@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   qremoval.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:28:19 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/27 18:28:21 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/30 19:48:34 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Includes/parsing.h"
+#include "../../minishell.h"
 
 char	*get_middlequoted(char target, char *str, int *index)
 {

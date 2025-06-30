@@ -1,4 +1,4 @@
-#include "../../Includes/parsing.h"
+#include "../../minishell.h"
 
 static int	count_dollar(char *s)
 {

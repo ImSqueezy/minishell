@@ -6,11 +6,11 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 21:56:13 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/18 15:19:42 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/30 19:47:40 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Includes/parsing.h"
+#include "../../minishell.h"
 
 static void	token_type(t_token *token)
 {
