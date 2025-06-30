@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/29 20:57:36 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/30 22:36:59 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token"
 # define INVALID_IDENTIFIER "minishell: export: '%s': not a valid identifier\n"
 
+typedef struct s_gdata	t_gdata;
 typedef struct s_token	t_token;
 typedef struct s_env	t_env;
 
@@ -46,13 +47,7 @@ typedef enum enum_token_type
 	delimiter,
 }	t_etype;
 
-typedef struct s_gdata	t_gdata;
 
-// temporary for error silencing
-typedef struct s_gdata
-{
-	int	blah;	
-}	t_gdata;
 
 typedef struct s_token
 {
@@ -92,14 +87,14 @@ void	del(void *ptr);
 void	token_lstdelone(t_token **head, t_token *lst, void (*del)(void *));
 void	token_lstclear(t_token **lst, void (*del)(void *));
 void	token_add_back(t_token **lst, t_token *new);
-void	lexer(char *input, t_pdata *data, t_gdata *ptr);
+int		lexer(t_pdata *data, char *input);
 void	re_definer(t_token *head);
 void	token_definer(char **tokens, t_pdata *data);
 void	get_env(t_env **ptr, char **env);
 int		env_size(t_env *env);
 void	print_tokens(char *word, int type);
 
-void	expansions_search(t_pdata *ptr);
+void	expansions_search(t_pdata *pdata, t_gdata *gdata);
 void	export_threater(t_token	*head);
 void	equoting_traffic(char quote, char *prev);
 char	*ft_strnjoin(const char *s1, const char *s2, int n);
@@ -115,7 +110,7 @@ void	env_lstclear(t_env **head, void (*del)(void *));
 void	env_lstdelone(t_env *node, void (*del)(void *));
 void	token_insert_after(t_token *current, t_token *new_node);
 t_token	*token_addnew(char *word, t_token *prev);
-char	*getenv_value(const char *str, t_pdata *ptr, int *index);
+char	*getenv_value(t_pdata *ptr, const char *str, int *index);
 
 char	*set_newstr(char *dst, char *src, int n);
 char	*quote_removal(t_token *node, char *previous_address);
