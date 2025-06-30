@@ -6,11 +6,11 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:01:37 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/29 20:57:11 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/30 22:38:40 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Includes/parsing.h"
+#include "../../minishell.h"
 
 void	equoting_traffic(char quote, char *prev)
 {
@@ -20,7 +20,7 @@ void	equoting_traffic(char quote, char *prev)
 		*prev = 0;
 }
 
-static char	*expand(char *word, int quoting, t_pdata *ptr)
+static char	*expand(t_pdata *pdata, char *word, int quoting)
 {
 	int		i;
 	t_pdata	var;
@@ -34,7 +34,7 @@ static char	*expand(char *word, int quoting, t_pdata *ptr)
 		if (word[i] == '$' && var.prev != '\'')
 		{
 			i++;
-			afterd = getenv_value(&word[i], ptr, &i);
+			afterd = getenv_value(pdata, &word[i], &i);
 			if (afterd)
 				newstr = set_newstr(newstr, afterd, ft_strlen(afterd));
 			free(afterd);
@@ -74,29 +74,29 @@ static t_token	*subtokenizer(t_token **head, t_token *curr)
 	return (free(splittedword), curr);
 }
 
-void	expansions_search(t_pdata *ptr)
+void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 {
 	t_token	*curr;
 	t_token	*next;
 	char	*new;
 
-	export_threater(ptr->token);
-	curr = ptr->token;
+	export_threater(pdata->token);
+	curr = pdata->token;
 	while (curr)
 	{
 		next = curr->next;
 		if (curr->var == 1 && curr->type != delimiter)
 		{
-			curr->word = expand(curr->word, curr->quoting, ptr);
+			curr->word = expand(pdata, curr->word, curr->quoting);
 			if (!curr->word)
 			{
 				free(curr->word);
 				curr->word = ft_strdup("");
 			}
-			curr = subtokenizer(&ptr->token, curr);
+			curr = subtokenizer(&pdata->token, curr);
 			re_definer(curr);
 		}
 		curr = next;
 	}
-	suppress_emptytokens(&ptr->token);
+	suppress_emptytokens(&pdata->token);
 }

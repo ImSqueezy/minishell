@@ -25,7 +25,7 @@ OBJS = $(PARSING_OBJS) \
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJS) Includes/parsing.h
+$(NAME): $(LIBFT) $(OBJS) Parsing/parsing.h minishell.h
 	cc $(FS) -g $(OBJS) $(LIBFT) -o $(NAME) -lreadline
 
 $(LIBFT): $(LIBFT_OBJS)

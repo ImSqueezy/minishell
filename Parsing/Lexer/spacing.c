@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   spacing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:23:19 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/08 13:23:19 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/30 19:48:34 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Includes/parsing.h"
+#include "../../minishell.h"
 
 int	is_whitespace(char c)
 {

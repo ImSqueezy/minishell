@@ -6,11 +6,11 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:46:45 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/05/26 18:54:24 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/06/30 21:11:56 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Includes/parsing.h"
+#include "../../minishell.h"
 
 static int	print_serror(t_token *curr, int op, int state)
 {
@@ -58,7 +58,7 @@ static int	syntax_checker(t_pdata *data, int quoting_flag)
 // temporary (debug)
 void	print_tokens(char *world, int type);
 
-void	lexer(char *input, t_pdata *data, t_gdata *gptr)
+int	lexer(t_pdata *data, char *input)
 {
 	char	*processed_input;
 	char	**tokens;
@@ -69,11 +69,9 @@ void	lexer(char *input, t_pdata *data, t_gdata *gptr)
 	token_definer(tokens, data);
 	free(tokens);
 	if (!syntax_checker(data, data->traffic))
-	{
-		token_lstclear(&data->token, del);
-		return ;
-	}
+		return (token_lstclear(&data->token, del), 0);
 	re_definer(data->token);
+	return (1);
 }
 
 /* quick token debuger
