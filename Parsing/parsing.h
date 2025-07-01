@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/01 18:41:32 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/01 18:43:20 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@
 # define REDS_COUNT 1
 # define CMDS_COUNT 0
 
-typedef struct s_gdata	t_gdata;
+typedef struct s_gdata			t_gdata;
 typedef struct s_redirections	t_red;
-typedef	struct s_commands	t_cmd;
-typedef struct s_token	t_token;
-typedef struct s_env	t_env;
+typedef struct s_commands		t_cmd;
+typedef struct s_token			t_token;
+typedef struct s_env			t_env;
 
 typedef enum enum_token_type
 {
