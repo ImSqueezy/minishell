@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/01 10:22:51 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/01 18:41:32 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,12 @@
 
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token"
 # define INVALID_IDENTIFIER "minishell: export: '%s': not a valid identifier\n"
+# define REDS_COUNT 1
+# define CMDS_COUNT 0
 
 typedef struct s_gdata	t_gdata;
+typedef struct s_redirections	t_red;
+typedef	struct s_commands	t_cmd;
 typedef struct s_token	t_token;
 typedef struct s_env	t_env;
 
@@ -46,8 +50,6 @@ typedef enum enum_token_type
 	file,
 	delimiter,
 }	t_etype;
-
-
 
 typedef struct s_token
 {
@@ -75,6 +77,7 @@ typedef struct parsing
 	t_env	*env;
 }	t_pdata;
 
+int		parser(char *input, t_pdata *pdata, t_gdata *gdata);
 char	*spacing(const char *p, t_pdata *data);
 size_t	straddlen(const char *p, size_t old_len, t_pdata *data);
 int		quoting_traffic(char c, t_pdata *data);
@@ -86,7 +89,7 @@ void	twod_free(char **p);
 void	del(void *ptr);
 void	token_lstdelone(t_token **head, t_token *lst, void (*del)(void *));
 void	token_lstclear(t_token **lst, void (*del)(void *));
-void	token_add_back(t_token **lst, t_token *new);
+void	token_addback(t_token **lst, t_token *new);
 int		lexer(t_pdata *data, char *input);
 void	re_definer(t_token *head);
 void	token_definer(char **tokens, t_pdata *data);
@@ -114,5 +117,11 @@ char	*getenv_value(t_pdata *ptr, const char *str, int *index, int exit_st);
 
 char	*set_newstr(char *dst, char *src, int n);
 char	*quote_removal(t_token *node, char *previous_address);
+
+void	cmd_addback(t_cmd **lst, t_cmd *new);
+void	red_addback(t_red **lst, t_red *new);
+t_cmd	*cmd_addnew(t_token *lst);
+int		define_ftype(int type);
+int		cmds_reds_counter(t_token *cmd, int count_flag);
 
 #endif

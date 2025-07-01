@@ -11,44 +11,8 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#define REDS_COUNT 1
-#define CMDS_COUNT 0
 
-void	red_addback(t_red **lst, t_red *new)
-{
-	t_red	*ptr;
-
-	if (!new || !lst)
-		return ;
-	if (*lst == NULL)
-	{
-		*lst = new;
-		return ;
-	}
-	ptr = *lst;
-	while (ptr && ptr->next)
-		ptr = ptr->next;
-	(*ptr).next = new;
-}
-
-void	cmd_addback(t_cmd **lst, t_cmd *new)
-{
-	t_cmd	*ptr;
-
-	if (!new || !lst)
-		return ;
-	if (*lst == NULL)
-	{
-		*lst = new;
-		return ;
-	}
-	ptr = *lst;
-	while (ptr && ptr->next)
-		ptr = ptr->next;
-	(*ptr).next = new;
-}
-
-static int	cmds_reds_counter(t_token *cmd, int count_flag)
+int	cmds_reds_counter(t_token *cmd, int count_flag)
 {
 	int		i;
 	int		j;
@@ -73,7 +37,7 @@ static int	cmds_reds_counter(t_token *cmd, int count_flag)
 	return (1337);
 }
 
-static int	define_ftype(int type)
+int	define_ftype(int type)
 {
 	if (type == red_out)
 		return (red_out);
@@ -85,78 +49,7 @@ static int	define_ftype(int type)
 		return (heredoc);
 }
 
-t_red	*red_addnew(t_token *lst)
-{
-	t_red	*new;
-
-	new = malloc(sizeof(t_red));
-	if (!new)
-		return (NULL);
-	while (lst)
-	{
-		if (lst->type == file || lst->type == delimiter)
-		{
-			new->fname = ft_strdup(lst->word);
-			new->type = define_ftype(lst->prev->type);
-			new->expand = 1;
-			if (!ft_strcmp(lst->word, ""))
-				new->ambiguous = 0;
-			new->next = NULL;
-			break ;
-		}
-		lst = lst->next;
-	}
-	return (new);
-}
-
-t_red	*reds_init(t_token *lst)
-{
-	t_token	*curr;
-	t_red	*head;
-
-	head = NULL;
-	curr = lst;
-	while (curr)
-	{
-		if (curr->type == file || curr->type == delimiter)
-			red_addback(&head, red_addnew(curr));
-		if (curr->next && curr->next->type == PIPE)
-			break ;
-		curr = curr->next;
-	}
-	return (head);
-}
-
-t_cmd	*cmd_addnew(t_token *lst)
-{
-	t_token	*curr;
-	t_cmd	*new;
-	int		i;
-
-	new = malloc(sizeof(t_cmd));
-	if (!new)
-		return (NULL);
-	while (lst->prev && lst->prev->type != PIPE)
-		lst = lst->prev;
-	new->cmd = malloc(
-			(cmds_reds_counter(lst, CMDS_COUNT) + 1) * sizeof(char *));
-	if (!new->cmd)
-		return (NULL);
-	(1) && (i = 0, curr = lst);
-	while (curr)
-	{
-		if (curr->type == command)
-			new->cmd[i++] = ft_strdup(curr->word);
-		if (curr->next && curr->next->type == PIPE)
-			break ;
-		curr = curr->next;
-	}
-	(1) && (new->cmd[i] = NULL, new->next = NULL);
-	new->reds = reds_init(lst);
-	return (new);
-}
-
-void	cmds_init(t_pdata *pdata, t_gdata *gdata)
+static void	cmds_init(t_pdata *pdata, t_gdata *gdata)
 {
 	t_token	*curr;
 	t_token	*next;
@@ -172,32 +65,6 @@ void	cmds_init(t_pdata *pdata, t_gdata *gdata)
 		curr = next;
 	}
 }
-
-/* quick debugger for filled data
-	t_cmd *curr1 = head;
-	t_red	*curr2;
-	int		i;
-	int		j;
-	while (curr1)
-	{
-		i = 0;
-		printf("commands:\n");
-		while (curr1->cmd[i])
-			printf("> [%s] \n", curr1->cmd[i++]);
-		printf("reds:\n");
-		curr2 = curr1->reds;
-		j = 0;
-		while (curr2)
-		{
-			printf("- - red number %d - -\n", j++);
-			print_tokens(curr2->fname, curr2->type);
-			printf("> expand: %d\n", curr2->expand);
-			printf("> ambiguous: %d\n", curr2->ambiguous);
-			curr2 = curr2->next;
-		}
-		curr1 = curr1->next;
-	}
-*/
 
 int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
 {
