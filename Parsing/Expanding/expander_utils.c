@@ -10,17 +10,27 @@ char	*set_newstr(char *dst, char *src, int n)
 	return (dst);
 }
 
-// $? must be handled
-char	*getenv_value(t_pdata *ptr, const char *str, int *index)
+static char	*special_params_handler(const char *str, int *index, int exit_st)
+{
+	if (*(str - 1) == *str)
+		return (ft_strdup(&*(str + 1)));
+	else if (*str == '?')
+	{
+		*index += 1;
+		return (ft_itoa(exit_st));
+	}
+	return (NULL);
+}
+
+char	*getenv_value(t_pdata *ptr, const char *str, int *index, int exit_st)
 {
 	int		li;
 	char	*key;
 	char	*value;
 	t_env	*curr;
 
-	(1) && (li = 0, value = NULL);
-	if (*(str - 1) == *str)
-		return (ft_strdup(&*(str + 1)));
+	li = 0;
+	value = special_params_handler(str, index, exit_st);
 	while (str[li] && (ft_isalnum(str[li]) || str[li] == '_')) 
 		li++;
 	key = ft_strndup(str, li);
