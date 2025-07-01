@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:01:37 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/30 22:38:40 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/01 10:25:36 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	equoting_traffic(char quote, char *prev)
 		*prev = 0;
 }
 
-static char	*expand(t_pdata *pdata, char *word, int quoting)
+static char	*expand(t_pdata *pdata, t_gdata *gdata, char *word, int quoting)
 {
 	int		i;
 	t_pdata	var;
@@ -34,7 +34,7 @@ static char	*expand(t_pdata *pdata, char *word, int quoting)
 		if (word[i] == '$' && var.prev != '\'')
 		{
 			i++;
-			afterd = getenv_value(pdata, &word[i], &i);
+			afterd = getenv_value(pdata, &word[i], &i, gdata->exit);
 			if (afterd)
 				newstr = set_newstr(newstr, afterd, ft_strlen(afterd));
 			free(afterd);
@@ -44,6 +44,7 @@ static char	*expand(t_pdata *pdata, char *word, int quoting)
 			newstr = set_newstr(newstr, &word[i], 1);
 		i++;
 	}
+	printf(">> %s\n", newstr);
 	return (free(word), newstr);
 }
 
@@ -87,7 +88,7 @@ void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 		next = curr->next;
 		if (curr->var == 1 && curr->type != delimiter)
 		{
-			curr->word = expand(pdata, curr->word, curr->quoting);
+			curr->word = expand(pdata, gdata, curr->word, curr->quoting);
 			if (!curr->word)
 			{
 				free(curr->word);
