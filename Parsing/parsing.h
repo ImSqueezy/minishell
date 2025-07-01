@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/30 22:36:59 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/01 10:22:51 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	env_lstclear(t_env **head, void (*del)(void *));
 void	env_lstdelone(t_env *node, void (*del)(void *));
 void	token_insert_after(t_token *current, t_token *new_node);
 t_token	*token_addnew(char *word, t_token *prev);
-char	*getenv_value(t_pdata *ptr, const char *str, int *index);
+char	*getenv_value(t_pdata *ptr, const char *str, int *index, int exit_st);
 
 char	*set_newstr(char *dst, char *src, int n);
 char	*quote_removal(t_token *node, char *previous_address);
