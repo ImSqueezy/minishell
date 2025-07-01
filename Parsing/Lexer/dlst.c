@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:51:49 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/30 19:48:34 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/01 12:06:12 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	token_lstclear(t_token **lst, void (*del)(void *))
 	*lst = NULL;
 }
 
-void	token_add_back(t_token **lst, t_token *new)
+void	token_addback(t_token **lst, t_token *new)
 {
 	t_token	*ptr;
 
