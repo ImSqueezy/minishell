@@ -30,7 +30,7 @@ static void	helpers_setter(bool *value_portion, char *var, char current_char)
 		equoting_traffic(current_char, var);
 }
 
-static char	*preserve_value(char *str, int *quoting)
+static char	*epreserve_value(char *str)
 {
 	bool	value_portion;
 	char	*new;
@@ -70,33 +70,38 @@ static void	value_preserver(t_token *export)
 		key = get_key(curr->word);
 		if (!ft_strchr(key, '\"') && !ft_strchr(key, '\'')
 			&& !ft_strchr(key, '$'))
-			curr->word = preserve_value(curr->word, &curr->quoting);
+			curr->word = epreserve_value(curr->word);
 		free(key);
 		curr = curr->next;
 	}
 }
 
+static int	is_redirect(int i)
+{
+	return (i == red_out || i == red_out || i == append || i == heredoc);
+}
+
 void	export_threater(t_token	*head)
 {
 	t_token	*curr;
-	bool	file_exists;
+	bool	redirect_exists;
 	int		strcmp;
 	int		count;
 
 	count = 0;
 	curr = head;
-	file_exists = false;
+	redirect_exists = false;
 	while (curr)
 	{
-		if (curr->type == file)
-			file_exists = true;
+		if (is_redirect(curr->type))
+			redirect_exists = true;
 		curr = curr->next;
 	}
 	curr = head;
 	while (curr)
 	{
 		strcmp = ft_strcmp(curr->word, "export");
-		if ((!strcmp && count == 0) || (!strcmp && file && count > 0))
+		if ((!strcmp && count == 0) || (!strcmp && redirect_exists && count > 0))
 			value_preserver(curr);
 		(1) && (count++, curr = curr->next);
 	}
