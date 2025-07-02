@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/02 17:13:15 by aouaalla          #+#    #+#             */
+/*   Updated: 2025/07/02 17:13:37 by aouaalla         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
 
 char	*set_newstr(char *dst, char *src, int n)
@@ -31,7 +43,7 @@ char	*getenv_value(t_pdata *ptr, const char *str, int *index, int exit_st)
 
 	li = 0;
 	value = special_params_handler(str, index, exit_st);
-	while (str[li] && (ft_isalnum(str[li]) || str[li] == '_')) 
+	while (str[li] && (ft_isalnum(str[li]) || str[li] == '_'))
 		li++;
 	key = ft_strndup(str, li);
 	curr = ptr->env;
@@ -61,4 +73,30 @@ void	suppress_emptytokens(t_token **head)
 			token_lstdelone(head, curr, del);
 		curr = next;
 	}
+}
+
+char	*preserve_value(char *str)
+{
+	size_t	new_len;
+	char	*new;
+	char	var;
+	int		i;
+	int		j;
+
+	if (ft_strchr(str, '"') || ft_strchr(str, '\''))
+	{
+		new = ft_strdup(str);
+		return (free(str), new);
+	}
+	new_len = ft_strlen(str) + 2;
+	new = malloc(new_len + 1);
+	if (!new)
+		return (NULL);
+	(1) && (i = 0, j = 0, var = 0);
+	new[j++] = '"';
+	while (str[i])
+		new[j++] = str[i++];
+	new[j++] = '"';
+	new[j] = '\0';
+	return (free(str), new);
 }

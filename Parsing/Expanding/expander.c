@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:01:37 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/01 10:25:36 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/02 17:12:58 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static char	*expand(t_pdata *pdata, t_gdata *gdata, char *word, int quoting)
 			newstr = set_newstr(newstr, &word[i], 1);
 		i++;
 	}
-	printf(">> %s\n", newstr);
 	return (free(word), newstr);
 }
 
@@ -75,6 +74,21 @@ static t_token	*subtokenizer(t_token **head, t_token *curr)
 	return (free(splittedword), curr);
 }
 
+static void	value_preserver(t_token *lst)
+{
+	t_token	*curr;
+
+	curr = lst;
+	while (curr)
+	{
+		if ((curr->type == file && curr->var) || (curr->type == command
+				&& curr->prev && !ft_strcmp(curr->prev->word, "echo")
+				&& curr->var))
+			curr->word = preserve_value(curr->word);
+		curr = curr->next;
+	}
+}
+
 void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 {
 	t_token	*curr;
@@ -82,6 +96,7 @@ void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 	char	*new;
 
 	export_threater(pdata->token);
+	value_preserver(pdata->token);
 	curr = pdata->token;
 	while (curr)
 	{
