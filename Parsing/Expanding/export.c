@@ -79,15 +79,25 @@ static void	value_preserver(t_token *export)
 void	export_threater(t_token	*head)
 {
 	t_token	*curr;
+	bool	file_exists;
+	int		strcmp;
 	int		count;
 
-	(1) && (count = 0, curr = head);
+	count = 0;
+	curr = head;
+	file_exists = false;
 	while (curr)
 	{
-		if (!ft_strcmp(curr->word, "export") && count == 0)
+		if (curr->type == file)
+			file_exists = true;
+		curr = curr->next;
+	}
+	curr = head;
+	while (curr)
+	{
+		strcmp = ft_strcmp(curr->word, "export");
+		if ((!strcmp && count == 0) || (!strcmp && file && count > 0))
 			value_preserver(curr);
-		if (count > 0)
-			return ;
 		(1) && (count++, curr = curr->next);
 	}
 }
