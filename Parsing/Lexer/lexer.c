@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:46:45 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/30 21:11:56 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/03 12:45:40 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,6 @@ static int	print_serror(t_token *curr, int op, int state)
 		printf("%s `%s'\n", SYNTAX_ERROR, curr->word);
 	return (1);
 }
-
-/* syntax error memory
-	1) checking weither pipe at the beginning or the end
-	2) then weither what's before pipe is red or pipe -> works well
-	3) also cheching what's after redirection (if not word leave)
-	4) at the end, checking weither red is at the beginning or the end
-*/
 
 static int	syntax_checker(t_pdata *data, int quoting_flag)
 {
@@ -73,17 +66,6 @@ int	lexer(t_pdata *data, char *input)
 	re_definer(data->token);
 	return (1);
 }
-
-/* quick token debuger
-	// t_token *curr;
-	// curr = data->token;
-	// while (curr)
-	// {
-	// 	print_tokens(curr->word, curr->type);
-	// 	printf("- - - - -\n");
-	// 	curr = curr->next;
-	// }
-*/
 
 void	print_tokens(char *word, int type)
 {
