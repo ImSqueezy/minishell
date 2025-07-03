@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/03 12:45:58 by aouaalla          #+#    #+#             */
+/*   Updated: 2025/07/03 12:48:25 by aouaalla         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
 
 static int	count_dollar(char *s)
@@ -76,11 +88,6 @@ static void	value_preserver(t_token *export)
 	}
 }
 
-static int	is_redirect(int i)
-{
-	return (i == red_out || i == red_out || i == append || i == heredoc);
-}
-
 void	export_threater(t_token	*head)
 {
 	t_token	*curr;
@@ -93,7 +100,8 @@ void	export_threater(t_token	*head)
 	redirect_exists = false;
 	while (curr)
 	{
-		if (is_redirect(curr->type))
+		if (curr->type == red_out || curr->type == red_out
+			|| curr->type == append || curr->type == heredoc)
 			redirect_exists = true;
 		curr = curr->next;
 	}
@@ -101,7 +109,8 @@ void	export_threater(t_token	*head)
 	while (curr)
 	{
 		strcmp = ft_strcmp(curr->word, "export");
-		if ((!strcmp && count == 0) || (!strcmp && redirect_exists && count > 0))
+		if ((!strcmp && count == 0)
+			|| (!strcmp && redirect_exists && count > 0))
 			value_preserver(curr);
 		(1) && (count++, curr = curr->next);
 	}

@@ -85,3 +85,14 @@ int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
 	cmds_init(pdata, gdata);
 	return (token_lstclear(&pdata->token, del), 1);
 }
+
+/* quick token debuger
+	// t_token *curr;
+	// curr = data->token;
+	// while (curr)
+	// {
+	// 	print_tokens(curr->word, curr->type);
+	// 	printf("- - - - -\n");
+	// 	curr = curr->next;
+	// }
+*/

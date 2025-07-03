@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:16:07 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/30 19:49:30 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/03 12:50:05 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_redirections
 	t_red	*next;
 }	t_red;
 
-typedef	struct s_commands
+typedef struct s_commands
 {
 	char	**cmd;
 	t_red	*reds;
