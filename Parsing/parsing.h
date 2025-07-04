@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/02 17:10:25 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/04 21:26:31 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,9 @@ void	suppress_emptytokens(t_token **head);
 
 char	*get_value(char *p);
 char	*get_key(char *p);
+t_env	*env_addnew(char *key, char *value);
+int		empty_value(char *str);
+void	env_addback(t_env **head, t_env *new);
 void	env_lstclear(t_env **head, void (*del)(void *));
 void	env_lstdelone(t_env *node, void (*del)(void *));
 void	token_insert_after(t_token *current, t_token *new_node);
