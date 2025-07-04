@@ -6,11 +6,24 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:46:15 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/30 19:45:48 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/04 20:49:13 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+t_env	*env_addnew(char *key, char *value)
+{
+	t_env	*new;
+
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return (NULL);
+	new->key = ft_strdup(key);
+	new->value = ft_strdup(value);
+	new->next = NULL;
+	return (new);
+}
 
 char	*get_key(char *p)
 {
@@ -33,7 +46,7 @@ char	*get_key(char *p)
 	return (key);
 }
 
-static void	env_add_back(t_env **head, t_env *new)
+void	env_addback(t_env **head, t_env *new)
 {
 	t_env	*ptr;
 
@@ -57,8 +70,10 @@ char	*get_value(char *p)
 
 	while (*p && *p != '=')
 		p++;
-	if (p)
+	if (*p)
 		p++;
+	else
+		return (ft_strdup(""));
 	i = 0;
 	while (p[i])
 		i++;
@@ -83,13 +98,5 @@ void	get_env(t_env **ptr, char **env)
 	*ptr = NULL;
 	i = -1;
 	while (env[++i])
-	{
-		new = malloc(sizeof(t_env));
-		if (!new)
-			return ;
-		new->key = get_key(env[i]);
-		new->value = get_value(env[i]);
-		new->next = NULL;
-		env_add_back(ptr, new);
-	}
+		env_addback(ptr, env_addnew(get_key(env[i]), get_value(env[i])));
 }
