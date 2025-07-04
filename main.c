@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:46:06 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/03 12:44:40 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/03 21:16:19 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@ void	free_minishell(t_pdata *ptr)
 {
 	token_lstclear(&ptr->token, del);
 	env_lstclear(&ptr->env, del);
-}
-
-void	execute(t_gdata	*data)
-{
-	(void)data;
-	return ;
 }
 
 int	main(int ac, char **av, char **env)
@@ -40,7 +34,7 @@ int	main(int ac, char **av, char **env)
 		if (!read)
 			return (printf("minishell exited!\n"), free_minishell(&pdata), 0);
 		if (parser(read, &pdata, &gdata))
-			execute(&gdata);
+			executer(&gdata);
 	}
 	return (0);
 }

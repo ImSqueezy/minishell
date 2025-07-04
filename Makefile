@@ -17,15 +17,17 @@ FS = -fsanitize=address
 FLAGS = $(FS) -g # -Wall -Wextra -Werror
 COMPILE = cc $(FLAGS) -c $< -o $@
 
+BUILTINS_OBJS = $(addprefix Built-ins/, echo.o)
+EXECUTION_OBJS = $(addprefix Execution/, $(BUILTINS_OBJS) executer.o)
 EXPANDER_OBJS = $(addprefix Expanding/, expander.o utils.o qremoval.o expander_utils.o export.o)
 LEXER_OBJS = $(addprefix Lexer/, lexer.o dlst.o straddlen.o spacing.o tokenizer.o)
 PARSING_OBJS = $(addprefix Parsing/, $(LEXER_OBJS) $(EXPANDER_OBJS) mem_related.o parser.o env.o data_fill.o)
-OBJS = $(PARSING_OBJS) \
+OBJS = $(PARSING_OBJS) $(EXECUTION_OBJS) \
 	main.o
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJS) Parsing/parsing.h minishell.h
+$(NAME): $(LIBFT) $(OBJS) Parsing/parsing.h Execution/execution.h minishell.h
 	cc $(FS) -g $(OBJS) $(LIBFT) -o $(NAME) -lreadline
 
 $(LIBFT): $(LIBFT_OBJS)
