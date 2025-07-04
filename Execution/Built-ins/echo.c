@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 21:12:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/03 21:12:57 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/04 20:00:04 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	echo(char **cmd)
 {
 	int		i;
 	bool	new_line;
-	bool	n_arg_processed;
 	bool	printed;
 	bool	permitted;
 
