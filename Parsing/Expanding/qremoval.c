@@ -6,11 +6,23 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:28:19 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/30 19:48:34 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/04 21:25:44 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+char	*ft_strndup(const char *s1, int n)
+{
+	int		i;
+	char	*new;
+
+	new = malloc(sizeof(char) * n + 1);
+	if (!new)
+		return (NULL);
+	i = ft_strlcpy(new, s1, n + 1);
+	return (new);
+}
 
 char	*get_middlequoted(char target, char *str, int *index)
 {

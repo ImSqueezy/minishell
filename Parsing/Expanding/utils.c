@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:05:11 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/06/30 19:48:34 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/04 21:26:15 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,6 @@ char	*ft_strnjoin(const char *s1, const char *s2, int n)
 	return (new);
 }
 
-char	*ft_strndup(const char *s1, int n)
-{
-	int		i;
-	char	*new;
-
-	new = malloc(sizeof(char) * n + 1);
-	if (!new)
-		return (NULL);
-	i = ft_strlcpy(new, s1, n + 1);
-	return (new);
-}
-
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	int	i;
@@ -76,4 +64,14 @@ int	token_size(t_token *ptr)
 int	_isred(char c)
 {
 	return (c == 2 || c == 3 || c == 4 || c == 5 || c == 6);
+}
+
+int	empty_value(char *str)
+{
+	char	*value;
+
+	value = get_value(str);
+	if (ft_strlen(value) == 0)
+		return (free(value), 1);
+	return (0);	
 }

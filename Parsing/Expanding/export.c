@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 12:45:58 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/03 12:48:25 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/04 21:26:37 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,18 @@ static void	helpers_setter(bool *value_portion, char *var, char current_char)
 		equoting_traffic(current_char, var);
 }
 
-static char	*epreserve_value(char *str)
+static char	*epreserve_value(char *str, int i, int j)
 {
 	bool	value_portion;
 	char	*new;
 	char	var;
-	int		i;
-	int		j;
 
+	if (empty_value(str))
+		return (ft_strjoin(str, "\"\""));
 	new = malloc(ft_strlen(str) + count_dollar(str) + 1);
 	if (!new)
 		return (NULL);
-	(1) && (i = 0, j = 0, var = 0, value_portion = false);
+	(1) && (var = 0, value_portion = false);
 	while (str[i])
 	{
 		helpers_setter(&value_portion, &var, str[i]);
@@ -75,14 +75,23 @@ static void	value_preserver(t_token *export)
 {
 	t_token	*curr;
 	char	*key;
+	char	*value;
+	int		i;
+	int		j;
 
-	curr = export->next;
+	(1) && (i = 0, j = 0, curr = export->next);
 	while (curr)
 	{
 		key = get_key(curr->word);
 		if (!ft_strchr(key, '\"') && !ft_strchr(key, '\'')
 			&& !ft_strchr(key, '$'))
-			curr->word = epreserve_value(curr->word);
+		{
+			curr->word = epreserve_value(curr->word, i, j);
+			value = get_value(curr->word);
+			if (!ft_strcmp(value, "\"\""))
+				curr->var = 3;
+			free(value);
+		}
 		free(key);
 		curr = curr->next;
 	}
