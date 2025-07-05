@@ -6,11 +6,11 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 21:12:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/04 20:00:04 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/05 20:55:08 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../minishell.h"
 
 static bool	check_arg(char *cmd, bool *print_status, bool *new_line)
 {

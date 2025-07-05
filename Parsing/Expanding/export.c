@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 12:45:58 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/04 21:26:37 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/05 20:57:09 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ static void	value_preserver(t_token *export)
 		{
 			curr->word = epreserve_value(curr->word, i, j);
 			value = get_value(curr->word);
-			if (!ft_strcmp(value, "\"\""))
-				curr->var = 3;
 			free(value);
 		}
 		free(key);
