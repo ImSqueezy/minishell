@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 20:13:03 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/04 21:35:39 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/05 11:58:02by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,11 @@ void	print_sortedenv(t_env *ptr)
 	(1) && (i = 0, curr = ptr);
 	while (curr)
 	{
-		if (ft_strlen(curr->value) > 0)
+		if (curr->value)
 		{
-			env[i] = ft_strjoin(curr->key, "=");
+			env[i] = ft_strjoin(curr->key, "=\"");
 			env[i] = set_newstr(env[i], curr->value, ft_strlen(curr->value));
+			env[i] = set_newstr(env[i], "\"", 1);
 		}
 		else
 			env[i] = ft_strdup(curr->key);
@@ -69,81 +70,140 @@ void	print_sortedenv(t_env *ptr)
 	print_env(env);
 }
 
-int	ft_is_symbol(char c) // $, + and _ aren't included
+int	check_symbols(char *identifier)
 {
-	return (c == '!' || c == '@' || c == '#' || c == '%'
-	|| c == '^' || c == '&' || c == '*' || c == '('
-	|| c == ')' || c == '-' || c == '=');
-}
+	size_t	len;
 
-int	check_symbols(char *key)
-{
-	int	i;
-
-	i = 0;
-	while (key[i])
+	len = ft_strlen(identifier);
+	if (len == 2)
 	{
-		if (ft_is_symbol(key[i]) || (key[i] == '+' && key[i + 1] != '\0'))
+		if (identifier[0] == '+' && identifier[1] == '=')	
 			return (1);
-		i++;
+	}
+	else if (len == 1)
+	{
+		if (identifier[0] == '=')	
+			return (1);
 	}
 	return (0);
 }
 
-int	checkinvalid_identifier(char *key, bool *key_status)
+int	keychecker(char *arg, bool *key_status)
 {
-	if (ft_isdigit(*key) || check_symbols(key))
-		return (*key_status = false, 1);
+	int	i;
+	char *key_holder;
+	char *identifier;
+
+	i = 0;
+	while (arg[i] && ft_isalnum(arg[i]))
+		i++;
+	if (!arg[i])
+		return (*key_status = true, 0);
+	key_holder = ft_strndup(arg, i);
+	(1) && (arg += i, i = 0);
+	if (arg[i] && arg[i] == '+' && arg[i + 1] && arg[i + 1] == '=')
+		i += 2;
+	else if (arg[i] && arg[i] == '=')
+		i++;
+	identifier = ft_strndup(arg, i++);
+	if (!check_symbols(identifier))
+		return (free(identifier), free(key_holder), *key_status = false, 1);
+	free(identifier);
+	free(key_holder);
 	return (*key_status = true, 0);
 }
 
-void	set_key(t_env *head, char *key, char *value)
+char	*append_value(char *old_value, char *to_append)
 {
-	bool	permitted;
-	t_env	*curr;
-	char	*tmp;
+	char	*new;
+	int		i, j;
 
-	permitted = true;
-	bool	key_exists = false;
+	if (!old_value)
+		return (ft_strdup(to_append));
+	new = malloc(ft_strlen(old_value) + ft_strlen(to_append) + 1);
+	if (!new)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (old_value[i])
+		new[j++] = old_value[i++];
+	ft_strlcpy(new + j, to_append, ft_strlen(to_append) + 1);
+	j += ft_strlen(to_append);
+	new[j] = '\0';
+	return (free(old_value), new);
+}
+
+bool	key_setter(t_env *head, char *key, char *value, bool append)
+{
+	bool	found;
+	t_env	*curr;
+
+	found = false;
 	curr = head;
 	while (curr)
 	{
-		if (!ft_strcmp(curr->key, key) && ft_strlen(value))
-			key_exists = true;
-		if (!ft_strcmp(curr->key, key) && !ft_strlen(value))
-			permitted = false;
+		if (!ft_strcmp(curr->key, key) && append)
+		{
+			curr->value = append_value(curr->value, value);
+			found = true;
+		}
+		else if (!ft_strcmp(curr->key, key) && !append && !found && value)
+		{
+			free(curr->value);
+			curr->value = ft_strdup(value);
+			found = true;
+		}
+		else if (!ft_strcmp(curr->key, key) && !append && !found && !value)
+			found = true;
 		curr = curr->next;
 	}
-	if (permitted && !key_exists)
-		env_addback(&head, env_addnew(key, value));
-	else
-	{
-		// replace value
-		return ;
-	}
+	return (found);
+}
+
+int	append_env_value(t_env *head, char *key, char *value)
+{
+	bool	append;
+	t_env	*curr;
+	char	*new_key;
+	int		i;
+
+	i = 0;
+	append = false;
+	while (key[i] && key[i] != '+')
+		i++;
+	new_key = ft_strndup(key, i);
+	if (ft_strlen(key) != ft_strlen(new_key))
+		append = true;
+	if (!key_setter(head, new_key, value, append))
+		env_addback(&head, env_addnew(new_key, value));
+	return (free(new_key), 0);
 }
 
 int	export(t_gdata *data)
 {
+	bool	permit;
 	char	**args;
 	char	*key;
+	char	*value;
 	int		i;
-	bool	permit;
 
-	permit = false;
-	args = data->cmds->cmd;
-	if (args[1] == NULL)
+	(1) && (i = 1, permit = false, args = data->cmds->cmd);
+	if (args[i] == NULL)
 		return (print_sortedenv(data->env), 0);
-	i = 1;
 	while (args[i])
 	{
 		key = get_key(args[i]);
-		if (checkinvalid_identifier(key, &permit) || *args[i] == '=')
+		value = get_value(args[i]);
+		if (ft_isdigit(*key) || keychecker(args[i], &permit) || *args[i] == '=')
+		{
 			printf(INVALID_IDENTIFIER, args[i]);
+			data->exit = 1;
+		}
 		if (permit)
-			set_key(data->env, key, get_value(args[i]));
+			data->exit = append_env_value(data->env, key, value);
+		free(value);
 		free(key);
 		i++;
 	}
-	return (0);
+	return (data->exit);
 }
