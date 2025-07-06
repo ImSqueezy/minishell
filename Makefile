@@ -12,12 +12,12 @@ ft_split.o ft_itoa.o ft_strmapi.o ft_striteri.o ft_putchar_fd.o ft_putstr_fd.o f
 LIBFT_PREFIX = Libraries/Libft/
 LIBFT = Libraries/Libft/libft.a
 
-FS = -fsanitize=address
+FS = #-fsanitize=address
 # -g to be removed later
 FLAGS = $(FS) -g # -Wall -Wextra -Werror
 COMPILE = cc $(FLAGS) -c $< -o $@
 
-BUILTINS_OBJS = $(addprefix Built-ins/, echo.o export.o env.o)
+BUILTINS_OBJS = $(addprefix Built-ins/, echo.o export.o export_utils.o env.o)
 EXECUTION_OBJS = $(addprefix Execution/, $(BUILTINS_OBJS) executer.o)
 EXPANDER_OBJS = $(addprefix Expanding/, expander.o utils.o qremoval.o expander_utils.o export.o)
 LEXER_OBJS = $(addprefix Lexer/, lexer.o dlst.o straddlen.o spacing.o tokenizer.o)
@@ -28,7 +28,7 @@ OBJS = $(PARSING_OBJS) $(EXECUTION_OBJS) \
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS) Parsing/parsing.h Execution/execution.h minishell.h
-	cc $(FS) -g $(OBJS) $(LIBFT) -o $(NAME) -lreadline
+	cc -g $(FS) $(OBJS) $(LIBFT) -o $(NAME) -lreadline
 
 $(LIBFT): $(LIBFT_OBJS)
 	make -C $(LIBFT_PREFIX)
