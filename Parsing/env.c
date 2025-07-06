@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:46:15 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/04 20:49:13 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/06 15:38:09 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*get_value(char *p)
 	if (*p)
 		p++;
 	else
-		return (ft_strdup(""));
+		return (NULL);
 	i = 0;
 	while (p[i])
 		i++;
