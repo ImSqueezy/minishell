@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/04 21:26:31 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/06 15:16:05 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # include <termios.h>
 
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token"
-# define INVALID_IDENTIFIER "minishell: export: '%s': not a valid identifier\n"
 # define REDS_COUNT 1
 # define CMDS_COUNT 0
 
@@ -85,7 +84,7 @@ int		isred(char c);
 int		isop(char c);
 int		is_whitespace(char c);
 
-void	twod_free(char **p);
+void	ft_free(char **p);
 void	del(void *ptr);
 void	token_lstdelone(t_token **head, t_token *lst, void (*del)(void *));
 void	token_lstclear(t_token **lst, void (*del)(void *));

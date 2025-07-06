@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 20:50:12 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/04 21:21:02 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/06 15:14:56 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int	execute_builtin(t_gdata *ptr)
 		return (export(ptr));
 	if (!ft_strcmp(*ptr->cmds->cmd, "env") && !ptr->cmds->cmd[1])
 		return (env(ptr->env));
+	if (!ft_strcmp(*ptr->cmds->cmd, "unset"))
+		return (unset(ptr, ptr->cmds->cmd));
 	return (0);
 }
 
