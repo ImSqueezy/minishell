@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 12:45:58 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/05 20:57:09 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/07 15:54:53 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static char	*epreserve_value(char *str, int i, int j)
 		if (value_portion && str[i] == '$' && !var)
 		{
 			(1) && (new[j++] = '"', new[j++] = str[i++]);
-			while (ft_isalnum(str[i]) || str[i] == '_')
+			while (ft_isalnum(str[i]) || str[i] == '_' || str[i] == '?')
 				new[j++] = str[i++];
 			new[j++] = '"';
 			continue ;
