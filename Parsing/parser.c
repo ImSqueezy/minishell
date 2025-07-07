@@ -49,20 +49,32 @@ int	define_ftype(int type)
 		return (heredoc);
 }
 
-static void	cmds_init(t_pdata *pdata, t_gdata *gdata)
+static void	data_init(t_pdata *pdata, t_gdata *gdata)
 {
-	t_token	*curr;
+	t_env	*ecurr;
+	t_token	*tcurr;
 	t_token	*next;
 
 	gdata->env = pdata->env;
 	gdata->cmds = NULL;
-	curr = pdata->token;
-	while (curr)
+	gdata->saved_pwd = NULL;
+	ecurr = gdata->env;
+	while (ecurr)
 	{
-		next = curr->next;
+		if (!ft_strcmp(ecurr->key, "PWD"))
+		{
+			gdata->saved_pwd = ft_strdup(ecurr->value);
+			break ;
+		}
+		ecurr = ecurr->next;
+	}
+	tcurr = pdata->token;
+	while (tcurr)
+	{
+		next = tcurr->next;
 		if (!next || next->type == PIPE)
-			cmd_addback(&gdata->cmds, cmd_addnew(curr));
-		curr = next;
+			cmd_addback(&gdata->cmds, cmd_addnew(tcurr));
+		tcurr = next;
 	}
 }
 
@@ -82,7 +94,7 @@ int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
 			t_cpy->word = quote_removal(t_cpy, t_cpy->word);
 		t_cpy = t_cpy->next;
 	}
-	cmds_init(pdata, gdata);
+	data_init(pdata, gdata);
 	return (token_lstclear(&pdata->token, del), 1);
 }
 

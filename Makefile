@@ -17,7 +17,7 @@ FS = #-fsanitize=address
 FLAGS = $(FS) -g # -Wall -Wextra -Werror
 COMPILE = cc $(FLAGS) -c $< -o $@
 
-BUILTINS_OBJS = $(addprefix Built-ins/, echo.o export.o export_utils.o env.o unset.o)
+BUILTINS_OBJS = $(addprefix Built-ins/, echo.o export.o export_utils.o env.o unset.o cd.o pwd.o)
 EXECUTION_OBJS = $(addprefix Execution/, $(BUILTINS_OBJS) executer.o)
 EXPANDER_OBJS = $(addprefix Expanding/, expander.o utils.o qremoval.o expander_utils.o export.o)
 LEXER_OBJS = $(addprefix Lexer/, lexer.o dlst.o straddlen.o spacing.o tokenizer.o)
