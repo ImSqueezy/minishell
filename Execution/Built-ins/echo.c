@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 21:12:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/05 20:55:08 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/07 11:13:33 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,7 @@ int	echo(char **cmd)
 	bool	printed;
 	bool	permitted;
 
-	i = 1;
-	new_line = false;
-	printed = false;
-	permitted = false;
+	(1) && (i = 1, new_line = false, printed = false, permitted = false);
 	while (cmd[i])
 	{
 		permitted = check_arg(cmd[i], &printed, &new_line);
@@ -54,6 +51,8 @@ int	echo(char **cmd)
 		i++;
 	}
 	if (!new_line && printed)
+		ft_putchar_fd('\n', 1);
+	else if (!new_line && !cmd[1])
 		ft_putchar_fd('\n', 1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 12:45:58 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/07 15:54:53 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/07 16:14:20 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ static char	*epreserve_value(char *str, int i, int j)
 	return (free(str), new);
 }
 
+// check commit hash 498f4b3^ for last removal if a problem occures here
 static void	value_preserver(t_token *export)
 {
 	t_token	*curr;
 	char	*key;
-	char	*value;
 	int		i;
 	int		j;
 
@@ -85,11 +85,7 @@ static void	value_preserver(t_token *export)
 		key = get_key(curr->word);
 		if (!ft_strchr(key, '\"') && !ft_strchr(key, '\'')
 			&& !ft_strchr(key, '$'))
-		{
 			curr->word = epreserve_value(curr->word, i, j);
-			value = get_value(curr->word);
-			free(value);
-		}
 		free(key);
 		curr = curr->next;
 	}

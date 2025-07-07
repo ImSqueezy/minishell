@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 20:13:03 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/05 11:58:02by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/07 16:18:49 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void	print_sortedenv(t_env *ptr)
 
 int	keychecker(char *arg, bool *key_status)
 {
-	int	i;
-	char *key_holder;
-	char *identifier;
+	int		i;
+	char	*key_holder;
+	char	*identifier;
 
 	i = 0;
 	while (arg[i] && ft_isalnum(arg[i]))

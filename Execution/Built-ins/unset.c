@@ -6,15 +6,15 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 14:57:06 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/06 15:36:54 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/07 16:18:25 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static int    key_checker(char *str)
+static int	key_checker(char *str)
 {
-	int    i;
+	int	i;
 
 	i = -1;
 	while (str[++i])
@@ -25,10 +25,10 @@ static int    key_checker(char *str)
 	return (1);
 }
 
-void    env_suppressone(t_env **env, char *key)
+void	env_suppressone(t_env **env, char *key)
 {
-	t_env    *curr;
-	t_env    *prev;
+	t_env	*curr;
+	t_env	*prev;
 
 	(1) && (curr = *env, prev = NULL);
 	while (curr)
@@ -47,10 +47,10 @@ void    env_suppressone(t_env **env, char *key)
 	}
 }
 
-int    unset(t_gdata *shell, char **ar)
+int	unset(t_gdata *shell, char **ar)
 {
 	bool	permit;
-	int    i;
+	int		i;
 
 	permit = true;
 	i = 1;
@@ -61,7 +61,7 @@ int    unset(t_gdata *shell, char **ar)
 			printf(INVALID_IDENTIFIER, ar[i]);
 			permit = false;
 			shell->exit = 1;
-        }
+		}
 		if (permit)
 		{
 			env_suppressone(&shell->env, ar[i]);

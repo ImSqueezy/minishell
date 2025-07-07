@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 20:50:12 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/06 15:14:56 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/07 16:21:09 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_built_in(t_cmd *cmd)
 		|| !ft_strcmp(*cmd->cmd, "cd") || !ft_strcmp(*cmd->cmd, "env")
 		|| !ft_strcmp(*cmd->cmd, "exit"))
 		return (1);
-	return (0);	
+	return (0);
 }
 
 int	execute_builtin(t_gdata *ptr)
@@ -32,6 +32,10 @@ int	execute_builtin(t_gdata *ptr)
 		return (env(ptr->env));
 	if (!ft_strcmp(*ptr->cmds->cmd, "unset"))
 		return (unset(ptr, ptr->cmds->cmd));
+	if (!ft_strcmp(*ptr->cmds->cmd, "cd"))
+		return (cd(ptr, ptr->cmds->cmd));
+	if (!ft_strcmp(*ptr->cmds->cmd, "pwd"))
+		return (pwd(ptr));
 	return (0);
 }
 

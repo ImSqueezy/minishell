@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:05:11 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/04 21:26:15 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/07 16:14:57 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,5 @@ int	empty_value(char *str)
 	value = get_value(str);
 	if (ft_strlen(value) == 0)
 		return (free(value), 1);
-	return (0);	
+	return (0);
 }
