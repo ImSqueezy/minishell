@@ -4,52 +4,49 @@ void	process_heredocs(t_cmd *cmds, int *heredoc_fds)
 {
 	int		i = 0;
 	t_red	*red;
-	t_red	*last;
 	int		pipefd[2];
 	char	*line;
 
 	while (cmds)
 	{
-		// find last heredoc
-		last = NULL;
+		heredoc_fds[i] = -1;
 		red = cmds->reds;
 		while (red)
 		{
 			if (red->type == heredoc)
-				last = red;
+			{
+				if (pipe(pipefd) == -1)
+				{
+					perror("pipe");
+					exit(1);
+				}
+				while (1)
+				{
+					line = readline("> ");
+					if (!line || strcmp(line, red->fname) == 0)
+					{
+						free(line);
+						break;
+					}
+					write(pipefd[1], line, strlen(line));
+					write(pipefd[1], "\n", 1);
+					free(line);
+				}
+				close(pipefd[1]);
+
+				// IMPORTANT: always close any old fd we set for this command
+				if (heredoc_fds[i] != -1)
+					close(heredoc_fds[i]);
+
+				// save the *current* pipe[0] as the last one
+				heredoc_fds[i] = pipefd[0];
+			}
 			red = red->next;
 		}
-
-		heredoc_fds[i] = -1;
-		if (last)
-		{
-			if (pipe(pipefd) == -1)
-			{
-				perror("pipe");
-				exit(1);
-			}
-
-			while (1)
-			{
-				line = readline("> ");
-				if (!line || strcmp(line, last->fname) == 0)
-				{
-					free(line);
-					break;
-				}
-				write(pipefd[1], line, strlen(line));
-				write(pipefd[1], "\n", 1);
-				free(line);
-			}
-			close(pipefd[1]);
-			heredoc_fds[i] = pipefd[0];
-		}
-		cmds = cmds->next;
 		i++;
+		cmds = cmds->next;
 	}
 }
-
-
 
 // ----------------------------- ENV TO ARRAY -----------------------------
 char **env_list_to_array(t_env *env)
@@ -194,6 +191,14 @@ void handle_redirections(t_red *reds)
 			fprintf(stderr, "minishell: ambiguous redirect\n");
 			exit(1);
 		}
+
+		// Skip heredocs, they are handled separately
+		if (reds->type == heredoc)
+		{
+			reds = reds->next;
+			continue;
+		}
+
 		fd = -1;
 		if (reds->type == red_in)
 			fd = open(reds->fname, O_RDONLY);
@@ -201,19 +206,25 @@ void handle_redirections(t_red *reds)
 			fd = open(reds->fname, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else if (reds->type == append)
 			fd = open(reds->fname, O_WRONLY | O_CREAT | O_APPEND, 0644);
+
 		if (fd < 0)
 		{
 			perror(reds->fname);
 			exit(1);
 		}
+
+		// Redirect STDIN or STDOUT
 		if (reds->type == red_in)
 			dup2(fd, STDIN_FILENO);
 		else
 			dup2(fd, STDOUT_FILENO);
+
 		close(fd);
+
 		reds = reds->next;
 	}
 }
+
 
 // ----------------------------- SETUP PIPES -----------------------------
 void setup_pipes(int i, int cmd_count, int **pipes)
@@ -268,7 +279,7 @@ void execute_command(t_gdata *data, t_cmd *cmd)
 }
 
 // ----------------------------- FORK AND EXECUTE -----------------------------
-void fork_and_execute_commands(int cmd_count, int **pipes, t_cmd *cmds, t_gdata *data)
+void fork_and_execute_commands(int cmd_count, int **pipes, int *heredoc_fds, t_cmd *cmds, t_gdata *data)
 {
 	t_cmd *current;
 	pid_t pid;
@@ -280,35 +291,39 @@ void fork_and_execute_commands(int cmd_count, int **pipes, t_cmd *cmds, t_gdata 
 	i = 0;
 	while (i < cmd_count)
 	{
-		// setuping the pipe for this command
-		// execute built in, writing to the next pipe
-		// i feel like i didn't reset something here after the execution
+		// 🛡️ if node has no command, skip fork/exec, just process heredoc to feed pipe if needed
+		if (!current->cmd || !current->cmd[0])
+		{
+			if (heredoc_fds[i] != -1)
+				close(heredoc_fds[i]); // close since it's not used
+			current = current->next;
+			i++;
+			continue;
+		}
+
 		if (is_built_in(current))
 		{
-			// Save original stdin/stdout
 			saved_stdin = dup(STDIN_FILENO);
 			saved_stdout = dup(STDOUT_FILENO);
 
-			// Setup pipes for this command
 			setup_pipes(i, cmd_count, pipes);
 
-			// Handle redirections
-			handle_redirections(current->reds);
+			if (heredoc_fds[i] != -1)
+			{
+				dup2(heredoc_fds[i], STDIN_FILENO);
+				close(heredoc_fds[i]);
+			}
 
-			// Run builtin directly in parent
+			handle_redirections(current->reds);
 			execute_builtin(data);
-			// Restore original stdin/stdout
+
 			dup2(saved_stdin, STDIN_FILENO);
 			dup2(saved_stdout, STDOUT_FILENO);
+			close(saved_stdin);
+			close(saved_stdout);
 
-			// WHAT'S THE CORE MEAANING OF THIS?
-			// close(saved_stdin);
-			// close(saved_stdout);
-
-			// IMPORTANT: close the write end of the pipe if applicable to signal EOF to next cmd
 			if (cmd_count > 1 && i < cmd_count - 1)
 				close(pipes[i][1]);
-			// Close the read end if it’s not first command
 			if (i > 0)
 				close(pipes[i - 1][0]);
 		}
@@ -323,12 +338,18 @@ void fork_and_execute_commands(int cmd_count, int **pipes, t_cmd *cmds, t_gdata 
 			if (pid == 0)
 			{
 				setup_pipes(i, cmd_count, pipes);
+
+				if (heredoc_fds[i] != -1)
+				{
+					dup2(heredoc_fds[i], STDIN_FILENO);
+					close(heredoc_fds[i]);
+				}
+
 				handle_redirections(current->reds);
 				execute_command(data, current);
 			}
 			if (cmd_count > 1 && i < cmd_count - 1)
 				close(pipes[i][1]);
-			// Close the read end if it’s not first command
 			if (i > 0)
 				close(pipes[i - 1][0]);
 		}
@@ -336,6 +357,7 @@ void fork_and_execute_commands(int cmd_count, int **pipes, t_cmd *cmds, t_gdata 
 		i++;
 	}
 }
+
 
 // ----------------------------- EXECUTE PIPELINE -----------------------------
 void execute_pipeline(t_gdata *data)
@@ -346,8 +368,6 @@ void execute_pipeline(t_gdata *data)
 	int	i;
 
 	cmd_count = count_cmds(data->cmds);
-
-	// allocate heredoc_fds
 	heredoc_fds = malloc(sizeof(int) * cmd_count);
 	if (!heredoc_fds)
 	{
@@ -356,9 +376,10 @@ void execute_pipeline(t_gdata *data)
 	}
 
 	process_heredocs(data->cmds, heredoc_fds);
-	cmd_count = count_cmds(data->cmds);
 	pipes = create_pipes(cmd_count);
-	fork_and_execute_commands(cmd_count, pipes, data->cmds, data);
+	fork_and_execute_commands(cmd_count, pipes, heredoc_fds, data->cmds, data);
+
+	// cleanup
 	i = 0;
 	while (i < cmd_count - 1)
 	{
@@ -368,6 +389,8 @@ void execute_pipeline(t_gdata *data)
 		i++;
 	}
 	free(pipes);
+	free(heredoc_fds);
+
 	i = 0;
 	while (i < cmd_count)
 	{
