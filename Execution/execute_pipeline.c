@@ -1,6 +1,22 @@
 #include "../minishell.h"
 
-void	process_heredocs(t_cmd *cmds, int *heredoc_fds)
+char	*e_expand(t_env *env, char *line)
+{
+	t_env	*curr;
+	char	*key;
+
+	key = line + 1;
+	curr = env;
+	while (curr)
+	{
+		if (!ft_strcmp(curr->key, key))
+			return (free(line), ft_strdup(curr->value));
+		curr = curr->next;
+	}
+	return (ft_strdup(""));
+}
+
+void	process_heredocs(t_env *env, t_cmd *cmds, int *heredoc_fds)
 {
 	int		i = 0;
 	t_red	*red;
@@ -23,7 +39,9 @@ void	process_heredocs(t_cmd *cmds, int *heredoc_fds)
 				while (1)
 				{
 					line = readline("> ");
-					if (!line || strcmp(line, red->fname) == 0)
+					if (ft_strchr(line, '$') && cmds->reds->expand)
+						line = e_expand(env, line);
+					if (!line || ft_strcmp(line, red->fname) == 0)
 					{
 						free(line);
 						break;
@@ -372,7 +390,7 @@ void execute_pipeline(t_gdata *data)
 		exit(1);
 	}
 
-	process_heredocs(data->cmds, heredoc_fds);
+	process_heredocs(data->env, data->cmds, heredoc_fds);
 	pipes = create_pipes(cmd_count);
 	fork_and_execute_commands(cmd_count, pipes, heredoc_fds, data->cmds, data);
 
