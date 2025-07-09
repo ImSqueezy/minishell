@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asadkaou <asadkaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 20:50:12 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/07 16:21:09 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/08 12:11:39 by asadkaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ int	execute_builtin(t_gdata *ptr)
 	return (0);
 }
 
-void	execute(t_gdata *ptr)
-{
-	if (is_built_in(ptr->cmds))
-		ptr->exit = execute_builtin(ptr);
-}
+// void	execute(t_gdata *ptr)
+// {
+// 	if (is_built_in(ptr->cmds))
+// 		ptr->exit = execute_builtin(ptr);
+// }
 
-void	executer(t_gdata	*data)
+void	executer(t_gdata *data)
 {
-	if (data->cmds && !data->cmds->next)
-		execute(data);
-	return ;
+	// if (data->cmds && !data->cmds->next)
+	// 	execute(data);
+	execute_pipeline(data);
 }
