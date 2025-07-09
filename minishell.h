@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asadkaou <asadkaou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:16:07 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/09 11:22:52 by asadkaou         ###   ########.fr       */
+/*   Updated: 2025/07/09 17:06:20 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ typedef struct s_redirections
 typedef struct s_commands
 {
 	char	**cmd;
-	int		heredoc_fd;
 	t_red	*reds;
 	t_cmd	*next;
 }	t_cmd;
