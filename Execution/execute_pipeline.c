@@ -32,13 +32,10 @@ void	process_heredocs(t_cmd *cmds, int *heredoc_fds)
 					write(pipefd[1], "\n", 1);
 					free(line);
 				}
+				//close write end
 				close(pipefd[1]);
 
-				// IMPORTANT: always close any old fd we set for this command
-				if (heredoc_fds[i] != -1)
-					close(heredoc_fds[i]);
-
-				// save the *current* pipe[0] as the last one
+				// save read end
 				heredoc_fds[i] = pipefd[0];
 			}
 			red = red->next;
@@ -291,11 +288,11 @@ void fork_and_execute_commands(int cmd_count, int **pipes, int *heredoc_fds, t_c
 	i = 0;
 	while (i < cmd_count)
 	{
-		// 🛡️ if node has no command, skip fork/exec, just process heredoc to feed pipe if needed
+		//if node has no command, skip fork/exec, just process heredoc to feed pipe if needed
 		if (!current->cmd || !current->cmd[0])
 		{
 			if (heredoc_fds[i] != -1)
-				close(heredoc_fds[i]); // close since it's not used
+				close(heredoc_fds[i]);
 			current = current->next;
 			i++;
 			continue;
