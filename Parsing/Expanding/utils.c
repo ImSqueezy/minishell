@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:05:11 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/07 16:14:57 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/09 12:38:44 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (s1[i] - s2[i]);
 }
 
-int	token_size(t_token *ptr)
-{
-	int	i;
 
-	i = 0;
-	while (ptr)
-	{
-		i++;
-		ptr = ptr->next;
-	}
-	return (i);
-}
 
 int	_isred(char c)
 {
