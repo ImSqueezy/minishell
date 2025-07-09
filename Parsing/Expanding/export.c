@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 12:45:58 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/07 16:14:20 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:32:03 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ static void	value_preserver(t_token *export)
 		if (!ft_strchr(key, '\"') && !ft_strchr(key, '\'')
 			&& !ft_strchr(key, '$'))
 			curr->word = epreserve_value(curr->word, i, j);
+		if (!valid_identifier(key))
+			curr->word = epreserve_key(curr->word, i, j);
 		free(key);
 		curr = curr->next;
 	}
