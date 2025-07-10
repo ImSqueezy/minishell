@@ -74,17 +74,25 @@ static t_token	*subtokenizer(t_token **head, t_token *curr)
 	return (free(splittedword), curr);
 }
 
-static void	value_preserver(t_token *lst)
+static void	quote_preserver(t_token *lst)
 {
 	t_token	*curr;
+	t_token	*next;
 
 	curr = lst;
 	while (curr)
 	{
-		if ((curr->type == file && curr->var) || (curr->type == command
-				&& curr->prev  && curr->var))
-			curr->word = preserve_value(curr->word);
-		curr = curr->next;
+		next = curr->next;
+		if (!ft_strcmp(curr->word, "echo") && next)
+		{
+			while (next && next->type != PIPE)
+			{
+				next->word = quote_removal(next, next->word);
+				next->quoting = -3;
+				next = next->next;
+			}
+		}
+		curr = next;
 	}
 }
 
@@ -95,7 +103,7 @@ void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 	char	*new;
 
 	export_threater(pdata->token);
-	// value_preserver(pdata->token);
+	quote_preserver(pdata->token);
 	curr = pdata->token;
 	while (curr)
 	{
@@ -113,6 +121,5 @@ void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 		}
 		curr = next;
 	}
-
 	suppress_emptytokens(&pdata->token);
 }

@@ -61,7 +61,7 @@ char	*quote_removal(t_token *node, char *previous_address)
 	while (node->word[i])
 	{
 		if ((node->word[i] == '\'' || node->word[i] == '"')
-			&& check_mate(&node->word[i], node->word[i]))
+			&& check_mate(&node->word[i], node->word[i]) && node->quoting != -3)
 		{
 			mq = get_middlequoted(node->word[i], &node->word[i + 1], &i);
 			if (mq)
