@@ -14,7 +14,7 @@ LIBFT = Libraries/Libft/libft.a
 
 FS = #-fsanitize=address
 # -g to be removed later
-FLAGS = $(FS) -g # -Wall -Wextra -Werror
+FLAGS = -g $(FS) # -Wall -Wextra -Werror
 COMPILE = cc $(FLAGS) -c $< -o $@
 
 BUILTINS_OBJS = $(addprefix Built-ins/, echo.o export.o export_utils.o env.o unset.o cd.o pwd.o)
@@ -28,7 +28,7 @@ OBJS = $(PARSING_OBJS) $(EXECUTION_OBJS) \
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS) Parsing/parsing.h Execution/execution.h minishell.h
-	cc -g $(FS) $(OBJS) $(LIBFT) -o $(NAME) -lreadline
+	cc $(FS) $(OBJS) $(LIBFT) -o $(NAME) -lreadline
 
 $(LIBFT): $(LIBFT_OBJS)
 	make -C $(LIBFT_PREFIX)
