@@ -10,7 +10,7 @@ char	*fill_nline(char *n_line, char *o_line, char *value, int key_len)
 	j = 0;
 	while (o_line[i])
 	{
-		if (o_line[i] == '$')
+		if (o_line[i] == '$' && !k)
 		{
 			k = 0;
 			while (value[k])
