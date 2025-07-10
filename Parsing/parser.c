@@ -99,12 +99,37 @@ int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
 }
 
 /* quick token debuger
-	// t_token *curr;
-	// curr = data->token;
-	// while (curr)
-	// {
-	// 	print_tokens(curr->word, curr->type);
-	// 	printf("- - - - -\n");
-	// 	curr = curr->next;
-	// }
+	t_token *curr;
+	curr = data->token;
+	while (curr)
+	{
+		print_tokens(curr->word, curr->type);
+		printf("- - - - -\n");
+		curr = curr->next;
+	}
+*/
+
+/* quick data
+	t_cmd	*curr1;
+	t_red	*curr2;
+	int		i;
+	curr1 = gdata->cmds;
+	while (curr1)
+	{
+		i = 0;
+		printf("command:\n");
+		while (curr1->cmd[i])
+		{
+			printf("%s\n", curr1->cmd[i]);
+			i++;
+		}
+		printf("redirect:\n");
+		curr2 = curr1->reds;
+		while (curr2)
+		{
+			printf("file name: %s am: %d\n", curr2->fname, curr2->ambiguous);
+			curr2 = curr2->next;
+		}
+		curr1 = curr1->next;
+	}
 */
