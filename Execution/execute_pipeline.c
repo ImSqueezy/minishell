@@ -8,6 +8,7 @@ char	*fill_nline(char *n_line, char *o_line, char *value, int key_len)
 
 	i = 0;
 	j = 0;
+	k = 0;
 	while (o_line[i])
 	{
 		if (o_line[i] == '$' && !k)
@@ -53,21 +54,22 @@ char	*e_replace_key(t_env *env, char *line, char *key)
 	return (new_line);
 }
 
-char	*e_expand(t_env *env, char *line)
+char	*e_expand(t_env *env, char *line, char *delimiter)
 {
 	char	*key;
 	int		i;
 
+	if (!ft_strcmp(line, delimiter))
+		return (line);
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '$' && line[i + 1] && line[i + 1] != ' ')  //  e$USERe$PWD
+		if (line[i] == '$' && line[i + 1] && line[i + 1] != ' ')
 		{
 			key = get_key(&line[++i]);
-			// value ?
 			line = e_replace_key(env, line, key);
 			i = 0;
-			continue;			
+			continue ;
 		}
 		i++;
 	}
@@ -98,7 +100,7 @@ void	process_heredocs(t_env *env, t_cmd *cmds, int *heredoc_fds)
 				{
 					line = readline("> ");
 					if (ft_strchr(line, '$') && cmds->reds->expand)
-						line = e_expand(env, line);
+						line = e_expand(env, line, red->fname);
 					if (!line || ft_strcmp(line, red->fname) == 0)
 					{
 						free(line);
