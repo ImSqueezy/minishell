@@ -16,6 +16,7 @@
 # include <errno.h>
 # include <string.h>
 # include <fcntl.h>
+# include <sys/wait.h>
 # define INVALID_IDENTIFIER "minishell: export: `%s': not a valid identifier\n"
 
 void	executer(t_gdata	*data);
