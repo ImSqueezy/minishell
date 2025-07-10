@@ -63,7 +63,7 @@ t_red	*red_addnew(t_token *lst)
 			if (lst->type == delimiter && lst->quoting == 1)
 				new->expand = 1;
 			new->ambiguous = 0;
-			if (!ft_strcmp(lst->word, "") || ft_strchr(new->fname, ' '))
+			if (!lst->word || ft_strchr(new->fname, ' '))
 				new->ambiguous = 1;
 			new->next = NULL;
 			break ;
