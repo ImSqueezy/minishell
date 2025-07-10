@@ -1,19 +1,74 @@
 #include "../minishell.h"
 
-char	*e_expand(t_env *env, char *line)
+char	*fill_nline(char *n_line, char *o_line, char *value, int key_len)
 {
-	t_env	*curr;
-	char	*key;
+	int	i;
+	int	j;
+	int	k;
 
-	key = line + 1;
+	i = 0;
+	j = 0;
+	while (o_line[i])
+	{
+		if (o_line[i] == '$')
+		{
+			k = 0;
+			while (value[k])
+				n_line[j++] = value[k++];
+			i += key_len + 1;
+		}
+		if (o_line[i] == '\0')
+		{
+			n_line[j] = '\0';
+			return (n_line);
+		}
+		n_line[j++] = o_line[i++];
+	}
+	n_line[j] = '\0';
+	return (n_line);
+}
+
+char	*e_replace_key(t_env *env, char *line, char *key)
+{
+	char	*new_line;
+	char	*value;
+	t_env	*curr;
+	
+	value = NULL;
 	curr = env;
 	while (curr)
 	{
 		if (!ft_strcmp(curr->key, key))
-			return (free(line), ft_strdup(curr->value));
+			value = curr->value;
 		curr = curr->next;
 	}
-	return (ft_strdup(""));
+	if (!value)
+		return (line);
+	new_line = malloc((ft_strlen(line) - ft_strlen(key) - 1)
+		+ ft_strlen(value) + 1);
+	if (!new_line)
+		return (NULL);
+	new_line = fill_nline(new_line, line, value, ft_strlen(key));
+	free(line);
+	return (new_line);
+}
+
+char	*e_expand(t_env *env, char *line)
+{
+	char	*key;
+	int		i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '$' && line[i + 1] && line[i + 1] != ' ')
+		{
+			key = get_key(&line[++i]);
+			line = e_replace_key(env, line, key);
+		}
+		i++;
+	}
+	return (line);
 }
 
 void	process_heredocs(t_env *env, t_cmd *cmds, int *heredoc_fds)
