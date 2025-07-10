@@ -28,6 +28,8 @@ int	main(int ac, char **av, char **env)
 	pdata.token = NULL;
 	gdata.exit = 0;
 	get_env(&pdata.env, env);
+	if (!pdata.env || !isatty(1))
+		return (1);
 	while (1)
 	{
 		read = readline("$");
