@@ -72,7 +72,7 @@ t_token	*token_addnew(char *word, t_token *prev)
 	new_node->word = word;
 	new_node->type = 0;
 	new_node->quoting = prev->quoting;
-	new_node->var = 0;
+	new_node->var = 3;
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	return (new_node);

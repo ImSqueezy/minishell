@@ -43,7 +43,7 @@ char	*e_replace_key(t_env *env, char *line, char *key)
 		curr = curr->next;
 	}
 	if (!value)
-		return (line);
+		value = "";
 	new_line = malloc((ft_strlen(line) - ft_strlen(key) - 1)
 		+ ft_strlen(value) + 1);
 	if (!new_line)
@@ -61,10 +61,13 @@ char	*e_expand(t_env *env, char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '$' && line[i + 1] && line[i + 1] != ' ')
+		if (line[i] == '$' && line[i + 1] && line[i + 1] != ' ')  //  e$USERe$PWD
 		{
 			key = get_key(&line[++i]);
+			// value ?
 			line = e_replace_key(env, line, key);
+			i = 0;
+			continue;			
 		}
 		i++;
 	}

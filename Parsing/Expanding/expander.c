@@ -82,8 +82,7 @@ static void	value_preserver(t_token *lst)
 	while (curr)
 	{
 		if ((curr->type == file && curr->var) || (curr->type == command
-				&& curr->prev && !ft_strcmp(curr->prev->word, "echo")
-				&& curr->var))
+				&& curr->prev  && curr->var))
 			curr->word = preserve_value(curr->word);
 		curr = curr->next;
 	}
@@ -96,7 +95,7 @@ void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 	char	*new;
 
 	export_threater(pdata->token);
-	value_preserver(pdata->token);
+	// value_preserver(pdata->token);
 	curr = pdata->token;
 	while (curr)
 	{
@@ -114,5 +113,6 @@ void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 		}
 		curr = next;
 	}
+
 	suppress_emptytokens(&pdata->token);
 }
