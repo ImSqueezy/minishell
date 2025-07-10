@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:46:15 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/06 15:38:09 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/10 10:35:35 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ char	*get_key(char *p)
 	int		i;
 
 	i = 0;
-	while (p[i] && p[i] != '=')
+	while (p[i] && p[i] != '=' && p[i] != ' ' && p[i] != '$')
 		i++;
 	key = malloc(sizeof(char) * i + 1);
 	if (!key)
 		return (NULL);
 	i = 0;
-	while (p[i] && p[i] != '=')
+	while (p[i] && p[i] != '=' && p[i] != ' ' && p[i] != '$')
 	{
 		key[i] = p[i];
 		i++;
