@@ -39,8 +39,9 @@ int	valid_identifier(char *key)
 		return (1);
 	while (tmp[i])
 	{
-		if (tmp[i] && (!ft_isalnum(tmp[i]) || tmp[i] == '\0'))
+		if (!ft_isalnum(tmp[i]) || tmp[i] == '\0')
 			return (0);
+		i++;
 	}
 	return (1);
 }
@@ -54,7 +55,7 @@ char *epreserve_key(char *str, int i, int j)
 		return (NULL);
 	while (str[i])
 	{
-		if (str[i] == '$' && (!ft_isalnum(str[i+1]) && str[i+1] != '?'))
+		if (str[i] == '$' && (!ft_isalnum(str[i + 1]) && str[i + 1] != '?'))
 		{
 			new[j++] = '\'';
 			new[j++] = str[i++];
