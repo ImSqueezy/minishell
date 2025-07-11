@@ -19,6 +19,7 @@
 # include <stdbool.h>
 
 int		ft_isalpha(int c);
+void	ft_free(char **p);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
 int		ft_isascii(int c);

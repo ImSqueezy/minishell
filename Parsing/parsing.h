@@ -89,7 +89,6 @@ int		isred(char c);
 int		isop(char c);
 int		is_whitespace(char c);
 
-void	ft_free(char **p);
 void	del(void *ptr);
 void	token_lstdelone(t_token **head, t_token *lst, void (*del)(void *));
 void	token_lstclear(t_token **lst, void (*del)(void *));

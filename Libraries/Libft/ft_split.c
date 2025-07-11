@@ -74,13 +74,13 @@ static char	*initilazing(char const *s, bool in_quote, char quote_char)
 	return (p);
 }
 
-static void	ft_free(char **p)
+void	ft_free(char **p)
 {
-	while (*p)
-	{
-		free(*p);
-		p++;
-	}
+	int	i;
+
+	i = 0;
+	while (p[i])
+		free(p[i++]);
 	free(p);
 }
 
