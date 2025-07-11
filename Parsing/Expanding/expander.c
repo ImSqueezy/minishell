@@ -47,7 +47,7 @@ static char	*expand(t_pdata *pdata, t_gdata *gdata, char *word, int quoting)
 	return (free(word), newstr);
 }
 
-static t_token	*subtokenizer(t_token **head, t_token *curr)
+static t_token	*subtokenizer(t_token **head, t_token *curr, t_token *prev)
 {
 	char	**splittedword;
 	t_token	*new;
@@ -61,6 +61,8 @@ static t_token	*subtokenizer(t_token **head, t_token *curr)
 	(1) && (i = 0, old_curr = curr);
 	while (splittedword[i])
 	{
+		if (prev && _isred(prev->type))
+			return (ft_free(splittedword), curr);
 		new = token_addnew(splittedword[i], curr);
 		if (i == 0)
 			new_curr = new;
@@ -116,7 +118,7 @@ void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 				free(curr->word);
 				curr->word = ft_strdup("");
 			}
-			curr = subtokenizer(&pdata->token, curr);
+			curr = subtokenizer(&pdata->token, curr, curr->prev);
 			re_definer(curr);
 		}
 		curr = next;
