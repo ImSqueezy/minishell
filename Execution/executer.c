@@ -14,6 +14,8 @@
 
 int	is_built_in(t_cmd *cmd)
 {
+	if (!*cmd->cmd)
+		return 0;
 	if (!ft_strcmp(*cmd->cmd, "echo") || !ft_strcmp(*cmd->cmd, "export")
 		|| !ft_strcmp(*cmd->cmd, "pwd") || !ft_strcmp(*cmd->cmd, "unset")
 		|| !ft_strcmp(*cmd->cmd, "cd") || !ft_strcmp(*cmd->cmd, "env")
@@ -22,20 +24,22 @@ int	is_built_in(t_cmd *cmd)
 	return (0);
 }
 
-int	execute_builtin(t_gdata *ptr)
+int	execute_builtin(t_cmd * current, t_gdata *ptr)
 {
-	if (!ft_strcmp(*ptr->cmds->cmd, "echo"))
-		return (echo(ptr->cmds->cmd));
-	if (!ft_strcmp(*ptr->cmds->cmd, "export"))
-		return (export(ptr));
-	if (!ft_strcmp(*ptr->cmds->cmd, "env") && !ptr->cmds->cmd[1])
+	if (!ft_strcmp(current->cmd[0], "echo"))
+		return (echo(current->cmd));
+	if (!ft_strcmp(current->cmd[0], "export"))
+		return (export(ptr, current)); // export needs fixing for args
+	if (!ft_strcmp(current->cmd[0], "env") && current->cmd[1])
 		return (env(ptr->env));
-	if (!ft_strcmp(*ptr->cmds->cmd, "unset"))
-		return (unset(ptr, ptr->cmds->cmd));
-	if (!ft_strcmp(*ptr->cmds->cmd, "cd"))
-		return (cd(ptr, ptr->cmds->cmd));
-	if (!ft_strcmp(*ptr->cmds->cmd, "pwd"))
-		return (pwd(ptr));
+	if (!ft_strcmp(current->cmd[0], "unset"))
+		return (unset(ptr, current->cmd));
+	if (!ft_strcmp(current->cmd[0], "cd"))
+		return (cd(ptr, current->cmd));
+	if (!ft_strcmp(current->cmd[0], "pwd"))
+		return (pwd());
+	if (!ft_strcmp(current->cmd[0], "exit"))
+		return (exit_builtin(current->cmd, ptr->exit));
 	return (0);
 }
 
@@ -45,9 +49,3 @@ int	execute_builtin(t_gdata *ptr)
 // 		ptr->exit = execute_builtin(ptr);
 // }
 
-void	executer(t_gdata *data)
-{
-	// if (data->cmds && !data->cmds->next)
-	// 	execute(data);
-	execute_pipeline(data);
-}
