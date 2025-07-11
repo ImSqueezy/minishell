@@ -31,13 +31,13 @@ char	*get_key(char *p)
 	int		i;
 
 	i = 0;
-	while (p[i] && p[i] != '=' && p[i] != ' ' && p[i] != '$')
+	while (p[i] && p[i] != '=' && p[i] != ' ')
 		i++;
 	key = malloc(sizeof(char) * i + 1);
 	if (!key)
 		return (NULL);
 	i = 0;
-	while (p[i] && p[i] != '=' && p[i] != ' ' && p[i] != '$')
+	while (p[i] && p[i] != '=' && p[i] != ' ')
 	{
 		key[i] = p[i];
 		i++;

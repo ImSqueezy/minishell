@@ -96,26 +96,15 @@ static void	value_preserver(t_token *export)
 void	export_threater(t_token	*head)
 {
 	t_token	*curr;
-	bool	redirect_exists;
 	int		strcmp;
 	int		count;
 
 	count = 0;
 	curr = head;
-	redirect_exists = false;
-	while (curr)
-	{
-		if (curr->type == red_out || curr->type == red_out
-			|| curr->type == append || curr->type == heredoc)
-			redirect_exists = true;
-		curr = curr->next;
-	}
-	curr = head;
 	while (curr)
 	{
 		strcmp = ft_strcmp(curr->word, "export");
-		if ((!strcmp && count == 0)
-			|| (!strcmp && redirect_exists && count > 0))
+		if (!strcmp && count == 0)
 			value_preserver(curr);
 		(1) && (count++, curr = curr->next);
 	}

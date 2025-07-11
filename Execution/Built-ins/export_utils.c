@@ -50,7 +50,7 @@ void	print_env(char **env)
 	print(env);
 }
 
-int	check_symbols(char *identifier)
+int	check_invalid_symbols(char *identifier)
 {
 	size_t	len;
 

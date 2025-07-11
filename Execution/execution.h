@@ -24,7 +24,7 @@ int		echo(char **cmd);
 int		env(t_env *head);
 int		exit_builtin(char **cmd, int exit_st);
 int		export(t_gdata *data, t_cmd *cmd);
-int		check_symbols(char *identifier);
+int		check_invalid_symbols(char *identifier);
 char	*append_value(char *old_value, char *to_append);
 void	print_env(char **env);
 int		unset(t_gdata *shell, char **ar);

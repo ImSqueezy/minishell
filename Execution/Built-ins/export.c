@@ -53,13 +53,14 @@ int	keychecker(char *arg, bool *key_status)
 	if (!arg[i])
 		return (*key_status = true, 0);
 	key_holder = ft_strndup(arg, i);
-	(1) && (arg += i, i = 0);
+	arg += i;
+	i = 0;
 	if (arg[i] && arg[i] == '+' && arg[i + 1] && arg[i + 1] == '=')
 		i += 2;
 	else if (arg[i] && arg[i] == '=')
 		i++;
 	identifier = ft_strndup(arg, i++);
-	if (!check_symbols(identifier))
+	if (check_invalid_symbols(identifier))
 		return (free(identifier), free(key_holder), *key_status = false, 1);
 	free(identifier);
 	free(key_holder);
