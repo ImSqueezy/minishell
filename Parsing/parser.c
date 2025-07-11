@@ -55,10 +55,8 @@ static void	data_init(t_pdata *pdata, t_gdata *gdata)
 	t_token	*tcurr;
 	t_token	*next;
 
-	gdata->env = pdata->env;
-	gdata->cmds = NULL;
-	gdata->saved_pwd = NULL;
-	ecurr = gdata->env;
+	(1) && (gdata->env = pdata->env, ecurr = gdata->env
+		, gdata->cmds = NULL, gdata->saved_pwd = NULL);
 	while (ecurr)
 	{
 		if (!ft_strcmp(ecurr->key, "PWD"))
@@ -73,27 +71,48 @@ static void	data_init(t_pdata *pdata, t_gdata *gdata)
 	{
 		next = tcurr->next;
 		if (!next || next->type == PIPE)
-			cmd_addback(&gdata->cmds, cmd_addnew(tcurr));
+			cmd_addback(&gdata->cmds, cmd_addnew(tcurr, pdata));
 		tcurr = next;
 	}
+	free_heredoc_strs(pdata->heredoc_strs);
+	pdata->heredoc_strs = NULL;
 }
 
-int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
+void	quote_suppression(t_token *head)
 {
 	t_token	*t_cpy;
-	char	*newinput;
 
-	add_history(input);
-	if (!lexer(pdata, input))
-		return (token_lstclear(&pdata->token, del), gdata->exit = 258, 0);
-	expansions_search(pdata, gdata);
-	t_cpy = pdata->token;
+	t_cpy = head;
 	while (t_cpy)
 	{
 		if (t_cpy->var != 3)
 			t_cpy->word = quote_removal(t_cpy, t_cpy->word);
 		t_cpy = t_cpy->next;
 	}
+}
+
+int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
+{
+	char	*newinput;
+	int		save_in;
+
+	add_history(input);
+	if (!lexer(pdata, input))
+		return (token_lstclear(&pdata->token, del), gdata->exit = 258, 0);
+	save_in = dup(STDIN_FILENO);
+	pdata->heredoc_count = 0;
+	pdata->heredoc_strs = get_heredoc_strings(pdata->token, pdata->env);
+	if (g_sigint)
+	{
+		free_heredoc_strs(pdata->heredoc_strs);
+		pdata->heredoc_strs = NULL;
+		dup2(save_in, STDIN_FILENO);
+		close(save_in);
+		g_sigint = 0;
+		return (0);
+	}
+	expansions_search(pdata, gdata);
+	quote_suppression(pdata->token);
 	data_init(pdata, gdata);
 	return (token_lstclear(&pdata->token, del), 1);
 }

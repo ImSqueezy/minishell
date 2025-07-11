@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 t_env	*env_addnew(char *key, char *value)
 {
@@ -93,7 +93,6 @@ char	*get_value(char *p)
 void	get_env(t_env **ptr, char **env)
 {
 	int		i;
-	t_env	*new;
 
 	*ptr = NULL;
 	i = -1;

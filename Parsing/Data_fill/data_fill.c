@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	red_addback(t_red **lst, t_red *new)
 {
@@ -53,37 +53,37 @@ t_red	*red_addnew(t_token *lst)
 	new = malloc(sizeof(t_red));
 	if (!new)
 		return (NULL);
-	while (lst)
-	{
-		if (lst->type == file || lst->type == delimiter)
-		{
-			new->fname = ft_strdup(lst->word);
-			new->type = define_ftype(lst->prev->type);
-			new->expand = 0;
-			if (lst->type == delimiter && lst->quoting == 1)
-				new->expand = 1;
-			new->ambiguous = 0;
-			if (!lst->word || ft_strchr(new->fname, ' '))
-				new->ambiguous = 1;
-			new->next = NULL;
-			break ;
-		}
-		lst = lst->next;
-	}
+	new->fname = ft_strdup(lst->word);
+	new->type = define_ftype(lst->prev->type);
+	new->ambiguous = 0;
+	if (!lst->word || !ft_strcmp(lst->word, "") || ft_strchr(new->fname, ' '))
+		new->ambiguous = 1;
+	new->heredoc_string = NULL;
+	new->next = NULL;
 	return (new);
 }
 
-t_red	*reds_init(t_token *lst)
+t_red	*reds_init(t_token *lst, t_pdata *data)
 {
 	t_token	*curr;
 	t_red	*head;
+	t_red	*new;
+	int		heredoc_count;
 
-	head = NULL;
-	curr = lst;
+	(1) && (head = NULL, curr = lst);
 	while (curr)
 	{
 		if (curr->type == file || curr->type == delimiter)
-			red_addback(&head, red_addnew(curr));
+		{
+			new = red_addnew(curr);
+			if (new->type == heredoc)
+			{
+				new->heredoc_string = ft_strdup(
+						data->heredoc_strs[data->heredoc_count]);
+				data->heredoc_count++;
+			}
+			red_addback(&head, new);
+		}
 		if (curr->next && curr->next->type == PIPE)
 			break ;
 		curr = curr->next;
@@ -91,7 +91,7 @@ t_red	*reds_init(t_token *lst)
 	return (head);
 }
 
-t_cmd	*cmd_addnew(t_token *lst)
+t_cmd	*cmd_addnew(t_token *lst, t_pdata *data)
 {
 	t_token	*curr;
 	t_cmd	*new;
@@ -116,6 +116,6 @@ t_cmd	*cmd_addnew(t_token *lst)
 		curr = curr->next;
 	}
 	(1) && (new->cmd[i] = NULL, new->next = NULL);
-	new->reds = reds_init(lst);
+	new->reds = reds_init(lst, data);
 	return (new);
 }

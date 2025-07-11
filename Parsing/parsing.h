@@ -26,6 +26,9 @@
 # include <readline/history.h>
 # include <termios.h>
 
+extern int	g_sigint;
+
+# define INVALID_IDENTIFIER "minishell: export: `%s': not a valid identifier\n"
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token"
 # define REDS_COUNT 1
 # define CMDS_COUNT 0
@@ -72,6 +75,8 @@ typedef struct parsing
 	bool	traffic;
 	char	quote;
 	char	prev;
+	char	**heredoc_strs;
+	int		heredoc_count;
 	t_token	*token;
 	t_env	*env;
 }	t_pdata;
@@ -97,6 +102,7 @@ int		env_size(t_env *env);
 void	print_tokens(char *word, int type);
 
 void	expansions_search(t_pdata *pdata, t_gdata *gdata);
+void	quote_suppression(t_token *head);
 void	export_threater(t_token	*head);
 void	equoting_traffic(char quote, char *prev);
 char	*preserve_value(char *str);
@@ -124,8 +130,9 @@ char	*quote_removal(t_token *node, char *previous_address);
 
 void	cmd_addback(t_cmd **lst, t_cmd *new);
 void	red_addback(t_red **lst, t_red *new);
-t_cmd	*cmd_addnew(t_token *lst);
+t_cmd	*cmd_addnew(t_token *lst, t_pdata *data);
 int		define_ftype(int type);
 int		cmds_reds_counter(t_token *cmd, int count_flag);
-
+char	**	get_heredoc_strings(t_token* token, t_env *env);
+void	free_heredoc_strs(char **strs);
 #endif
