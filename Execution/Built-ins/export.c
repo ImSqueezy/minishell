@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 20:13:03 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/07 16:18:49 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/11 21:06:00 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,15 +112,17 @@ int	append_env_value(t_env *head, char *key, char *value)
 	return (free(new_key), 0);
 }
 
-int	export(t_gdata *data)
+int	export(t_gdata *data, t_cmd *cmd)
 {
 	bool	permit;
 	char	**args;
 	char	*key;
 	char	*value;
 	int		i;
+	int		res;
 
-	(1) && (i = 1, permit = false, args = data->cmds->cmd);
+	res = 0;
+	(1) && (i = 1, permit = false, args = cmd->cmd);
 	if (args[i] == NULL)
 		return (print_sortedenv(data->env), 0);
 	while (args[i])
@@ -130,13 +132,16 @@ int	export(t_gdata *data)
 		if (ft_isdigit(*key) || keychecker(args[i], &permit) || *args[i] == '=')
 		{
 			printf(INVALID_IDENTIFIER, args[i]);
-			data->exit = 1;
+			res = 1;
 		}
-		if (permit)
-			data->exit = append_env_value(data->env, key, value);
+		if (permit) 
+		{
+			if (res == 0)
+				res = append_env_value(data->env, key, value);
+		}
 		free(value);
 		free(key);
 		i++;
 	}
-	return (data->exit);
+	return (res);
 }
