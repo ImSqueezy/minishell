@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asadkaou <asadkaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:05:47 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/07 15:16:57 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:09:16 by asadkaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	pwd(t_gdata *data)
+int	pwd(void)
 {
 	char	buf[1024];
 
