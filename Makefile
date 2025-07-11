@@ -1,7 +1,3 @@
-# relink must be handled
-# compilation must be done with the flags (Werror, Wextra and Wall)
-# -g must be removed
-
 NAME = minishell
 
 LIBFT_OBJS = $(addprefix Libraries/Libft/, ft_isalpha.o ft_isdigit.o ft_isalnum.o ft_isascii.o ft_isprint.o ft_strlen.o ft_memset.o ft_bzero.o \
@@ -12,28 +8,29 @@ ft_split.o ft_itoa.o ft_strmapi.o ft_striteri.o ft_putchar_fd.o ft_putstr_fd.o f
 LIBFT_PREFIX = Libraries/Libft/
 LIBFT = Libraries/Libft/libft.a
 
-FS = #-fsanitize=address
-# -g to be removed later
-FLAGS = -g $(FS) # -Wall -Wextra -Werror
-COMPILE = cc $(FLAGS) -c $< -o $@
+FLAGS =  #-Wall -Wextra -Werror #-I$(HOME)/.local/include
+R_COMPILE = -I$(shell brew --prefix readline)/include
+R_RELINK = -lreadline -L$(shell brew --prefix readline)/lib
+COMPILE = cc $(FLAGS) $(R_COMPILE) -c $< -o $@
 
-BUILTINS_OBJS = $(addprefix Built-ins/, echo.o export.o export_utils.o env.o unset.o cd.o pwd.o)
+BUILTINS_OBJS = $(addprefix Built-ins/, echo.o exit.o export.o export_utils.o env.o unset.o cd.o pwd.o)
 EXECUTION_OBJS = $(addprefix Execution/, $(BUILTINS_OBJS) executer.o execute_pipeline.o ft_execution_split.o)
 EXPANDER_OBJS = $(addprefix Expanding/, expander.o utils.o qremoval.o expander_utils.o export.o export_utils.o)
 LEXER_OBJS = $(addprefix Lexer/, lexer.o dlst.o straddlen.o spacing.o tokenizer.o)
-PARSING_OBJS = $(addprefix Parsing/, $(LEXER_OBJS) $(EXPANDER_OBJS) mem_related.o parser.o env.o data_fill.o)
+DATA_F_OBJS = $(addprefix Data_fill/, env.o data_fill.o)
+PARSING_OBJS = $(addprefix Parsing/, $(LEXER_OBJS) $(EXPANDER_OBJS) $(DATA_F_OBJS) heredoc.o mem_related.o parser.o)
 OBJS = $(PARSING_OBJS) $(EXECUTION_OBJS) \
 	main.o
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJS) Parsing/parsing.h Execution/execution.h minishell.h
-	cc $(FS) $(OBJS) $(LIBFT) -o $(NAME) -lreadline
+$(NAME): $(LIBFT) $(OBJS)
+	cc $(FS) $(OBJS) $(LIBFT) -o $(NAME) $(R_RELINK)
 
 $(LIBFT): $(LIBFT_OBJS)
 	make -C $(LIBFT_PREFIX)
 
-%.o: %.c
+%.o: %.c Parsing/parsing.h Execution/execution.h minishell.h
 	$(COMPILE)
 
 clean:
