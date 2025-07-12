@@ -80,6 +80,7 @@ char	*e_expand(t_env *env, char *line, char *delimiter)
 		{
 			key = get_key(&line[++i]);
 			line = e_replace_key(env, line, key);
+			free(key);
 			i = 0;
 			continue ;
 		}
@@ -145,7 +146,6 @@ int	has_quotes(char *delimiter)
 char	*get_heredoc(char *delimiter, t_env *env)
 {
 	char	*res;
-	char	*tmp;
 	char	*line;
 	int		quotes;
 
@@ -160,17 +160,13 @@ char	*get_heredoc(char *delimiter, t_env *env)
 		{
 			if (quotes)
 				free(delimiter);
-			return (res);
+			return (free(line), res);
 		}
 		if (!quotes)
 			line = e_expand(env, line, delimiter);
-		tmp = line; // replace later with set_newstr() for norm
-		line = ft_strjoin(line, "\n");
-		free(tmp);
-		tmp = res;
-		res = ft_strjoin(res, line);
+		line = set_newstr(line, "\n", 1);
+		res = set_newstr(res, line, ft_strlen(line));
 		free(line);
-		free(tmp);
 	}
 	return (NULL);
 }

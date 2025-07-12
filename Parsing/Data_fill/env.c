@@ -20,7 +20,17 @@ t_env	*env_addnew(char *key, char *value)
 	if (!new)
 		return (NULL);
 	new->key = ft_strdup(key);
+	if (key)
+	{
+		free(key);
+		key = NULL;
+	}
 	new->value = ft_strdup(value);
+	if (value)
+	{
+		free(value);
+		value = NULL;
+	}
 	new->next = NULL;
 	return (new);
 }

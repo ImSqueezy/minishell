@@ -60,5 +60,5 @@ int	empty_value(char *str)
 	value = get_value(str);
 	if (ft_strlen(value) == 0)
 		return (free(value), 1);
-	return (0);
+	return (free(value), 0);
 }

@@ -79,6 +79,8 @@ void	ft_free(char **p)
 	int	i;
 
 	i = 0;
+	if (!p)
+		return ;
 	while (p[i])
 		free(p[i++]);
 	free(p);

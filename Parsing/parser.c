@@ -74,7 +74,7 @@ static void	data_init(t_pdata *pdata, t_gdata *gdata)
 			cmd_addback(&gdata->cmds, cmd_addnew(tcurr, pdata));
 		tcurr = next;
 	}
-	free_heredoc_strs(pdata->heredoc_strs);
+	ft_free(pdata->heredoc_strs);
 	pdata->heredoc_strs = NULL;
 }
 
@@ -104,12 +104,12 @@ int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
 	pdata->heredoc_strs = get_heredoc_strings(pdata->token, pdata->env);
 	if (g_sigint)
 	{
-		free_heredoc_strs(pdata->heredoc_strs);
+		ft_free(pdata->heredoc_strs);
 		pdata->heredoc_strs = NULL;
 		dup2(save_in, STDIN_FILENO);
 		close(save_in);
 		g_sigint = 0;
-		return (0);
+		return (token_lstclear(&pdata->token, del), 0);
 	}
 	expansions_search(pdata, gdata);
 	quote_suppression(pdata->token);

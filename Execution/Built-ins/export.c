@@ -49,7 +49,7 @@ int	keychecker(char *arg, bool *key_status)
 
 	i = 0;
 	while (arg[i] && ft_isalnum(arg[i]))
-		i++;
+		i++; // key+a+=
 	if (!arg[i])
 		return (*key_status = true, 0);
 	key_holder = ft_strndup(arg, i);
@@ -59,7 +59,7 @@ int	keychecker(char *arg, bool *key_status)
 		i += 2;
 	else if (arg[i] && arg[i] == '=')
 		i++;
-	identifier = ft_strndup(arg, i++);
+	identifier = ft_strndup(arg, i);
 	if (check_invalid_symbols(identifier))
 		return (free(identifier), free(key_holder), *key_status = false, 1);
 	free(identifier);
@@ -110,7 +110,9 @@ int	append_env_value(t_env *head, char *key, char *value)
 		append = true;
 	if (!key_setter(head, new_key, value, append))
 		env_addback(&head, env_addnew(new_key, value));
-	return (free(new_key), 0);
+	else
+		free(new_key);
+	return (0);
 }
 
 int	export(t_gdata *data, t_cmd *cmd)
