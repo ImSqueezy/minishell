@@ -63,7 +63,7 @@ static t_token	*subtokenizer(t_token **head, t_token *curr, t_token *prev)
 	{
 		if ((prev && _isred(prev->type)) )
 			return (ft_free(splittedword), curr);
-		new = token_addnew(splittedword[i], curr);
+		new = sub_token_addnew(splittedword[i], curr);
 		if (i == 0)
 			new_curr = new;
 		token_insert_after(curr, new);

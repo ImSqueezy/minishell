@@ -121,7 +121,7 @@ void	env_addback(t_env **head, t_env *new);
 void	env_lstclear(t_env **head, void (*del)(void *));
 void	env_lstdelone(t_env *node, void (*del)(void *));
 void	token_insert_after(t_token *current, t_token *new_node);
-t_token	*token_addnew(char *word, t_token *prev);
+t_token	*sub_token_addnew(char *word, t_token *prev);
 char	*getenv_value(t_pdata *ptr, const char *str, int *index, int exit_st);
 
 char	*set_newstr(char *dst, char *src, int n);
@@ -133,5 +133,6 @@ t_cmd	*cmd_addnew(t_token *lst, t_pdata *data);
 int		define_ftype(int type);
 int		cmds_reds_counter(t_token *cmd, int count_flag);
 char	**	get_heredoc_strings(t_token* token, t_env *env);
-void	free_heredoc_strs(char **strs);
+void	tcmd_lstclear(t_cmd **lst);
+
 #endif

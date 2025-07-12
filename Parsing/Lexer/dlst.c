@@ -23,7 +23,7 @@ void	token_lstdelone(t_token **head, t_token *lst, void (*del)(void *))
 	if (lst->next)
 		lst->next->prev = lst->prev;
 	del(lst->word);
-	free(lst);
+	del(lst);
 }
 
 void	token_lstclear(t_token **lst, void (*del)(void *))
@@ -62,7 +62,7 @@ void	token_addback(t_token **lst, t_token *new)
 	new->prev = ptr;
 }
 
-t_token	*token_addnew(char *word, t_token *prev)
+t_token	*sub_token_addnew(char *word, t_token *prev)
 {
 	t_token	*new_node;
 
