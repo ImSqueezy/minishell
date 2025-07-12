@@ -70,7 +70,7 @@ char *find_command_in_path(char *cmd)
 		full_path = ft_strjoin(paths[i], "/");
 		if (!full_path)
 			break;
-		full_path = ft_strjoin(full_path, cmd);
+		full_path = set_newstr(full_path, cmd, ft_strlen(cmd));
 		if (!full_path)
 			break;
 		if (access(full_path, X_OK) == 0)
@@ -143,12 +143,7 @@ int handle_redirections(t_red *reds)
 			fd = open(reds->fname, O_WRONLY | O_CREAT | O_APPEND, 0644);
 
 		if (fd < 0)
-		{
 			perror(reds->fname);
-			exit(1);
-		}
-
-		// Redirect STDIN or STDOUT
 		if (reds->type == red_in || reds->type == heredoc)
 			dup2(fd, STDIN_FILENO);
 		else
@@ -162,8 +157,6 @@ int handle_redirections(t_red *reds)
 }
 
 
-
-// ----------------------------- EXECUTE COMMAND -----------------------------
 void command_in_child(t_cmd *cmd ,t_gdata *data)
 {
 	char *path;

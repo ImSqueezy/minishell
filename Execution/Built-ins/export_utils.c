@@ -63,9 +63,9 @@ int	check_invalid_symbols(char *identifier)
 	else if (len == 1)
 	{
 		if (identifier[0] == '=')
-			return (1);
+			return (0);
 	}
-	return (0);
+	return (1);
 }
 
 char	*append_value(char *old_value, char *to_append)

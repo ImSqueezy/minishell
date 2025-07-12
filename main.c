@@ -14,26 +14,14 @@
 
 int	g_sigint;
 
-void free_heredoc_strs(char **strs)
-{
-	int i;
 
-	i = 0;
-	if (!strs)
-		return;
-	while(strs[i])
-	{
-		free(strs[i]);
-		i++;
-	}
-	free(strs);
-}
-
-void	free_minishell(t_pdata *ptr)
+void	free_minishell(t_pdata *ptr, char *read_line)
 {
+	if (read_line)
+		free(read_line);
 	token_lstclear(&ptr->token, del);
 	env_lstclear(&ptr->env, del);
-	free_heredoc_strs(ptr->heredoc_strs);
+	ft_free(ptr->heredoc_strs);
 	ptr->heredoc_strs = NULL;
 }
 
@@ -62,35 +50,45 @@ int is_spaces(char *str)
 	return 1;
 }
 
-
-int	main(int ac, char **av, char **env)
+int	minishell_executer(t_gdata *gdata, t_pdata *pdata)
 {
-	t_pdata	pdata;
-	t_gdata	gdata;
 	char	*read;
 
-	rl_catch_signals = 0;
-	(1) && (pdata.env = NULL, pdata.token = NULL, gdata.exit = 0);
-	get_env(&pdata.env, env);
-	if (!pdata.env || !isatty(1))
-		return (1);
-	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		signal(SIGINT, sigint_handler);
-		pdata.heredoc_strs = NULL;
+		pdata->heredoc_strs = NULL;
 		read = readline("$");
 		if (!read)
-			return (printf("minishell exited!\n"), free_minishell(&pdata), gdata.exit);
+			return (printf("minishell exited!\n"), free_minishell(pdata, read), gdata->exit);
 		if (is_spaces(read))
 		{
 			free(read);
 			continue ;
 		}
-		if (parser(read, &pdata, &gdata))
-			executer(&gdata);
+		if (parser(read, pdata, gdata))
+			executer(gdata);
+		tcmd_lstclear(&gdata->cmds);
+		token_lstclear(&pdata->token, del);
+		free(gdata->saved_pwd);
 		free(read);
-		free_heredoc_strs(pdata.heredoc_strs);
+		ft_free(pdata->heredoc_strs);
 	}
 	return (0);
+}
+
+int	main(int ac, char **av, char **env)
+{
+	t_pdata	pdata;
+	t_gdata	gdata;
+	int		ret;
+
+	(1) && (pdata.env = NULL, pdata.token = NULL);
+	(1) && (gdata.exit = 0, rl_catch_signals = 0);
+	get_env(&pdata.env, env);
+	if (!pdata.env || !isatty(1))
+		return (env_lstclear(&pdata.env, del), 1);
+	signal(SIGQUIT, SIG_IGN);
+	ret = minishell_executer(&gdata, &pdata);
+	return (ret);
 }

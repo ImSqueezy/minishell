@@ -42,10 +42,3 @@ int	execute_builtin(t_cmd * current, t_gdata *ptr)
 		return (exit_builtin(current->cmd, ptr->exit));
 	return (0);
 }
-
-// void	execute(t_gdata *ptr)
-// {
-// 	if (is_built_in(ptr->cmds))
-// 		ptr->exit = execute_builtin(ptr);
-// }
-
