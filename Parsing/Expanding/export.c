@@ -68,7 +68,7 @@ static char	*epreserve_value(char *str, int i, int j)
 		new[j++] = str[i++];
 	}
 	new[j] = '\0';
-	return (free(str), new);
+	return (new);
 }
 
 // check commit hash 498f4b3^ for last removal if a problem occures here
@@ -78,16 +78,23 @@ static void	value_preserver(t_token *export)
 	char	*key;
 	int		i;
 	int		j;
+	char	*tmp;
 
 	(1) && (i = 0, j = 0, curr = export->next);
 	while (curr)
 	{
 		key = get_key(curr->word);
 		if (!ft_strchr(key, '\"') && !ft_strchr(key, '\'')
-			&& !ft_strchr(key, '$'))
+			&& !ft_strchr(key, '$')) {
+			tmp = curr->word;
 			curr->word = epreserve_value(curr->word, i, j);
-		if (!valid_identifier(key))
+			free(tmp);
+		}
+		if (!valid_identifier(key)) {
+			tmp = curr->word;
 			curr->word = epreserve_key(curr->word, i, j);
+			free(tmp);
+		}
 		free(key);
 		curr = curr->next;
 	}

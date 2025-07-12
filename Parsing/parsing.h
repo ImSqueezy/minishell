@@ -6,20 +6,13 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/09 14:41:00 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/12 18:53:44 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
-/*
-    - Libft has:
-        * unistd
-        * stdlib
-        * limits
-		* stdbool
-*/
 # include "../Libraries/Libft/libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
@@ -75,7 +68,6 @@ typedef struct parsing
 	bool	traffic;
 	char	quote;
 	char	prev;
-	char	**token_saved_address;
 	char	**heredoc_strs;
 	int		heredoc_count;
 	t_token	*token;
@@ -99,7 +91,6 @@ void	re_definer(t_token *head);
 void	token_definer(char **tokens, t_pdata *data);
 void	get_env(t_env **ptr, char **env);
 int		env_size(t_env *env);
-void	print_tokens(char *word, int type);
 
 void	expansions_search(t_pdata *pdata, t_gdata *gdata);
 void	quote_suppression(t_token *head);
@@ -134,6 +125,6 @@ t_cmd	*cmd_addnew(t_token *lst, t_pdata *data);
 int		define_ftype(int type);
 int		cmds_reds_counter(t_token *cmd, int count_flag);
 char	**	get_heredoc_strings(t_token* token, t_env *env);
-void	tcmd_lstclear(t_cmd **lst);
+void	tcmd_lstclear(t_cmd *lst);
 
 #endif

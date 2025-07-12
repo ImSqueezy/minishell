@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 17:13:15 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/02 17:13:37 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/12 18:48:56 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*set_newstr(char *dst, char *src, int n)
 	char	*tmp;
 
 	tmp = dst;
-	dst = ft_strnjoin(tmp, src, n);
+	dst = ft_strnjoin(dst, src, n);
 	free(tmp);
 	return (dst);
 }

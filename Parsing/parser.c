@@ -56,11 +56,13 @@ static void	data_init(t_pdata *pdata, t_gdata *gdata)
 	t_token	*next;
 
 	(1) && (gdata->env = pdata->env, ecurr = gdata->env
-		, gdata->cmds = NULL, gdata->saved_pwd = NULL);
+		, gdata->cmds = NULL);
 	while (ecurr)
 	{
 		if (!ft_strcmp(ecurr->key, "PWD"))
 		{
+			if (gdata->saved_pwd)
+				free(gdata->saved_pwd);
 			gdata->saved_pwd = ft_strdup(ecurr->value);
 			break ;
 		}
@@ -79,12 +81,16 @@ static void	data_init(t_pdata *pdata, t_gdata *gdata)
 void	quote_suppression(t_token *head)
 {
 	t_token	*t_cpy;
+	char	*tmp;
 
 	t_cpy = head;
 	while (t_cpy)
 	{
-		if (t_cpy->var != 3)
+		if (t_cpy->var != 3) {
+			tmp = t_cpy->word;
 			t_cpy->word = quote_removal(t_cpy, t_cpy->word);
+			free(tmp);
+		}
 		t_cpy = t_cpy->next;
 	}
 }
@@ -96,21 +102,28 @@ int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
 
 	add_history(input);
 	if (!lexer(pdata, input))
-		return (pdata_lstclear(pdata, false, del), gdata->exit = 258, 0);
+		return (gdata->exit = 258, 0);
+	t_token *curr = pdata->token;
 	save_in = dup(STDIN_FILENO);
 	pdata->heredoc_count = 0;
 	pdata->heredoc_strs = get_heredoc_strings(pdata->token, pdata->env);
 	if (g_sigint)
 	{
+		ft_free(pdata->heredoc_strs);
+		pdata->heredoc_strs = NULL;
+		pdata->heredoc_count = 0;
 		dup2(save_in, STDIN_FILENO);
 		close(save_in);
 		g_sigint = 0;
-		return (pdata_lstclear(pdata, true, del), 0);
+		return (0);
 	}
 	expansions_search(pdata, gdata);
 	quote_suppression(pdata->token);
 	data_init(pdata, gdata);
-	return (pdata_lstclear(pdata, true, del), 1);
+	ft_free(pdata->heredoc_strs);
+	pdata->heredoc_strs = NULL;
+	close(save_in);
+	return (1);
 }
 
 /* quick token debuger

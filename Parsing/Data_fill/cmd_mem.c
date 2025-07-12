@@ -37,19 +37,18 @@ static void free_str_array(char **arr)
 	free(arr);
 }
 
-void	tcmd_lstclear(t_cmd **lst)
+void	tcmd_lstclear(t_cmd *lst)
 {
 	t_cmd	*tmp;
 
-	if (!lst || !*lst)
+	if (!lst)
 		return;
-	while (*lst)
+	while (lst)
 	{
-		tmp = (*lst)->next;
-		free_str_array((*lst)->cmd);
-		free_reds((*lst)->reds);
-		free(*lst);
-		*lst = tmp;
+		tmp = lst->next;
+		free_str_array(lst->cmd);
+		free_reds(lst->reds);
+		free(lst);
+		lst = tmp;
 	}
-	*lst = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 20:50:17 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/11 20:52:24 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/12 18:53:25 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ char	*get_heredoc(char *delimiter, t_env *env)
 {
 	char	*res;
 	char	*line;
+	char	*tmp;
 	int		quotes;
 
 	res = ft_strdup("");
@@ -164,8 +165,12 @@ char	*get_heredoc(char *delimiter, t_env *env)
 		}
 		if (!quotes)
 			line = e_expand(env, line, delimiter);
-		line = set_newstr(line, "\n", 1);
-		res = set_newstr(res, line, ft_strlen(line));
+		tmp = line;
+		line = ft_strjoin(line, "\n");
+		free(tmp);
+		tmp = res;
+		res = ft_strjoin(res, line);
+		free(tmp);
 		free(line);
 	}
 	return (NULL);
@@ -190,13 +195,21 @@ char	**get_heredoc_strings(t_token *token, t_env *env)
 		return (NULL);
 	res = malloc((count + 1) * sizeof(char *));
 	while (i < count + 1)
-		res[i++] = NULL;
+	{
+		res[i] = NULL;
+		i++;
+	}
 	i = 0;
 	while (token)
 	{
 		if (token->type == heredoc)
 		{
 			res[i] = get_heredoc(token->next->word, env);
+			if (g_sigint)
+			{
+				ft_free(res);
+				return (NULL);
+			}
 			i++;
 		}
 		token = token->next;

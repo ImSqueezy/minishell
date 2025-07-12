@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:46:45 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/03 12:45:40 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/12 18:52:40 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,6 @@ static int	syntax_checker(t_pdata *data, int quoting_flag)
 	return (1);
 }
 
-// temporary (debug)
-void	print_tokens(char *world, int type);
-
 int	lexer(t_pdata *data, char *input)
 {
 	char	*processed_input;
@@ -60,34 +57,9 @@ int	lexer(t_pdata *data, char *input)
 	tokens = ft_split(processed_input);
 	free(processed_input);
 	token_definer(tokens, data);
-	data->token_saved_address = tokens;
+	ft_free(tokens);
 	if (!syntax_checker(data, data->traffic))
-		return (pdata_lstclear(data, false, del), 0);
+		return (0);
 	re_definer(data->token);
 	return (1);
-}
-
-void	print_tokens(char *word, int type)
-{
-	printf("token: %s\n", word);
-	if (type == 0)
-		printf("of type %s\n", "word");
-	else if (type == 1)
-		printf("of type %s\n", "pipe");
-	else if (type == 2)
-		printf("of type %s\n", "redirection");
-	else if (type == 3)
-		printf("of type %s\n", "red_in");
-	else if (type == 4)
-		printf("of type %s\n", "red_out");
-	else if (type == 5)
-		printf("of type %s\n", "append");
-	else if (type == 6)
-		printf("of type %s\n", "heredoc");
-	else if (type == 7)
-		printf("of type %s\n", "command");
-	else if (type == 8)
-		printf("of type %s\n", "file");
-	else if (type == 9)
-		printf("of type %s\n", "delimiter");
 }

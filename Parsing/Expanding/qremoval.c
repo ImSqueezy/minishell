@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:28:19 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/04 21:25:44 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/12 18:49:46 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	check_mate(char *str, char c)
 char	*quote_removal(t_token *node, char *previous_address)
 {
 	char	*new;
+	char	*tmp;
 	char	*mq;
 	int		i;
 
@@ -64,17 +65,22 @@ char	*quote_removal(t_token *node, char *previous_address)
 			&& check_mate(&node->word[i], node->word[i]) && node->quoting != -3)
 		{
 			mq = get_middlequoted(node->word[i], &node->word[i + 1], &i);
-			if (mq)
-				new = set_newstr(new, mq, ft_strlen(mq));
+			if (mq) {
+				tmp = new;
+				new = ft_strnjoin(new, mq, ft_strlen(mq));
+				free(tmp);
+			}
 			free(mq);
 			i++;
 		}
-		else
-			new = set_newstr(new, &node->word[i], 1);
+		else {
+			tmp = new;
+			new = ft_strnjoin(new, &node->word[i], 1);
+			free(tmp);
+		}
 		if (!node->word[i])
 			break ;
 		i++;
 	}
-	// free(previous_address); if enabled it suppresses the leaks, but gives double free
 	return (new);
 }

@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:01:37 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/02 17:12:58 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/12 18:50:58 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@ void	equoting_traffic(char quote, char *prev)
 
 static char	*expand(t_pdata *pdata, t_gdata *gdata, char *word, int quoting)
 {
-	int		i;
 	t_pdata	var;
+	int		i;
 	char	*afterd;
 	char	*newstr;
+	char	*tmp;
 
-	(1) && (newstr = NULL, i = 0, var.prev = 0);
+	(1) && (newstr = NULL, afterd = NULL, i = 0, var.prev = 0);
 	while (word[i])
 	{
 		equoting_traffic(word[i], &var.prev);
@@ -35,16 +36,23 @@ static char	*expand(t_pdata *pdata, t_gdata *gdata, char *word, int quoting)
 		{
 			i++;
 			afterd = getenv_value(pdata, &word[i], &i, gdata->exit);
-			if (afterd)
-				newstr = set_newstr(newstr, afterd, ft_strlen(afterd));
+			if (afterd) {
+				tmp = newstr;
+				newstr = ft_strnjoin(newstr, afterd, ft_strlen(afterd));
+				free(tmp);
+			}
 			free(afterd);
 			i--;
 		}
 		else
-			newstr = set_newstr(newstr, &word[i], 1);
+		{
+			tmp = newstr;
+			newstr = ft_strnjoin(newstr, &word[i], 1);
+			free(tmp);
+		}
 		i++;
 	}
-	return (free(word), newstr);
+	return (newstr);
 }
 
 static t_token	*subtokenizer(t_token **head, t_token *curr, t_token *prev)
@@ -72,7 +80,10 @@ static t_token	*subtokenizer(t_token **head, t_token *curr, t_token *prev)
 	token_lstdelone(head, old_curr, del);
 	curr = new_curr;
 	if (curr->quoting > 1)
+	{
+		free(curr->word);
 		curr->word = quote_removal(curr, curr->word);
+	}
 	return (free(splittedword), curr);
 }
 
@@ -80,6 +91,7 @@ static void	quote_preserver(t_token *lst)
 {
 	t_token	*curr;
 	t_token	*next;
+	char	*tmp;
 
 	curr = lst;
 	while (curr)
@@ -89,7 +101,9 @@ static void	quote_preserver(t_token *lst)
 		{
 			while (next && next->type != PIPE)
 			{
+				tmp = next->word;
 				next->word = quote_removal(next, next->word);
+				free(tmp);
 				next->quoting = -3;
 				next = next->next;
 			}
@@ -103,21 +117,20 @@ void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 	t_token	*curr;
 	t_token	*next;
 	char	*new;
+	char	*tmp;
 
 	export_threater(pdata->token);
-	quote_preserver(pdata->token);
 	curr = pdata->token;
 	while (curr)
 	{
 		next = curr->next;
 		if (curr->var == 1 && curr->type != delimiter)
 		{
+			tmp = curr->word;
 			curr->word = expand(pdata, gdata, curr->word, curr->quoting);
+			free(tmp);
 			if (!curr->word)
-			{
-				free(curr->word);
 				curr->word = ft_strdup("");
-			}
 			curr = subtokenizer(&pdata->token, curr, curr->prev);
 			re_definer(curr);
 		}

@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:46:06 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/03 21:16:19 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/12 18:54:00 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	free_minishell(t_pdata *ptr, char *read_line)
 {
 	if (read_line)
 		free(read_line);
-	pdata_lstclear(ptr, true, del); // freed heredoc
+	pdata_lstclear(ptr, true, del);
 	env_lstclear(&ptr->env, del);
 }
 
@@ -58,7 +58,7 @@ int	minishell_executer(t_gdata *gdata, t_pdata *pdata)
 		pdata->heredoc_strs = NULL;
 		read = readline("$");
 		if (!read)
-			return (printf("minishell exited!\n"), free_minishell(pdata, read), gdata->exit);
+			return (printf("minishell exited!\n"), free_minishell(pdata, read), free(gdata->saved_pwd), gdata->exit);
 		if (is_spaces(read))
 		{
 			free(read);
@@ -66,9 +66,13 @@ int	minishell_executer(t_gdata *gdata, t_pdata *pdata)
 		}
 		if (parser(read, pdata, gdata))
 			executer(gdata);
-		tcmd_lstclear(&gdata->cmds);
-		pdata_lstclear(pdata, true,del); // freed heredoc
-		free(gdata->saved_pwd);
+		if (gdata->cmds)
+		{
+			tcmd_lstclear(gdata->cmds);
+			gdata->cmds = NULL;
+		}
+		pdata_lstclear(pdata, true, del);
+		pdata->token = NULL;
 		free(read);
 	}
 	return (0);
@@ -80,9 +84,8 @@ int	main(int ac, char **av, char **env)
 	t_gdata	gdata;
 	int		ret;
 
-	pdata.token_saved_address = NULL;
 	(1) && (pdata.env = NULL, pdata.token = NULL);
-	(1) && (gdata.exit = 0, rl_catch_signals = 0);
+	(1) && (gdata.exit = 0, gdata.saved_pwd = NULL, gdata.cmds = NULL,  rl_catch_signals = 0);
 	get_env(&pdata.env, env);
 	if (!pdata.env || !isatty(1))
 		return (env_lstclear(&pdata.env, del), 1);

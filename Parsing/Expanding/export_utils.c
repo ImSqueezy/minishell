@@ -64,5 +64,5 @@ char *epreserve_key(char *str, int i, int j)
 		new[j++] = str[i++];
 	}
 	new[j] = '\0';
-	return (free(str), new);
+	return (new);
 }

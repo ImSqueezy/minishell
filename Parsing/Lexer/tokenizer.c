@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 21:56:13 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/01 12:10:30 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/12 18:52:46 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,6 @@ static void	token_type(t_token *token)
 		token->type = word;
 }
 
-/*  could replace it with what's below
-t_token	*token_addnew(char *word)
-{
-	t_token	*new;
-
-	new = malloc(sizeof(t_token));
-	if (!new)
-		return (NULL);
-	new->word = ft_strdup(word);
-	new->var = 0;
-	new->quoting = 1;
-	if (ft_strchr(new->word, '\''))
-		new->quoting = 2;
-	if (ft_strchr(new->word, '\"'))
-		new->quoting = 3;
-	new->next = NULL;
-	new->prev = NULL;
-}
-*/
-
 void	token_definer(char **tokens, t_pdata *data)
 {
 	int		i;
@@ -72,7 +52,7 @@ void	token_definer(char **tokens, t_pdata *data)
 		new_token = malloc(sizeof(t_token));
 		if (!new_token)
 			return ;
-		new_token->word = tokens[i];
+		new_token->word = ft_strdup(tokens[i]);
 		new_token->var = 0;
 		new_token->quoting = 1;
 		if (ft_strchr(new_token->word, '\''))
