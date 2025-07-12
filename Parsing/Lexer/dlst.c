@@ -22,25 +22,34 @@ void	token_lstdelone(t_token **head, t_token *lst, void (*del)(void *))
 		lst->prev->next = lst->next;
 	if (lst->next)
 		lst->next->prev = lst->prev;
-	del(lst->word);
 	del(lst);
 }
 
-void	token_lstclear(t_token **lst, void (*del)(void *))
+void	pdata_lstclear(t_pdata *ptr, bool free_heredoc, void (*del)(void *))
 {
 	t_token	*next;
 	t_token	**head;
 
-	head = lst;
-	if (!lst || !del)
+	head = &ptr->token;
+	if (!ptr->token || !del)
 		return ;
-	while (*lst)
+	while (ptr->token)
 	{
-		next = (*lst)->next;
-		token_lstdelone(head, *lst, del);
-		*lst = next;
+		next = (ptr->token)->next;
+		token_lstdelone(head, ptr->token, del);
+		ptr->token = next;
 	}
-	*lst = NULL;
+	ptr->token = NULL;
+	if (ptr->token_saved_address)
+	{
+		ft_free(ptr->token_saved_address);
+		ptr->token_saved_address = NULL;
+	}
+	if (ptr->heredoc_strs && free_heredoc)
+	{
+		ft_free(ptr->heredoc_strs);
+		ptr->heredoc_strs = NULL;
+	}
 }
 
 void	token_addback(t_token **lst, t_token *new)

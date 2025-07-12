@@ -75,6 +75,6 @@ char	*quote_removal(t_token *node, char *previous_address)
 			break ;
 		i++;
 	}
-	free(previous_address);
+	// free(previous_address); if enabled it suppresses the leaks, but gives double free
 	return (new);
 }

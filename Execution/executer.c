@@ -29,7 +29,7 @@ int	execute_builtin(t_cmd * current, t_gdata *ptr)
 	if (!ft_strcmp(current->cmd[0], "echo"))
 		return (echo(current->cmd));
 	if (!ft_strcmp(current->cmd[0], "export"))
-		return (export(ptr, current)); // export needs fixing for args
+		return (export(ptr, current));
 	if (!ft_strcmp(current->cmd[0], "env") && current->cmd[1])
 		return (env(ptr->env));
 	if (!ft_strcmp(current->cmd[0], "unset"))

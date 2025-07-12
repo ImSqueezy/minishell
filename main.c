@@ -19,10 +19,8 @@ void	free_minishell(t_pdata *ptr, char *read_line)
 {
 	if (read_line)
 		free(read_line);
-	token_lstclear(&ptr->token, del);
+	pdata_lstclear(ptr, true, del); // freed heredoc
 	env_lstclear(&ptr->env, del);
-	ft_free(ptr->heredoc_strs);
-	ptr->heredoc_strs = NULL;
 }
 
 
@@ -69,10 +67,9 @@ int	minishell_executer(t_gdata *gdata, t_pdata *pdata)
 		if (parser(read, pdata, gdata))
 			executer(gdata);
 		tcmd_lstclear(&gdata->cmds);
-		token_lstclear(&pdata->token, del);
+		pdata_lstclear(pdata, true,del); // freed heredoc
 		free(gdata->saved_pwd);
 		free(read);
-		ft_free(pdata->heredoc_strs);
 	}
 	return (0);
 }
@@ -83,6 +80,7 @@ int	main(int ac, char **av, char **env)
 	t_gdata	gdata;
 	int		ret;
 
+	pdata.token_saved_address = NULL;
 	(1) && (pdata.env = NULL, pdata.token = NULL);
 	(1) && (gdata.exit = 0, rl_catch_signals = 0);
 	get_env(&pdata.env, env);

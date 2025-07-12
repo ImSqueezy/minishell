@@ -75,6 +75,7 @@ typedef struct parsing
 	bool	traffic;
 	char	quote;
 	char	prev;
+	char	**token_saved_address;
 	char	**heredoc_strs;
 	int		heredoc_count;
 	t_token	*token;
@@ -91,7 +92,7 @@ int		is_whitespace(char c);
 
 void	del(void *ptr);
 void	token_lstdelone(t_token **head, t_token *lst, void (*del)(void *));
-void	token_lstclear(t_token **lst, void (*del)(void *));
+void	pdata_lstclear(t_pdata *ptr, bool free_heredoc, void (*del)(void *));
 void	token_addback(t_token **lst, t_token *new);
 int		lexer(t_pdata *data, char *input);
 void	re_definer(t_token *head);

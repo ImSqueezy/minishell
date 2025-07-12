@@ -74,8 +74,6 @@ static void	data_init(t_pdata *pdata, t_gdata *gdata)
 			cmd_addback(&gdata->cmds, cmd_addnew(tcurr, pdata));
 		tcurr = next;
 	}
-	ft_free(pdata->heredoc_strs);
-	pdata->heredoc_strs = NULL;
 }
 
 void	quote_suppression(t_token *head)
@@ -98,23 +96,21 @@ int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
 
 	add_history(input);
 	if (!lexer(pdata, input))
-		return (token_lstclear(&pdata->token, del), gdata->exit = 258, 0);
+		return (pdata_lstclear(pdata, false, del), gdata->exit = 258, 0);
 	save_in = dup(STDIN_FILENO);
 	pdata->heredoc_count = 0;
 	pdata->heredoc_strs = get_heredoc_strings(pdata->token, pdata->env);
 	if (g_sigint)
 	{
-		ft_free(pdata->heredoc_strs);
-		pdata->heredoc_strs = NULL;
 		dup2(save_in, STDIN_FILENO);
 		close(save_in);
 		g_sigint = 0;
-		return (token_lstclear(&pdata->token, del), 0);
+		return (pdata_lstclear(pdata, true, del), 0);
 	}
 	expansions_search(pdata, gdata);
 	quote_suppression(pdata->token);
 	data_init(pdata, gdata);
-	return (token_lstclear(&pdata->token, del), 1);
+	return (pdata_lstclear(pdata, true, del), 1);
 }
 
 /* quick token debuger

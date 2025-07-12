@@ -60,9 +60,9 @@ int	lexer(t_pdata *data, char *input)
 	tokens = ft_split(processed_input);
 	free(processed_input);
 	token_definer(tokens, data);
-	free(tokens);
+	data->token_saved_address = tokens;
 	if (!syntax_checker(data, data->traffic))
-		return (token_lstclear(&data->token, del), 0);
+		return (pdata_lstclear(data, false, del), 0);
 	re_definer(data->token);
 	return (1);
 }

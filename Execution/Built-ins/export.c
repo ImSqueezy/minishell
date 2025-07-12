@@ -111,7 +111,26 @@ int	append_env_value(t_env *head, char *key, char *value)
 	if (!key_setter(head, new_key, value, append))
 		env_addback(&head, env_addnew(new_key, value));
 	else
+	{
+		free(value);
 		free(new_key);
+	}
+	return (0);
+}
+
+int	set_permit(char *arg, char *key, char *value, bool *permit)
+{
+	static int	last_res;
+
+	if (ft_isdigit(*key) || keychecker(arg, permit) || *arg == '=')
+	{
+		printf(INVALID_IDENTIFIER, arg);
+		free(value);
+		last_res = 1;
+		return (1);
+	}
+	if (last_res == 1)
+		return (1);
 	return (0);
 }
 
@@ -124,27 +143,20 @@ int	export(t_gdata *data, t_cmd *cmd)
 	int		i;
 	int		res;
 
-	res = 0;
-	(1) && (i = 1, permit = false, args = cmd->cmd);
-	if (args[i] == NULL)
+	(1) && (i = 0, permit = false, args = cmd->cmd, res = 0);
+	if (args[1] == NULL)
 		return (print_sortedenv(data->env), 0);
-	while (args[i])
+	while (args[++i])
 	{
 		key = get_key(args[i]);
 		value = get_value(args[i]);
-		if (ft_isdigit(*key) || keychecker(args[i], &permit) || *args[i] == '=')
-		{
-			printf(INVALID_IDENTIFIER, args[i]);
-			res = 1;
-		}
-		if (permit) 
+		res = set_permit(args[i], key, value, &permit);
+		if (permit == true) 
 		{
 			if (res == 0)
 				res = append_env_value(data->env, key, value);
 		}
-		free(value);
 		free(key);
-		i++;
 	}
 	return (res);
 }
