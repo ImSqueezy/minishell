@@ -17,8 +17,8 @@ BUILTINS_OBJS = $(addprefix Built-ins/, echo.o exit.o export.o export_utils.o en
 EXECUTION_OBJS = $(addprefix Execution/, $(BUILTINS_OBJS) executer.o execute_pipeline.o ft_execution_split.o)
 EXPANDER_OBJS = $(addprefix Expanding/, expander.o utils.o qremoval.o expander_utils.o export.o export_utils.o)
 LEXER_OBJS = $(addprefix Lexer/, lexer.o dlst.o straddlen.o spacing.o tokenizer.o)
-DATA_F_OBJS = $(addprefix Data_fill/, env.o data_fill.o)
-PARSING_OBJS = $(addprefix Parsing/, $(LEXER_OBJS) $(EXPANDER_OBJS) $(DATA_F_OBJS) heredoc.o mem_related.o parser.o)
+DATA_F_OBJS = $(addprefix Data_fill/, env.o data_fill.o env_mem.o cmd_mem.o)
+PARSING_OBJS = $(addprefix Parsing/, $(LEXER_OBJS) $(EXPANDER_OBJS) $(DATA_F_OBJS) heredoc.o parser.o)
 OBJS = $(PARSING_OBJS) $(EXECUTION_OBJS) \
 	main.o
 
