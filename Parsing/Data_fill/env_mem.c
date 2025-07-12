@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	del(void *ptr)
 {
@@ -44,3 +44,4 @@ void	env_lstdelone(t_env *node, void (*del)(void *))
 	del(node->value);
 	free(node);
 }
+
