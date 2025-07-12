@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asadkaou <asadkaou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 20:50:12 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/08 12:11:39 by asadkaou         ###   ########.fr       */
+/*   Updated: 2025/07/12 18:55:16 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,19 @@ int	execute_builtin(t_cmd * current, t_gdata *ptr)
 	if (!ft_strcmp(current->cmd[0], "cd"))
 		return (cd(ptr, current->cmd));
 	if (!ft_strcmp(current->cmd[0], "pwd"))
-		return (pwd());
+		return (pwd(ptr));
 	if (!ft_strcmp(current->cmd[0], "exit"))
 		return (exit_builtin(current->cmd, ptr->exit));
 	return (0);
+}
+
+char *get_env_v(t_env *env, char *key)
+{
+	while(env) 
+	{
+		if (!ft_strcmp(env->key, key))
+			return (env->value);
+		env = env->next;
+	}
+	return ("");
 }

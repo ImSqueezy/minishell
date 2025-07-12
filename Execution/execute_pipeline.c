@@ -53,7 +53,7 @@ static void free_string_array(char **arr)
 	free(arr);
 }
 
-char *find_command_in_path(char *cmd)
+char *find_command_in_path(char *cmd, t_env *env)
 {
 	char **paths;
 	char *full_path;
@@ -61,7 +61,7 @@ char *find_command_in_path(char *cmd)
 
 	if (!cmd || !*cmd)
 		return (NULL);
-	paths = ft_execution_split(getenv("PATH"), ':');
+	paths = ft_execution_split(get_env_v(env, "PATH"), ':');
 	if (!paths)
 		return (NULL);
 	i = 0;
@@ -69,10 +69,10 @@ char *find_command_in_path(char *cmd)
 	{
 		full_path = ft_strjoin(paths[i], "/");
 		if (!full_path)
-			break;
+			break ;
 		full_path = set_newstr(full_path, cmd, ft_strlen(cmd));
 		if (!full_path)
-			break;
+			break ;
 		if (access(full_path, X_OK) == 0)
 		{
 			free_string_array(paths);
@@ -164,19 +164,21 @@ void command_in_child(t_cmd *cmd ,t_gdata *data)
 
 	if (!cmd || !cmd->cmd || !cmd->cmd[0])
 		exit(0);
+
 	if (ft_strchr(cmd->cmd[0], '/'))
 		path = ft_strdup(cmd->cmd[0]);
 	else
-		path = find_command_in_path(cmd->cmd[0]);
+		path = find_command_in_path(cmd->cmd[0], data->env);
 	if (!path)
 	{
-		fprintf(stderr, "%s: command not found\n", cmd->cmd[0]);
+		ft_putstr_fd( cmd->cmd[0], 2);
+		ft_putendl_fd(": command not found", 2);
 		exit(127);
 	}
 	envp = env_list_to_array(data->env);
 	if (!envp)
 	{
-		fprintf(stderr, "Failed to prepare environment\n");
+		ft_putstr_fd("Failed to prepare environment", 2);
 		free(path);
 		exit(1);
 	}
@@ -289,9 +291,14 @@ void executer(t_gdata *data)
 	int pid;
 
 	current = data->cmds;
+
 	data->saved_stdin = dup(STDIN_FILENO);
 	data->saved_stdout = dup(STDOUT_FILENO);
 	save_read = -1;
+	if (!current) {
+		data->exit = 0;
+		return;
+	}
 	if (!current->next) { // NEEDS BUILTIN HANDLING
 		single_command(data);
 		reset_fds(data);
@@ -304,5 +311,5 @@ void executer(t_gdata *data)
 	}
 	reset_fds(data);
 	data->exit = get_exit_status(pid);
-	while(wait(NULL) == -1);
+	while(wait(NULL) != -1);
 }
