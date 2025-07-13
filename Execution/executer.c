@@ -6,7 +6,7 @@
 /*   By: asadkaou <asadkaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 20:50:12 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/13 14:41:30 by asadkaou         ###   ########.fr       */
+/*   Updated: 2025/07/13 21:35:17 by asadkaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	is_built_in(t_cmd *cmd)
 {
 	if (!*cmd->cmd)
-		return 0;
+		return (0);
 	if (!ft_strcmp(*cmd->cmd, "echo") || !ft_strcmp(*cmd->cmd, "export")
 		|| !ft_strcmp(*cmd->cmd, "pwd") || !ft_strcmp(*cmd->cmd, "unset")
 		|| !ft_strcmp(*cmd->cmd, "cd") || !ft_strcmp(*cmd->cmd, "env")
@@ -24,7 +24,7 @@ int	is_built_in(t_cmd *cmd)
 	return (0);
 }
 
-int	execute_builtin(t_cmd * current, t_gdata *ptr)
+int	execute_builtin(t_cmd *current, t_gdata *ptr)
 {
 	if (!ft_strcmp(current->cmd[0], "echo"))
 		return (echo(current->cmd));
@@ -43,13 +43,13 @@ int	execute_builtin(t_cmd * current, t_gdata *ptr)
 	return (0);
 }
 
-char *get_env_v(t_env *env, char *key)
+char	*get_env_v(t_env *env, char *key)
 {
-	while(env) 
+	while (env)
 	{
 		if (!ft_strcmp(env->key, key))
-			return env->value;
+			return (env->value);
 		env = env->next;
 	}
-	return ("");
+	return (NULL);
 }
