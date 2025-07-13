@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asadkaou <asadkaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:16:07 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/11 20:54:01 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/13 14:43:29 by asadkaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_gdata
 	int		saved_stdin;
 	int		saved_stdout;
 	int		exit;
+	int		*pids;
 }	t_gdata;
 
 #endif

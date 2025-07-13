@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asadkaou <asadkaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 20:50:12 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/13 13:30:07 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/13 14:41:30 by asadkaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	execute_builtin(t_cmd * current, t_gdata *ptr)
 	if (!ft_strcmp(current->cmd[0], "cd"))
 		return (cd(ptr, current->cmd));
 	if (!ft_strcmp(current->cmd[0], "pwd"))
-		return (pwd());
+		return (pwd(ptr));
 	if (!ft_strcmp(current->cmd[0], "exit"))
 		return (exit_builtin(current->cmd, ptr->exit));
 	return (0);
