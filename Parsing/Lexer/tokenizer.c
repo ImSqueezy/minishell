@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 21:56:13 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/12 18:52:46 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 00:30:35 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void	token_type(t_token *token)
 	size_t	len;
 
 	token->var = 0;
+	token->split_permit = 1;
 	len = ft_strlen(token->word);
 	if (len == 1)
 	{

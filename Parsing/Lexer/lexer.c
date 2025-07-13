@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:46:45 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/12 18:52:40 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/13 13:17:50 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	lexer(t_pdata *data, char *input)
 	char	**tokens;
 
 	processed_input = spacing(input, data);
-	tokens = ft_split(processed_input);
+	tokens = ft_split(processed_input, 0);
 	free(processed_input);
 	token_definer(tokens, data);
 	ft_free(tokens);

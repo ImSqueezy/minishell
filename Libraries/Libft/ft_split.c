@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 15:05:25 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/12 18:56:30 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/13 22:40:45 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	is_whitespace(char c)
 	return (c == 32 || (c >= 9 && c <= 13));
 }
 
-int	count_words(const char *p)
+int	count_words(const char *p, int split_permit)
 {
 	size_t	i;
 	size_t	len;
@@ -32,7 +32,7 @@ int	count_words(const char *p)
 	len = ft_strlen(p);
 	while (i <= len)
 	{
-		if (!var && (p[i] == '\'' || p[i] == '"'))
+		if (!var && (p[i] == '\'' || p[i] == '"') && !split_permit)
 			var = p[i];
 		else if (p[i] == var)
 			var = 0;
@@ -45,7 +45,7 @@ int	count_words(const char *p)
 	return (words);
 }
 
-static char	*initilazing(char const *s, bool in_quote, char quote_char)
+static char	*initilazing(char const *s, bool in_quote, char quote_char, int sp)
 {
 	char	*p;
 	int		i;
@@ -54,7 +54,7 @@ static char	*initilazing(char const *s, bool in_quote, char quote_char)
 	(1) && (i = -1, len = 0);
 	while (s[len])
 	{
-		if ((s[len] == '\'' || s[len] == '\"'))
+		if ((s[len] == '\'' || s[len] == '\"') && !sp)
 		{
 			if (!in_quote)
 				(1) && (in_quote = true, quote_char = s[len]);
@@ -90,7 +90,8 @@ void	ft_free(char **p)
 	free(p);
 }
 
-char	**ft_split(char const *s)
+
+char	**ft_split(char const *s, int split_permit)
 {
 	size_t		words;
 	size_t		i;
@@ -100,7 +101,7 @@ char	**ft_split(char const *s)
 
 	if (!s)
 		return (0);
-	(1) && (i = -1, words = count_words(s));
+	(1) && (i = -1, words = count_words(s, split_permit));
 	quote = 0;
 	quote_char = 0;
 	p = (char **)malloc((words + 1) * sizeof(char *));
@@ -110,7 +111,7 @@ char	**ft_split(char const *s)
 	{
 		while (is_whitespace(*s))
 			s++;
-		p[i] = initilazing(s, quote, quote_char);
+		p[i] = initilazing(s, quote, quote_char, split_permit);
 		if (p[i] == NULL)
 			return (ft_free(p), NULL);
 		s += ft_strlen(p[i]);

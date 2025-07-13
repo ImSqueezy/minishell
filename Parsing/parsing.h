@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/12 18:53:44 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/13 13:22:13 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 
 extern int	g_sigint;
 
-# define INVALID_IDENTIFIER "minishell: export: `%s': not a valid identifier\n"
+# define EINVALID_IDENTIFIER "minishell: export: `%s': not a valid identifier\n"
+# define UINVALID_IDENTIFIER "minishell: unset: `%s': not a valid identifier\n"
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token"
 # define REDS_COUNT 1
 # define CMDS_COUNT 0
@@ -52,6 +53,7 @@ typedef struct s_token
 	int		type;
 	int		var;
 	int		quoting;	
+	bool	split_permit;
 	t_token	*next;
 	t_token	*prev;
 }	t_token;
@@ -94,7 +96,7 @@ int		env_size(t_env *env);
 
 void	expansions_search(t_pdata *pdata, t_gdata *gdata);
 void	quote_suppression(t_token *head);
-void	export_threater(t_token	*head);
+void	export_threater(t_token	*head, t_env *env);
 void	equoting_traffic(char quote, char *prev);
 char	*preserve_value(char *str);
 char	*epreserve_key(char *str, int i, int j);

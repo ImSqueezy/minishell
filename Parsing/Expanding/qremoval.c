@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:28:19 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/12 18:49:46 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/13 13:16:05 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ char	*quote_removal(t_token *node, char *previous_address)
 			&& check_mate(&node->word[i], node->word[i]) && node->quoting != -3)
 		{
 			mq = get_middlequoted(node->word[i], &node->word[i + 1], &i);
-			if (mq) {
+			if (mq)
+			{
 				tmp = new;
 				new = ft_strnjoin(new, mq, ft_strlen(mq));
 				free(tmp);

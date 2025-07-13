@@ -58,7 +58,7 @@ int	check_invalid_symbols(char *identifier)
 	if (len == 2)
 	{
 		if (identifier[0] == '+' && identifier[1] == '=')
-			return (1);
+			return (0);
 	}
 	else if (len == 1)
 	{

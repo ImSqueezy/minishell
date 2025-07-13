@@ -86,7 +86,8 @@ void	quote_suppression(t_token *head)
 	t_cpy = head;
 	while (t_cpy)
 	{
-		if (t_cpy->var != 3) {
+		if (t_cpy->var != 3)
+		{
 			tmp = t_cpy->word;
 			t_cpy->word = quote_removal(t_cpy, t_cpy->word);
 			free(tmp);
@@ -109,12 +110,12 @@ int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
 	pdata->heredoc_strs = get_heredoc_strings(pdata->token, pdata->env);
 	if (g_sigint)
 	{
-		ft_free(pdata->heredoc_strs);
+		g_sigint = 0;
+		gdata->exit = 130;
 		pdata->heredoc_strs = NULL;
 		pdata->heredoc_count = 0;
 		dup2(save_in, STDIN_FILENO);
 		close(save_in);
-		g_sigint = 0;
 		return (0);
 	}
 	expansions_search(pdata, gdata);
@@ -123,6 +124,7 @@ int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
 	ft_free(pdata->heredoc_strs);
 	pdata->heredoc_strs = NULL;
 	close(save_in);
+	
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 12:49:15 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/03 12:49:20 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/13 13:08:50 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,33 @@ void	cmd_addback(t_cmd **lst, t_cmd *new)
 	(*ptr).next = new;
 }
 
-t_red	*red_addnew(t_token *lst)
+int	expanded_key(t_env *env, char *str)
+{
+	t_env	*curr;
+	char	*key;
+	char 	*tmp;
+	int		i;
+	
+	tmp = ft_strchr(str, '$');
+	if (!tmp)
+		return (0);
+	i = 1;
+	while (tmp[i])
+		i++;
+	key = ft_strdup(&tmp[1]);
+	if (key[0] == '\0')
+		return (0);
+	curr = env;
+	while (curr)
+	{
+		if (!ft_strcmp(curr->key, key))
+			return (free(key), 0);
+		curr = curr->next;	
+	}
+	return (free(key), 1);
+}
+
+t_red	*red_addnew(t_env *env, t_token *lst)
 {
 	t_red	*new;
 
@@ -56,7 +82,7 @@ t_red	*red_addnew(t_token *lst)
 	new->fname = ft_strdup(lst->word);
 	new->type = define_ftype(lst->prev->type);
 	new->ambiguous = 0;
-	if (!lst->word || !ft_strcmp(lst->word, "") || ft_strchr(new->fname, ' '))
+	if (!lst->word || !ft_strcmp(lst->word, "") || expanded_key(env, lst->word))
 		new->ambiguous = 1;
 	new->heredoc_string = NULL;
 	new->next = NULL;
@@ -75,7 +101,7 @@ t_red	*reds_init(t_token *lst, t_pdata *data)
 	{
 		if (curr->type == file || curr->type == delimiter)
 		{
-			new = red_addnew(curr);
+			new = red_addnew(data->env, curr);
 			if (new->type == heredoc)
 			{
 				new->heredoc_string = ft_strdup(

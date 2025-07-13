@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 12:45:58 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/09 14:32:03 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/13 13:36:08 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,23 @@ static void	helpers_setter(bool *value_portion, char *var, char current_char)
 		equoting_traffic(current_char, var);
 }
 
-static char	*epreserve_value(char *str, int i, int j)
+
+static char	*epreserve_value(t_env *env, char *str, int i, int j)
 {
-	bool	value_portion;
+	bool	v_portion;
 	char	*new;
 	char	var;
 
 	if (empty_value(str))
-		return (ft_strjoin(str, "\"\""));
+		return (ft_strdup(str));
 	new = malloc(ft_strlen(str) + count_dollar(str) + 1);
 	if (!new)
 		return (NULL);
-	(1) && (var = 0, value_portion = false);
+	(1) && (var = 0, v_portion = false);
 	while (str[i])
 	{
-		helpers_setter(&value_portion, &var, str[i]);
-		if (value_portion && str[i] == '$' && !var)
+		helpers_setter(&v_portion, &var, str[i]);
+		if (v_portion && str[i] == '$' && !var)
 		{
 			(1) && (new[j++] = '"', new[j++] = str[i++]);
 			while (ft_isalnum(str[i]) || str[i] == '_' || str[i] == '?')
@@ -71,26 +72,27 @@ static char	*epreserve_value(char *str, int i, int j)
 	return (new);
 }
 
-// check commit hash 498f4b3^ for last removal if a problem occures here
-static void	value_preserver(t_token *export)
+static void	value_preserver(t_token *export, t_env *env, int i, int j)
 {
 	t_token	*curr;
 	char	*key;
-	int		i;
-	int		j;
 	char	*tmp;
 
-	(1) && (i = 0, j = 0, curr = export->next);
+	(1) && (curr = export->next);
 	while (curr)
 	{
 		key = get_key(curr->word);
 		if (!ft_strchr(key, '\"') && !ft_strchr(key, '\'')
-			&& !ft_strchr(key, '$')) {
+			&& !ft_strchr(key, '$'))
+		{
 			tmp = curr->word;
-			curr->word = epreserve_value(curr->word, i, j);
+			curr->word = epreserve_value(env, curr->word, i, j);
+			curr->split_permit = 0;
+			curr->quoting = 3;
 			free(tmp);
 		}
-		if (!valid_identifier(key)) {
+		if (!valid_identifier(key))
+		{
 			tmp = curr->word;
 			curr->word = epreserve_key(curr->word, i, j);
 			free(tmp);
@@ -100,7 +102,7 @@ static void	value_preserver(t_token *export)
 	}
 }
 
-void	export_threater(t_token	*head)
+void	export_threater(t_token	*head, t_env *env)
 {
 	t_token	*curr;
 	int		strcmp;
@@ -112,7 +114,7 @@ void	export_threater(t_token	*head)
 	{
 		strcmp = ft_strcmp(curr->word, "export");
 		if (!strcmp && count == 0)
-			value_preserver(curr);
+			value_preserver(curr, env, 0, 0);
 		(1) && (count++, curr = curr->next);
 	}
 }

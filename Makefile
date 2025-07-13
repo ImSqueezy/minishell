@@ -11,9 +11,9 @@ LIBFT = Libraries/Libft/libft.a
 FLAGS =  #-Wall -Wextra -Werror #-I$(HOME)/.local/include
 R_COMPILE = -I$(shell brew --prefix readline)/include
 R_RELINK = -lreadline -L$(shell brew --prefix readline)/lib
-COMPILE = cc $(FLAGS) $(R_COMPILE) -c $< -o $@
+COMPILE = cc -g $(FLAGS) $(R_COMPILE) -c $< -o $@
 
-BUILTINS_OBJS = $(addprefix Built-ins/, echo.o exit.o export.o export_utils.o env.o unset.o cd.o pwd.o)
+BUILTINS_OBJS = $(addprefix Built-ins/, echo.o exit.o export.o export_utils.o env.o unset.o cd.o pwd.o utils.o)
 EXECUTION_OBJS = $(addprefix Execution/, $(BUILTINS_OBJS) executer.o execute_pipeline.o ft_execution_split.o)
 EXPANDER_OBJS = $(addprefix Expanding/, expander.o utils.o qremoval.o expander_utils.o export.o export_utils.o)
 LEXER_OBJS = $(addprefix Lexer/, lexer.o dlst.o straddlen.o spacing.o tokenizer.o)
@@ -25,7 +25,7 @@ OBJS = $(PARSING_OBJS) $(EXECUTION_OBJS) \
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	cc $(FS) $(OBJS) $(LIBFT) -o $(NAME) $(R_RELINK)
+	cc -g $(FS) $(OBJS) $(LIBFT) -o $(NAME) $(R_RELINK)
 
 $(LIBFT): $(LIBFT_OBJS)
 	make -C $(LIBFT_PREFIX)

@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 20:50:17 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/12 18:53:25 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/13 13:20:01 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ char	*get_heredoc(char *delimiter, t_env *env)
 	char	*tmp;
 	int		quotes;
 
+
 	res = ft_strdup("");
 	quotes = has_quotes(delimiter);
 	if (quotes)
@@ -195,18 +196,14 @@ char	**get_heredoc_strings(t_token *token, t_env *env)
 		return (NULL);
 	res = malloc((count + 1) * sizeof(char *));
 	while (i < count + 1)
-	{
-		res[i] = NULL;
-		i++;
-	}
+		res[i++] = NULL;
 	i = 0;
 	while (token)
 	{
 		if (token->type == heredoc)
 		{
 			res[i] = get_heredoc(token->next->word, env);
-			if (g_sigint)
-			{
+			if (g_sigint) {
 				ft_free(res);
 				return (NULL);
 			}

@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:01:37 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/12 18:50:58 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 00:24:20 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	equoting_traffic(char quote, char *prev)
 		*prev = 0;
 }
 
-static char	*expand(t_pdata *pdata, t_gdata *gdata, char *word, int quoting)
+static char	*expand(t_pdata *pdata, t_gdata *gdata, char *word)
 {
 	t_pdata	var;
 	int		i;
@@ -36,7 +36,8 @@ static char	*expand(t_pdata *pdata, t_gdata *gdata, char *word, int quoting)
 		{
 			i++;
 			afterd = getenv_value(pdata, &word[i], &i, gdata->exit);
-			if (afterd) {
+			if (afterd)
+			{
 				tmp = newstr;
 				newstr = ft_strnjoin(newstr, afterd, ft_strlen(afterd));
 				free(tmp);
@@ -55,21 +56,35 @@ static char	*expand(t_pdata *pdata, t_gdata *gdata, char *word, int quoting)
 	return (newstr);
 }
 
-static t_token	*subtokenizer(t_token **head, t_token *curr, t_token *prev)
+static void	sub_quote_removal(t_token *new_curr)
+{
+	t_token	*curr;
+	char	*tmp;
+
+	curr = new_curr;
+	if (curr->quoting > 1)
+	{
+		tmp = curr->word;
+		curr->word = quote_removal(curr, curr->word);
+		free(tmp);
+	}
+}
+
+static t_token	*subtokenizer(t_token **hd, t_token *curr, t_token *prev, int i)
 {
 	char	**splittedword;
+	char	*tmp;
 	t_token	*new;
 	t_token	*old_curr;
 	t_token	*new_curr;
-	int		i;
 
-	splittedword = ft_split(curr->word);
+	splittedword = ft_split(curr->word, curr->split_permit);
 	if (!splittedword || !splittedword[0])
 		return (curr);
-	(1) && (i = 0, old_curr = curr);
+	old_curr = curr;
 	while (splittedword[i])
 	{
-		if ((prev && _isred(prev->type)) )
+		if (prev && _isred(prev->type))
 			return (ft_free(splittedword), curr);
 		new = sub_token_addnew(splittedword[i], curr);
 		if (i == 0)
@@ -77,39 +92,9 @@ static t_token	*subtokenizer(t_token **head, t_token *curr, t_token *prev)
 		token_insert_after(curr, new);
 		(1) && (i += 1, curr = curr->next);
 	}
-	token_lstdelone(head, old_curr, del);
-	curr = new_curr;
-	if (curr->quoting > 1)
-	{
-		free(curr->word);
-		curr->word = quote_removal(curr, curr->word);
-	}
+	token_lstdelone(hd, old_curr, del);
+	sub_quote_removal(new_curr);
 	return (free(splittedword), curr);
-}
-
-static void	quote_preserver(t_token *lst)
-{
-	t_token	*curr;
-	t_token	*next;
-	char	*tmp;
-
-	curr = lst;
-	while (curr)
-	{
-		next = curr->next;
-		if (!ft_strcmp(curr->word, "echo") && next)
-		{
-			while (next && next->type != PIPE)
-			{
-				tmp = next->word;
-				next->word = quote_removal(next, next->word);
-				free(tmp);
-				next->quoting = -3;
-				next = next->next;
-			}
-		}
-		curr = next;
-	}
 }
 
 void	expansions_search(t_pdata *pdata, t_gdata *gdata)
@@ -119,7 +104,7 @@ void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 	char	*new;
 	char	*tmp;
 
-	export_threater(pdata->token);
+	export_threater(pdata->token, gdata->env);
 	curr = pdata->token;
 	while (curr)
 	{
@@ -127,11 +112,11 @@ void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 		if (curr->var == 1 && curr->type != delimiter)
 		{
 			tmp = curr->word;
-			curr->word = expand(pdata, gdata, curr->word, curr->quoting);
+			curr->word = expand(pdata, gdata, curr->word);
 			free(tmp);
 			if (!curr->word)
 				curr->word = ft_strdup("");
-			curr = subtokenizer(&pdata->token, curr, curr->prev);
+			curr = subtokenizer(&pdata->token, curr, curr->prev, 0);
 			re_definer(curr);
 		}
 		curr = next;

@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:46:15 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/10 10:35:35 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/13 23:01:11 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,7 @@ t_env	*env_addnew(char *key, char *value)
 	if (!new)
 		return (NULL);
 	new->key = ft_strdup(key);
-	if (key)
-	{
-		free(key);
-		key = NULL;
-	}
 	new->value = ft_strdup(value);
-	if (value)
-	{
-		free(value);
-		value = NULL;
-	}
 	new->next = NULL;
 	return (new);
 }
@@ -103,9 +93,16 @@ char	*get_value(char *p)
 void	get_env(t_env **ptr, char **env)
 {
 	int		i;
+	char *key;
+	char *value;
 
 	*ptr = NULL;
 	i = -1;
-	while (env[++i])
-		env_addback(ptr, env_addnew(get_key(env[i]), get_value(env[i])));
+	while (env[++i]) {
+		key = get_key(env[i]);
+		value = get_value(env[i]);
+		env_addback(ptr, env_addnew(key ,value));
+		free(key);
+		free(value);
+	}
 }

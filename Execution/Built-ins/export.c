@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 20:13:03 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/11 21:06:00 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 00:17:08 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,43 +28,13 @@ void	print_sortedenv(t_env *ptr)
 	while (curr)
 	{
 		if (curr->value)
-		{
-			env[i] = ft_strjoin(curr->key, "=\"");
-			env[i] = set_newstr(env[i], curr->value, ft_strlen(curr->value));
-			env[i] = set_newstr(env[i], "\"", 1);
-		}
+			env[i] = get_export_env(curr);
 		else
 			env[i] = ft_strdup(curr->key);
 		(1) && (i++, curr = curr->next);
 	}
 	env[i] = NULL;
 	print_env(env);
-}
-
-int	keychecker(char *arg, bool *key_status)
-{
-	int		i;
-	char	*key_holder;
-	char	*identifier;
-
-	i = 0;
-	while (arg[i] && ft_isalnum(arg[i]))
-		i++; // key+a+=
-	if (!arg[i])
-		return (*key_status = true, 0);
-	key_holder = ft_strndup(arg, i);
-	arg += i;
-	i = 0;
-	if (arg[i] && arg[i] == '+' && arg[i + 1] && arg[i + 1] == '=')
-		i += 2;
-	else if (arg[i] && arg[i] == '=')
-		i++;
-	identifier = ft_strndup(arg, i);
-	if (check_invalid_symbols(identifier))
-		return (free(identifier), free(key_holder), *key_status = false, 1);
-	free(identifier);
-	free(key_holder);
-	return (*key_status = true, 0);
 }
 
 bool	key_setter(t_env *head, char *key, char *value, bool append)
@@ -110,11 +80,7 @@ int	append_env_value(t_env *head, char *key, char *value)
 		append = true;
 	if (!key_setter(head, new_key, value, append))
 		env_addback(&head, env_addnew(new_key, value));
-	else
-	{
-		free(value);
-		free(new_key);
-	}
+	free(new_key);
 	return (0);
 }
 
@@ -124,7 +90,7 @@ int	set_permit(char *arg, char *key, char *value, bool *permit)
 
 	if (ft_isdigit(*key) || keychecker(arg, permit) || *arg == '=')
 	{
-		printf(INVALID_IDENTIFIER, arg);
+		printf(EINVALID_IDENTIFIER, arg);
 		free(value);
 		last_res = 1;
 		return (1);
@@ -134,16 +100,15 @@ int	set_permit(char *arg, char *key, char *value, bool *permit)
 	return (0);
 }
 
-int	export(t_gdata *data, t_cmd *cmd)
+int	export(t_gdata *data, t_cmd *cmd, int i)
 {
 	bool	permit;
 	char	**args;
 	char	*key;
 	char	*value;
-	int		i;
 	int		res;
 
-	(1) && (i = 0, permit = false, args = cmd->cmd, res = 0);
+	(1) && (permit = false, args = cmd->cmd, res = 0);
 	if (args[1] == NULL)
 		return (print_sortedenv(data->env), 0);
 	while (args[++i])
@@ -151,10 +116,11 @@ int	export(t_gdata *data, t_cmd *cmd)
 		key = get_key(args[i]);
 		value = get_value(args[i]);
 		res = set_permit(args[i], key, value, &permit);
-		if (permit == true) 
+		if (permit == true)
 		{
 			if (res == 0)
 				res = append_env_value(data->env, key, value);
+			free(value);
 		}
 		free(key);
 	}

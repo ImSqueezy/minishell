@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 14:57:06 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/07 16:18:25 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/13 22:41:23 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	unset(t_gdata *shell, char **ar)
 	{
 		if (ft_isdigit(*ar[i]) || !key_checker(ar[i]) || *ar[i] == '\0')
 		{
-			printf(INVALID_IDENTIFIER, ar[i]);
+			printf(UINVALID_IDENTIFIER, ar[i]);
 			permit = false;
 			shell->exit = 1;
 		}

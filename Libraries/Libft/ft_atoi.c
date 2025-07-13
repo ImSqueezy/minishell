@@ -6,13 +6,13 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 09:08:07 by aouaalla          #+#    #+#             */
-/*   Updated: 2024/11/10 10:38:55 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 00:07:59 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	is_wspace(int i)
+int	is_wspace(int i)
 {
 	return (i == 32 || (i >= 9 && i <= 13));
 }
