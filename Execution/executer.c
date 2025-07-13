@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 20:50:12 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/12 18:55:16 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/13 13:30:07 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ int	execute_builtin(t_cmd * current, t_gdata *ptr)
 		return (echo(current->cmd));
 	if (!ft_strcmp(current->cmd[0], "export"))
 		return (export(ptr, current));
-	if (!ft_strcmp(current->cmd[0], "env") && current->cmd[1])
+	if (!ft_strcmp(current->cmd[0], "env"))
 		return (env(ptr->env));
 	if (!ft_strcmp(current->cmd[0], "unset"))
 		return (unset(ptr, current->cmd));
 	if (!ft_strcmp(current->cmd[0], "cd"))
 		return (cd(ptr, current->cmd));
 	if (!ft_strcmp(current->cmd[0], "pwd"))
-		return (pwd(ptr));
+		return (pwd());
 	if (!ft_strcmp(current->cmd[0], "exit"))
 		return (exit_builtin(current->cmd, ptr->exit));
 	return (0);
@@ -48,7 +48,7 @@ char *get_env_v(t_env *env, char *key)
 	while(env) 
 	{
 		if (!ft_strcmp(env->key, key))
-			return (env->value);
+			return env->value;
 		env = env->next;
 	}
 	return ("");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asadkaou <asadkaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:19:41 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/12 18:48:03 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:08:59 by asadkaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*append_value(char *old_value, char *to_append);
 void	print_env(char **env);
 int		unset(t_gdata *shell, char **ar);
 int		cd(t_gdata *data, char **cmd);
-int		pwd(t_gdata *data);
+int		pwd(void);
 char	**ft_execution_split(char const *s, char c);
 int		is_built_in(t_cmd *cmd);
 int		execute_builtin(t_cmd * current, t_gdata *ptr);

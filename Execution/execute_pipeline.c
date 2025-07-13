@@ -1,4 +1,7 @@
 #include "../minishell.h"
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 // ----------------------------- ENV TO ARRAY -----------------------------
 char **env_list_to_array(t_env *env)
@@ -69,10 +72,10 @@ char *find_command_in_path(char *cmd, t_env *env)
 	{
 		full_path = ft_strjoin(paths[i], "/");
 		if (!full_path)
-			break ;
+			break;
 		full_path = set_newstr(full_path, cmd, ft_strlen(cmd));
 		if (!full_path)
-			break ;
+			break;
 		if (access(full_path, X_OK) == 0)
 		{
 			free_string_array(paths);
@@ -142,8 +145,10 @@ int handle_redirections(t_red *reds)
 		else if (reds->type == append)
 			fd = open(reds->fname, O_WRONLY | O_CREAT | O_APPEND, 0644);
 
-		if (fd < 0)
+		if (fd < 0) {
 			perror(reds->fname);
+			return 0;
+		}
 		if (reds->type == red_in || reds->type == heredoc)
 			dup2(fd, STDIN_FILENO);
 		else
@@ -197,12 +202,20 @@ int get_exit_status(int pid) {
 		return WEXITSTATUS(status);
 	} else if (WIFSIGNALED(status)) {
 		signal = WTERMSIG(status);
-		if (signal == SIGQUIT) {
+		if (signal == SIGINT)
+			ft_putstr_fd("\n", 1);
+		else if (signal == SIGQUIT)
 			ft_putendl_fd("Quit", 1);
-		}
 		return 128 + signal;
 	}
 	return 1;
+}
+
+void reset_fds(t_gdata *data) {
+	dup2(data->saved_stdin, STDIN_FILENO);
+	dup2(data->saved_stdout, STDOUT_FILENO);
+	close(data->saved_stdin);
+	close(data->saved_stdout);
 }
 
 void single_command(t_gdata *data) { // add builtin handling
@@ -260,7 +273,7 @@ int execute_command(t_cmd *current, t_gdata *data, int *save_read) {
 	if (pid == -1)
 	{
 		perror("fork");
-		exit(1);
+		return -1;
 	}
 	if (pid == 0) { 
 		signal(SIGINT, SIG_DFL);
@@ -276,40 +289,67 @@ int execute_command(t_cmd *current, t_gdata *data, int *save_read) {
 	return pid;
 }
 
-void reset_fds(t_gdata *data) {
-	dup2(data->saved_stdin, STDIN_FILENO);
-	dup2(data->saved_stdout, STDOUT_FILENO);
-	close(data->saved_stdin);
-	close(data->saved_stdout);
+
+
+int count_cmds(t_cmd *cmd) 
+{
+	int i;
+
+	i = 0;
+	while(cmd) {
+		i++;
+		cmd = cmd->next;
+	}
+	return (i);
 }
+
+void kill_children(int *pids, int current) {
+	int i;
+
+	i = 0;
+	while(i < current)
+	{
+		kill(pids[i], SIGKILL);
+		i++;
+	}
+}
+
 
 // ----------------------------- FORK AND EXECUTE -----------------------------
 void executer(t_gdata *data)
 {
 	t_cmd *current ;
 	int save_read;
-	int pid;
-
+	int i;
 	current = data->cmds;
-
-	data->saved_stdin = dup(STDIN_FILENO);
-	data->saved_stdout = dup(STDOUT_FILENO);
-	save_read = -1;
 	if (!current) {
 		data->exit = 0;
 		return;
 	}
+	signal(SIGINT, SIG_IGN);
+	data->saved_stdin = dup(STDIN_FILENO);
+	data->saved_stdout = dup(STDOUT_FILENO);
 	if (!current->next) { // NEEDS BUILTIN HANDLING
 		single_command(data);
 		reset_fds(data);
 		return;
 	}
+	save_read = -1;
+	i = 0;
+	data->pids = malloc((count_cmds(current) + 1) * sizeof(int));
 	while (current)
 	{
-		pid = execute_command(current, data, &save_read);
-		current = current->next;	
+		data->pids[i] = execute_command(current, data, &save_read);
+		if (data->pids[i] == -1) {
+			reset_fds(data);
+			kill_children(data->pids, i);
+			return;
+		}
+		i++;
+		current = current->next;
 	}
 	reset_fds(data);
-	data->exit = get_exit_status(pid);
+	data->exit = get_exit_status(data->pids[i - 1]);
 	while(wait(NULL) != -1);
+	free(data->pids);
 }
