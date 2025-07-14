@@ -62,3 +62,11 @@ int	empty_value(char *str)
 		return (free(value), 1);
 	return (free(value), 0);
 }
+
+void	equoting_traffic(char quote, char *prev)
+{
+	if (!*prev && (quote == '\'' || quote == '"'))
+		*prev = quote;
+	else if (quote && *prev == quote)
+		*prev = 0;
+}

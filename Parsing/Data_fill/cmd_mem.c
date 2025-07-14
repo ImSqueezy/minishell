@@ -48,3 +48,41 @@ void	tcmd_lstclear(t_cmd *lst)
 		lst = tmp;
 	}
 }
+
+/*
+	Additional rather than memory related
+*/
+
+void	red_addback(t_red **lst, t_red *new)
+{
+	t_red	*ptr;
+
+	if (!new || !lst)
+		return ;
+	if (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	ptr = *lst;
+	while (ptr && ptr->next)
+		ptr = ptr->next;
+	(*ptr).next = new;
+}
+
+void	cmd_addback(t_cmd **lst, t_cmd *new)
+{
+	t_cmd	*ptr;
+
+	if (!new || !lst)
+		return ;
+	if (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	ptr = *lst;
+	while (ptr && ptr->next)
+		ptr = ptr->next;
+	(*ptr).next = new;
+}

@@ -12,14 +12,6 @@
 
 #include "../../minishell.h"
 
-void	equoting_traffic(char quote, char *prev)
-{
-	if (!*prev && (quote == '\'' || quote == '"'))
-		*prev = quote;
-	else if (quote && *prev == quote)
-		*prev = 0;
-}
-
 static char	*expand(t_pdata *pdata, t_gdata *gdata, char *word)
 {
 	t_pdata	var;
@@ -132,7 +124,6 @@ void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 		{
 			tmp = curr->word;
 			curr->word = expand(pdata, gdata, curr->word);
-			// printf("%s %d\n", curr->word, curr->split_permit);
 			free(tmp);
 			if (!curr->word)
 				curr->word = ft_strdup("");
