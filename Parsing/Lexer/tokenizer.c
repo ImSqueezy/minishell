@@ -6,13 +6,13 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 21:56:13 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/14 00:30:35 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 02:00:00 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static void	token_type(t_token *token)
+void	token_type(t_token *token)
 {
 	size_t	len;
 
@@ -103,8 +103,7 @@ void	re_definer(t_token *head)
 	t_token	*curr;
 	int		file_onwards;
 
-	curr = head;
-	file_onwards = 0;
+	(1) && (curr = head, file_onwards = 0);
 	while (curr)
 	{
 		if (_isred(curr->type) || curr->type == PIPE)

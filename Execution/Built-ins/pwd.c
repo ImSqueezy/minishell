@@ -6,13 +6,13 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:05:47 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/14 00:43:30 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 06:04:46 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int     pwd(t_gdata *data)
+int	pwd(t_gdata *data)
 {
 	char	buf[1024];
 

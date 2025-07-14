@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 15:05:25 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/13 22:40:45 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 06:04:31 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	ft_free(char **p)
 	}
 	free(p);
 }
-
 
 char	**ft_split(char const *s, int split_permit)
 {

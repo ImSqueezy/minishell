@@ -98,13 +98,14 @@ void	quote_suppression(t_token *head)
 
 int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
 {
+	t_token	*curr;
 	char	*newinput;
 	int		save_in;
 
 	add_history(input);
 	if (!lexer(pdata, input))
 		return (gdata->exit = 258, 0);
-	t_token *curr = pdata->token;
+	curr = pdata->token;
 	save_in = dup(STDIN_FILENO);
 	pdata->heredoc_count = 0;
 	pdata->heredoc_strs = get_heredoc_strings(pdata->token, pdata->env);
@@ -124,7 +125,6 @@ int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
 	ft_free(pdata->heredoc_strs);
 	pdata->heredoc_strs = NULL;
 	close(save_in);
-	
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:36:06 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/09 14:40:05 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 07:08:36 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	count_special_dollars(char *str)
 {
-	int count;
-	int i;
+	int	count;
+	int	i;
 
 	count = 0;
 	i = 0;
@@ -25,7 +25,7 @@ static int	count_special_dollars(char *str)
 			count += 2;
 		i++;
 	}
-	return count;
+	return (count);
 }
 
 int	valid_identifier(char *key)
@@ -46,9 +46,9 @@ int	valid_identifier(char *key)
 	return (1);
 }
 
-char *epreserve_key(char *str, int i, int j)
+char	*epreserve_key(char *str, int i, int j)
 {
-	char *new;
+	char	*new;
 
 	new = malloc(ft_strlen(str) + count_special_dollars(str) + 1);
 	if (!new)

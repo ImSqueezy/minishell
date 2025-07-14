@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 12:45:58 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/13 13:36:08 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 07:09:27 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static void	helpers_setter(bool *value_portion, char *var, char current_char)
 	if (current_char == '\'' || current_char == '"')
 		equoting_traffic(current_char, var);
 }
-
 
 static char	*epreserve_value(t_env *env, char *str, int i, int j)
 {
@@ -78,7 +77,7 @@ static void	value_preserver(t_token *export, t_env *env, int i, int j)
 	char	*key;
 	char	*tmp;
 
-	(1) && (curr = export->next);
+	curr = export->next;
 	while (curr)
 	{
 		key = get_key(curr->word);
@@ -87,8 +86,7 @@ static void	value_preserver(t_token *export, t_env *env, int i, int j)
 		{
 			tmp = curr->word;
 			curr->word = epreserve_value(env, curr->word, i, j);
-			curr->split_permit = 0;
-			curr->quoting = 3;
+			(1) && (curr->split_permit = 0, curr->quoting = 3);
 			free(tmp);
 		}
 		if (!valid_identifier(key))

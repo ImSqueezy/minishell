@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:51:49 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/01 12:06:12 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 05:29:28 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	token_lstdelone(t_token **head, t_token *lst, void (*del)(void *))
 	del(lst);
 }
 
-void	pdata_lstclear(t_pdata *ptr, bool free_heredoc, void (*del)(void *))
+void	pdata_lstclear(t_pdata *ptr, void (*del)(void *))
 {
 	t_token	*next;
 	t_token	**head;

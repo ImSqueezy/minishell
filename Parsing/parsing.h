@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/13 13:22:13 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 07:18:04 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ extern int	g_sigint;
 # define REDS_COUNT 1
 # define CMDS_COUNT 0
 
-typedef struct s_gdata			t_gdata;
 typedef struct s_redirections	t_red;
+typedef struct s_gdata			t_gdata;
 typedef struct s_commands		t_cmd;
 typedef struct s_token			t_token;
 typedef struct s_env			t_env;
@@ -39,12 +39,12 @@ typedef enum enum_token_type
 	PIPE,
 	redirection,
 	red_in,
-	red_out,
+	red_out, // 4
 	append,
-	heredoc,
+	heredoc, // 6
 	command,
 	file,
-	delimiter,
+	delimiter, // 9
 }	t_etype;
 
 typedef struct s_token
@@ -84,9 +84,15 @@ int		isred(char c);
 int		isop(char c);
 int		is_whitespace(char c);
 
+int		count_heredocs(t_token *token);
+char	*remove_quotes(char *str);
+int		has_quotes(char *delimiter);
+char	*res_setter(char *final, char *line);
+char	*fill_nline(char *n_line, char *o_line, char *value, int key_len);
+
 void	del(void *ptr);
 void	token_lstdelone(t_token **head, t_token *lst, void (*del)(void *));
-void	pdata_lstclear(t_pdata *ptr, bool free_heredoc, void (*del)(void *));
+void	pdata_lstclear(t_pdata *ptr, void (*del)(void *));
 void	token_addback(t_token **lst, t_token *new);
 int		lexer(t_pdata *data, char *input);
 void	re_definer(t_token *head);
@@ -126,7 +132,7 @@ void	red_addback(t_red **lst, t_red *new);
 t_cmd	*cmd_addnew(t_token *lst, t_pdata *data);
 int		define_ftype(int type);
 int		cmds_reds_counter(t_token *cmd, int count_flag);
-char	**	get_heredoc_strings(t_token* token, t_env *env);
+char	**get_heredoc_strings(t_token *token, t_env *env);
 void	tcmd_lstclear(t_cmd *lst);
 
 #endif

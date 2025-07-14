@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 12:49:15 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/13 13:08:50 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 07:13:59 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ int	expanded_key(t_env *env, char *str)
 {
 	t_env	*curr;
 	char	*key;
-	char 	*tmp;
+	char	*tmp;
 	int		i;
-	
+
 	tmp = ft_strchr(str, '$');
 	if (!tmp)
 		return (0);
@@ -67,7 +67,7 @@ int	expanded_key(t_env *env, char *str)
 	{
 		if (!ft_strcmp(curr->key, key))
 			return (free(key), 0);
-		curr = curr->next;	
+		curr = curr->next;
 	}
 	return (free(key), 1);
 }
@@ -82,7 +82,8 @@ t_red	*red_addnew(t_env *env, t_token *lst)
 	new->fname = ft_strdup(lst->word);
 	new->type = define_ftype(lst->prev->type);
 	new->ambiguous = 0;
-	if (!lst->word || !ft_strcmp(lst->word, "") || expanded_key(env, lst->word))
+	if ((!lst->word || !ft_strcmp(lst->word, "")
+			|| expanded_key(env, lst->word)) && lst->type != delimiter)
 		new->ambiguous = 1;
 	new->heredoc_string = NULL;
 	new->next = NULL;
@@ -94,7 +95,6 @@ t_red	*reds_init(t_token *lst, t_pdata *data)
 	t_token	*curr;
 	t_red	*head;
 	t_red	*new;
-	int		heredoc_count;
 
 	(1) && (head = NULL, curr = lst);
 	while (curr)

@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:28:19 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/13 13:16:05 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 07:07:34 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,16 @@ int	check_mate(char *str, char c)
 	return (0);
 }
 
+char	*str_setter(char *str, char *addition, char n)
+{
+	char	*tmp;
+
+	tmp = str;
+	str = ft_strnjoin(str, addition, n);
+	free(tmp);
+	return (str);
+}
+
 char	*quote_removal(t_token *node, char *previous_address)
 {
 	char	*new;
@@ -66,19 +76,12 @@ char	*quote_removal(t_token *node, char *previous_address)
 		{
 			mq = get_middlequoted(node->word[i], &node->word[i + 1], &i);
 			if (mq)
-			{
-				tmp = new;
-				new = ft_strnjoin(new, mq, ft_strlen(mq));
-				free(tmp);
-			}
+				new = str_setter(new, mq, ft_strlen(mq));
 			free(mq);
 			i++;
 		}
-		else {
-			tmp = new;
-			new = ft_strnjoin(new, &node->word[i], 1);
-			free(tmp);
-		}
+		else
+			new = str_setter(new, &node->word[i], 1);
 		if (!node->word[i])
 			break ;
 		i++;

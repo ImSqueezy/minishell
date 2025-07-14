@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:16:07 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/11 20:54:01 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 05:26:12 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ typedef struct s_gdata
 	t_cmd	*cmds;
 	t_env	*env;
 	char	*saved_pwd;
+	int		*pids;
 	int		saved_stdin;
 	int		saved_stdout;
 	int		exit;
-	int		*pids;
 }	t_gdata;
 
 #endif

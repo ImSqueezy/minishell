@@ -6,40 +6,11 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 20:50:17 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/13 13:20:01 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 07:06:27 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-char	*fill_nline(char *n_line, char *o_line, char *value, int key_len)
-{
-	int	i;
-	int	j;
-	int	k;
-
-	i = 0;
-	j = 0;
-	k = 0;
-	while (o_line[i])
-	{
-		if (o_line[i] == '$' && !k)
-		{
-			k = 0;
-			while (value[k])
-				n_line[j++] = value[k++];
-			i += key_len + 1;
-		}
-		if (o_line[i] == '\0')
-		{
-			n_line[j] = '\0';
-			return (n_line);
-		}
-		n_line[j++] = o_line[i++];
-	}
-	n_line[j] = '\0';
-	return (n_line);
-}
 
 char	*e_replace_key(t_env *env, char *line, char *key)
 {
@@ -89,67 +60,12 @@ char	*e_expand(t_env *env, char *line, char *delimiter)
 	return (line);
 }
 
-int	count_heredocs(t_token *token)
-{
-	int	i;
-
-	i = 0;
-	while (token)
-	{
-		if (token->type == heredoc)
-			i++;
-		token = token->next;
-	}
-	return (i);
-}
-
-char	*remove_quotes(char *str)
-{
-	int		i;
-	int		j;
-	int		len;
-	char	*result;
-
-	len = strlen(str);
-	result = malloc(len + 1);
-	if (!result)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] != '\'' && str[i] != '"')
-		{
-			result[j] = str[i];
-			j++;
-		}
-		i++;
-	}
-	result[j] = '\0';
-	return (result);
-}
-
-int	has_quotes(char *delimiter)
-{
-	int	i;
-
-	i = 0;
-	while (delimiter[i])
-	{
-		if (delimiter[i] == '"' || delimiter[i] == '\'')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 char	*get_heredoc(char *delimiter, t_env *env)
 {
 	char	*res;
 	char	*line;
 	char	*tmp;
 	int		quotes;
-
 
 	res = ft_strdup("");
 	quotes = has_quotes(delimiter);
@@ -166,13 +82,7 @@ char	*get_heredoc(char *delimiter, t_env *env)
 		}
 		if (!quotes)
 			line = e_expand(env, line, delimiter);
-		tmp = line;
-		line = ft_strjoin(line, "\n");
-		free(tmp);
-		tmp = res;
-		res = ft_strjoin(res, line);
-		free(tmp);
-		free(line);
+		res = res_setter(res, line);
 	}
 	return (NULL);
 }
@@ -195,6 +105,8 @@ char	**get_heredoc_strings(t_token *token, t_env *env)
 	if (count == 0)
 		return (NULL);
 	res = malloc((count + 1) * sizeof(char *));
+	if (!res)
+		return (NULL);
 	while (i < count + 1)
 		res[i++] = NULL;
 	i = 0;
@@ -203,10 +115,8 @@ char	**get_heredoc_strings(t_token *token, t_env *env)
 		if (token->type == heredoc)
 		{
 			res[i] = get_heredoc(token->next->word, env);
-			if (g_sigint) {
-				ft_free(res);
-				return (NULL);
-			}
+			if (g_sigint)
+				return (ft_free(res), NULL);
 			i++;
 		}
 		token = token->next;

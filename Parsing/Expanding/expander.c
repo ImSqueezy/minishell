@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:01:37 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/14 00:24:20 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/14 07:12:33 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static t_token	*subtokenizer(t_token **hd, t_token *curr, t_token *prev, int i)
 	t_token	*old_curr;
 	t_token	*new_curr;
 
-	splittedword = ft_split(curr->word, curr->split_permit);
+	splittedword = ft_split(curr->word, 0);
 	if (!splittedword || !splittedword[0])
 		return (curr);
 	old_curr = curr;
@@ -95,6 +95,25 @@ static t_token	*subtokenizer(t_token **hd, t_token *curr, t_token *prev, int i)
 	token_lstdelone(hd, old_curr, del);
 	sub_quote_removal(new_curr);
 	return (free(splittedword), curr);
+}
+
+void	expand_re_definer(t_token *lst)
+{
+	t_token	*curr;
+	t_token	*prev;
+	int		file_onwards;
+
+	curr = lst;
+	while (curr)
+	{
+		prev = curr->prev;
+		if (curr->type == 0 && (!prev || prev->type == PIPE
+				|| prev->type == command || prev->type == delimiter))
+			curr->type = command;
+		else if (curr->type == 0 && _isred(prev->type))
+			curr->type = file;
+		curr = curr->next;
+	}
 }
 
 void	expansions_search(t_pdata *pdata, t_gdata *gdata)
@@ -117,7 +136,7 @@ void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 			if (!curr->word)
 				curr->word = ft_strdup("");
 			curr = subtokenizer(&pdata->token, curr, curr->prev, 0);
-			re_definer(curr);
+			expand_re_definer(pdata->token);
 		}
 		curr = next;
 	}

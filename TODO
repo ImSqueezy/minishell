@@ -1,0 +1,49 @@
+$exit | exit 100
+minishell: exit: 100: numeric argument required
+$echo $?
+255
+------------------------------------------------------------------------------
+$exit | exit 9223372036854775807
+minishell: exit: 9223372036854775807: numeric argument required
+$echo $?
+255
+$bash
+bash: /mnt/homes/aouaalla/.docker/init-bash.sh: No such file or directory
+
+The default interactive shell is now zsh.
+To update your account to use zsh, please run `chsh -s /bin/zsh`.
+For more details, please visit https://support.apple.com/kb/HT208050.
+bash-3.2$ exit | exit 9223372036854775807
+bash-3.2$ echo $?
+255
+bash-3.2$ 
+----------------------------------------------------------------------------------
+$chmod 000 a.out 
+$./a.out 
+execve: Permission denied
+$echo $?
+1
+$
+----------------------------------------------------------------------------------
+when i send ctrl-C
+
+$cat << l | ls | cat << p | ls
+> 
+$echo $?
+130 > it should be 1
+$
+----------------------------------------------------------------------------------
+aouaalla@e3r7p11 minishell % ./minishell 
+$^C
+$^D
+minishell exited!
+aouaalla@e3r7p11 minishell % echo $?
+0 > it should be 1
+--
+aouaalla@e3r7p11 minishell % ./minishell 
+$^D
+minishell exited!
+(this should exit with 0)
+----------------------------------------------------------------------------------
+executer malloc not protected
+----------------------------------------------------------------------------------
