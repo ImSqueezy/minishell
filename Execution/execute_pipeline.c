@@ -103,7 +103,10 @@ char	*generate_path()
 		if (!str)
 			return (NULL);
 		if (access(str, F_OK) == -1)
+		{
+			printf("i in generale path=%d\n", i);
 			return (str);
+		}
 		free(str);
 		i++;
 	}
@@ -128,11 +131,11 @@ int handle_redirections(t_red *reds)
 		fd = -1;
 		if (reds->type == heredoc)
 		{
-			file = generate_path();
+			file = generate_path();//if i unlink why the incrementation???
 			fd = open(file, O_CREAT | O_WRONLY, 0644);
 			write(fd, reds->heredoc_string, ft_strlen(reds->heredoc_string));
 			close(fd);
-			fd = open(file, O_RDONLY, 0644);
+			fd = open(file, O_RDONLY, 0644);//open the file and remove it from the directory
 			unlink(file);
 			free(file);
 		}
@@ -266,30 +269,36 @@ void after_fork(t_gdata *data, t_cmd *current, int *save_read, int *fds) {
 }
 
 
-int execute_command(t_cmd *current, t_gdata *data, int *save_read) {
-	int pid;
-	int fds[2];
-	
-	if (current->next)
-			pipe(fds);
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork");
-		return -1;
-	}
-	if (pid == 0) { 
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		after_fork(data, current, save_read, fds);
-	}
-	else {
-		if (current != data->cmds)
-			close(*save_read);
-		*save_read = fds[0];
-		close(fds[1]);
-	}
-	return pid;
+int execute_command(t_cmd *current, t_gdata *data, int *save_read)
+{
+    int pid;
+    int fds[2];
+
+    if (current->next)
+        pipe(fds);
+    pid = fork();
+    if (pid == -1)
+    {
+        close(fds[0]);
+        close(fds[1]);
+        close(*save_read);
+        perror("fork");
+        return -1;
+    }
+    if (pid == 0)
+    {
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
+        after_fork(data, current, save_read, fds);
+    }
+    else
+    {
+        if (current != data->cmds)
+            close(*save_read);
+        *save_read = fds[0];
+        close(fds[1]);
+    }
+    return pid;
 }
 
 
