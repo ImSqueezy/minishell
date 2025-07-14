@@ -1,7 +1,5 @@
 #include "../minishell.h"
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
+
 
 // ----------------------------- ENV TO ARRAY -----------------------------
 char **env_list_to_array(t_env *env)
@@ -187,6 +185,11 @@ void command_in_child(t_cmd *cmd ,t_gdata *data)
 		free(path);
 		exit(1);
 	}
+	if (access(path, X_OK) == -1) {
+		ft_putstr_fd(cmd->cmd[0], 2);
+		ft_putendl_fd(": Permission denied", 2);
+		exit(126);
+	}
 	execve(path, cmd->cmd, envp);
 	perror("execve");
 	exit(1);
@@ -230,7 +233,7 @@ void single_command(t_gdata *data) { // add builtin handling
 	int pid = fork();
 	if (pid == -1) {
 		perror("fork");
-		exit(1);
+		return ;
 	}
 	if (pid == 0) {
 		signal(SIGINT, SIG_DFL);
@@ -312,6 +315,7 @@ void kill_children(int *pids, int current) {
 		kill(pids[i], SIGKILL);
 		i++;
 	}
+	while(wait(NULL) != -1);
 }
 
 

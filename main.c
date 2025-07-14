@@ -24,7 +24,7 @@ void	free_minishell(t_pdata *ptr, char *read_line)
 
 void	sigint_handler(int sig)
 {
-	(void)sig;
+	g_sigint = sig;
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -57,6 +57,13 @@ void	data_clear(t_gdata *gdata, t_pdata *pdata, char *read)
 	free(read);
 }
 
+int	get_minishell_exit_status(int status)
+{
+	if (g_sigint)
+		return (130);
+	return (status);
+}
+
 int	minishell_executer(t_gdata *gdata, t_pdata *pdata)
 {
 	char	*read;
@@ -69,7 +76,9 @@ int	minishell_executer(t_gdata *gdata, t_pdata *pdata)
 		if (!read)
 			return (printf("minishell exited!\n")
 				, free_minishell(pdata, read), free(gdata->saved_pwd)
-				, gdata->exit);
+				, get_minishell_exit_status(gdata->exit));
+		if (g_sigint)
+			(1) && (gdata->exit = 130, g_sigint = 0);
 		if (is_spaces(read))
 		{
 			free(read);

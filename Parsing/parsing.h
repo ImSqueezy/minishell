@@ -27,21 +27,11 @@ extern int	g_sigint;
 # define REDS_COUNT 1
 # define CMDS_COUNT 0
 
-typedef struct s_redirections
-{
-}	t_red;
-typedef struct s_gdata
-{
-}	t_gdata;
-typedef struct s_commands
-{
-}	t_cmd;
-typedef struct s_token
-{
-}	t_token;
-typedef struct s_env
-{
-}	t_env;
+typedef struct s_gdata			t_gdata;
+typedef struct s_redirections	t_red;
+typedef struct s_commands		t_cmd;
+typedef struct s_token			t_token;
+typedef struct s_env			t_env;
 
 typedef enum enum_token_type
 {

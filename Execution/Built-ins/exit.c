@@ -35,7 +35,10 @@ int	exit_atoi(const char *str, bool *permit)
 	while (*str >= '0' && *str <= '9')
 	{
 		if (num > (LLONG_MAX - (*str - '0')) / 10)
-			permit = false;
+		{
+			*permit = false;
+			return -(1);
+		}
 		num = num * 10 + (*str - '0');
 		str++;
 	}
@@ -86,7 +89,7 @@ int	exit_builtin(char **cmd, int exit_st)
 	else if (count == 2)
 	{
 		exit_st = exit_atoi(cmd[1], &permit);
-		if (!permit)
+		if (permit)
 			exit(exit_st);
 		print_exit_error(cmd[1]);
 	}
