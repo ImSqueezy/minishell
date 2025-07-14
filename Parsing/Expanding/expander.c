@@ -78,7 +78,7 @@ static t_token	*subtokenizer(t_token **hd, t_token *curr, t_token *prev, int i)
 	t_token	*old_curr;
 	t_token	*new_curr;
 
-	splittedword = ft_split(curr->word, 0);
+	splittedword = ft_split(curr->word, curr->split_permit);
 	if (!splittedword || !splittedword[0])
 		return (curr);
 	old_curr = curr;
@@ -132,6 +132,7 @@ void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 		{
 			tmp = curr->word;
 			curr->word = expand(pdata, gdata, curr->word);
+			// printf("%s %d\n", curr->word, curr->split_permit);
 			free(tmp);
 			if (!curr->word)
 				curr->word = ft_strdup("");
