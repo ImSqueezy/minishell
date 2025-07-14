@@ -347,6 +347,7 @@ void executer(t_gdata *data)
 		if (data->pids[i] == -1) {
 			reset_fds(data);
 			kill_children(data->pids, i);
+			free(data->pids);
 			return;
 		}
 		i++;

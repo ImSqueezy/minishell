@@ -60,7 +60,7 @@ void	data_clear(t_gdata *gdata, t_pdata *pdata, char *read)
 int	get_minishell_exit_status(int status)
 {
 	if (g_sigint)
-		return (130);
+		return (1);
 	return (status);
 }
 
@@ -78,7 +78,7 @@ int	minishell_executer(t_gdata *gdata, t_pdata *pdata)
 				, free_minishell(pdata, read), free(gdata->saved_pwd)
 				, get_minishell_exit_status(gdata->exit));
 		if (g_sigint)
-			(1) && (gdata->exit = 130, g_sigint = 0);
+			(1) && (gdata->exit = 1, g_sigint = 0);
 		if (is_spaces(read))
 		{
 			free(read);

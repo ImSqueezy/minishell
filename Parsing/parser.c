@@ -112,7 +112,7 @@ int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
 	if (g_sigint)
 	{
 		g_sigint = 0;
-		gdata->exit = 130;
+		gdata->exit = 1;
 		pdata->heredoc_strs = NULL;
 		pdata->heredoc_count = 0;
 		dup2(save_in, STDIN_FILENO);
