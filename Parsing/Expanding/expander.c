@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:01:37 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/15 19:28:43 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 22:00:31 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static char	*expand(t_pdata *pdata, t_gdata *gdata, char *word)
 	int		i;
 	char	*afterd;
 	char	*newstr;
-	char	*tmp;
 
 	(1) && (newstr = NULL, afterd = NULL, i = 0, var.prev = 0);
 	while (word[i])
@@ -49,7 +48,7 @@ static void	sub_quote_removal(t_token *new_curr)
 	if (curr->quoting > 1)
 	{
 		tmp = curr->word;
-		curr->word = quote_removal(curr, curr->word);
+		curr->word = quote_removal(curr);
 		free(tmp);
 	}
 }
@@ -57,7 +56,6 @@ static void	sub_quote_removal(t_token *new_curr)
 static t_token	*subtokenizer(t_token **hd, t_token *curr, t_token *prev, int i)
 {
 	char	**splittedword;
-	char	*tmp;
 	t_token	*new;
 	t_token	*old_curr;
 	t_token	*new_curr;
@@ -85,7 +83,6 @@ void	expand_re_definer(t_token *lst)
 {
 	t_token	*curr;
 	t_token	*prev;
-	int		file_onwards;
 
 	curr = lst;
 	while (curr)
@@ -104,10 +101,9 @@ void	expansions_search(t_pdata *pdata, t_gdata *gdata)
 {
 	t_token	*curr;
 	t_token	*next;
-	char	*new;
 	char	*tmp;
 
-	export_threater(pdata->token, gdata->env);
+	export_threater(pdata->token);
 	curr = pdata->token;
 	while (curr)
 	{

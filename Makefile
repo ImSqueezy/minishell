@@ -8,19 +8,20 @@ ft_split.o ft_itoa.o ft_strmapi.o ft_striteri.o ft_putchar_fd.o ft_putstr_fd.o f
 LIBFT_PREFIX = Libraries/Libft/
 LIBFT = Libraries/Libft/libft.a
 
-FLAGS = #-Wall -Wextra -Werror #-I$(HOME)/.local/include
+FLAGS = -Wall -Wextra -Werror
 R_COMPILE = -I$(shell brew --prefix readline)/include
 R_RELINK = -lreadline -L$(shell brew --prefix readline)/lib
 COMPILE = cc -g $(FLAGS) $(R_COMPILE) -c $< -o $@
 
 BUILTINS_OBJS = $(addprefix Built-ins/, echo.o exit.o export.o export_utils.o env.o unset.o cd.o pwd.o utils.o)
-EXECUTION_OBJS = $(addprefix Execution/, $(BUILTINS_OBJS) executer.o execute_pipeline.o ft_execution_split.o)
+EXECUTION_OBJS = $(addprefix Execution/, $(BUILTINS_OBJS) executer.o ft_execution_split.o command_loop.o env_array.o \
+	execute.o path_utils.o pipeline.o redirections.o utils.o)
 EXPANDER_OBJS = $(addprefix Expanding/, expander.o utils.o qremoval.o expander_utils.o export.o export_utils.o)
 LEXER_OBJS = $(addprefix Lexer/, lexer.o dlst.o straddlen.o spacing.o tokenizer.o)
 DATA_F_OBJS = $(addprefix Data_fill/, env.o data_fill.o env_mem.o cmd_mem.o)
 PARSING_OBJS = $(addprefix Parsing/, $(LEXER_OBJS) $(EXPANDER_OBJS) $(DATA_F_OBJS) heredoc.o heredoc_utils.o parser.o)
 OBJS = $(PARSING_OBJS) $(EXECUTION_OBJS) \
-	main.o
+	main.o utils.o
 
 all: $(NAME)
 

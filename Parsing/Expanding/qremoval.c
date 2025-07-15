@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:28:19 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/15 19:30:08 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 21:58:01 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,9 @@ char	*str_setter(char *str, char *addition, char n)
 	return (str);
 }
 
-char	*quote_removal(t_token *node, char *previous_address)
+char	*quote_removal(t_token *node)
 {
 	char	*new;
-	char	*tmp;
 	char	*mq;
 	int		i;
 

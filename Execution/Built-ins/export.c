@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 20:13:03 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/15 18:33:52 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 22:00:48 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ bool	key_setter(t_env *head, char *key, char *value, bool append)
 void	append_env_value(t_env **head, char *key, char *value)
 {
 	bool	append;
-	t_env	*curr;
 	char	*new_key;
 	int		i;
 

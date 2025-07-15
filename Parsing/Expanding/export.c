@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 12:45:58 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/14 07:09:27 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 22:00:02 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	helpers_setter(bool *value_portion, char *var, char current_char)
 		equoting_traffic(current_char, var);
 }
 
-static char	*epreserve_value(t_env *env, char *str, int i, int j)
+static char	*epreserve_value(char *str, int i, int j)
 {
 	bool	v_portion;
 	char	*new;
@@ -71,7 +71,7 @@ static char	*epreserve_value(t_env *env, char *str, int i, int j)
 	return (new);
 }
 
-static void	value_preserver(t_token *export, t_env *env, int i, int j)
+static void	value_preserver(t_token *export, int i, int j)
 {
 	t_token	*curr;
 	char	*key;
@@ -85,7 +85,7 @@ static void	value_preserver(t_token *export, t_env *env, int i, int j)
 			&& !ft_strchr(key, '$'))
 		{
 			tmp = curr->word;
-			curr->word = epreserve_value(env, curr->word, i, j);
+			curr->word = epreserve_value(curr->word, i, j);
 			(1) && (curr->split_permit = 0, curr->quoting = 3);
 			free(tmp);
 		}
@@ -100,7 +100,7 @@ static void	value_preserver(t_token *export, t_env *env, int i, int j)
 	}
 }
 
-void	export_threater(t_token	*head, t_env *env)
+void	export_threater(t_token	*head)
 {
 	t_token	*curr;
 	int		strcmp;
@@ -112,7 +112,7 @@ void	export_threater(t_token	*head, t_env *env)
 	{
 		strcmp = ft_strcmp(curr->word, "export");
 		if (!strcmp && count == 0)
-			value_preserver(curr, env, 0, 0);
+			value_preserver(curr, 0, 0);
 		(1) && (count++, curr = curr->next);
 	}
 }

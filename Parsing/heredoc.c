@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 20:50:17 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/15 19:36:09 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 22:00:38 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ char	*get_heredoc(char *delimiter, t_env *env)
 {
 	char	*res;
 	char	*line;
-	char	*tmp;
 	int		quotes;
 
 	res = ft_strdup("");

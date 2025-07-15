@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:05:11 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/13 13:16:23 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 21:57:36 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 char	*ft_strnjoin(const char *s1, const char *s2, int n)
 {
 	char	*new;
-	size_t	j;
-	size_t	i;
-	size_t	size;
+	int		j;
+	int		i;
+	int		size;
 
 	if (!s1)
 		return (ft_strndup(s2, n));

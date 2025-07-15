@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/15 19:37:31 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 22:00:17 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int		env_size(t_env *env);
 
 void	expansions_search(t_pdata *pdata, t_gdata *gdata);
 void	quote_suppression(t_token *head);
-void	export_threater(t_token	*head, t_env *env);
+void	export_threater(t_token	*head);
 void	equoting_traffic(char quote, char *prev);
 char	*preserve_value(char *str);
 char	*epreserve_key(char *str, int i, int j);
@@ -124,7 +124,7 @@ t_token	*sub_token_addnew(char *word, t_token *prev);
 char	*getenv_value(t_pdata *ptr, const char *str, int *index, int exit_st);
 
 char	*str_setter(char *str, char *addition, char n);
-char	*quote_removal(t_token *node, char *previous_address);
+char	*quote_removal(t_token *node);
 
 void	cmd_addback(t_cmd **lst, t_cmd *new);
 void	red_addback(t_red **lst, t_red *new);

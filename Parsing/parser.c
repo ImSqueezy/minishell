@@ -89,7 +89,7 @@ void	quote_suppression(t_token *head)
 		if (t_cpy->var != 3)
 		{
 			tmp = t_cpy->word;
-			t_cpy->word = quote_removal(t_cpy, t_cpy->word);
+			t_cpy->word = quote_removal(t_cpy);
 			free(tmp);
 		}
 		t_cpy = t_cpy->next;
@@ -99,7 +99,6 @@ void	quote_suppression(t_token *head)
 int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
 {
 	t_token	*curr;
-	char	*newinput;
 	int		save_in;
 
 	if (!lexer(pdata, input))

@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:16:07 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/14 05:26:12 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 21:54:47 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,12 @@ typedef struct s_gdata
 	int		saved_stdin;
 	int		saved_stdout;
 	int		exit;
-	t_pdata *pdata;
+	t_pdata	*pdata;
 }	t_gdata;
+
+void	data_clear(t_gdata *gdata, t_pdata *pdata, char *read);
+int		is_spaces(char *str);
+void	sigint_handler(int sig);
+void	free_minishell(t_pdata *ptr, char *read_line);
 
 #endif
