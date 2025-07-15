@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asadkaou <asadkaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 00:14:14 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/14 00:18:52 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 02:39:44 by asadkaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	exit_atoi(const char *str, bool *permit)
 		if (num > (LLONG_MAX - (*str - '0')) / 10)
 		{
 			*permit = false;
-			return -(1);
+			return (-(1));
 		}
 		num = num * 10 + (*str - '0');
 		str++;
