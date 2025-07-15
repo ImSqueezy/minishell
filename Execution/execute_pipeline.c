@@ -39,7 +39,7 @@ char **env_list_to_array(t_env *env)
 }
 
 // ----------------------------- UTILS -----------------------------
-static void free_string_array(char **arr)
+void free_string_array(char **arr)
 {
 	int i;
 

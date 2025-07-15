@@ -97,6 +97,7 @@ int	main(int ac, char **av, char **env)
 	t_gdata	gdata;
 	int		ret;
 
+	gdata.pdata = &pdata;
 	pdata.env = NULL;
 	pdata.token = NULL;
 	gdata.saved_pwd = NULL;
@@ -105,7 +106,7 @@ int	main(int ac, char **av, char **env)
 	g_sigint = 0;
 	rl_catch_signals = 0;
 	get_env(&pdata.env, env);
-	if (!pdata.env || !isatty(1))
+	if (!isatty(1) || !isatty(0))
 		return (env_lstclear(&pdata.env, del), 1);
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);

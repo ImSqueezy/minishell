@@ -46,6 +46,7 @@ typedef struct s_gdata
 	int		saved_stdin;
 	int		saved_stdout;
 	int		exit;
+	t_pdata *pdata;
 }	t_gdata;
 
 #endif

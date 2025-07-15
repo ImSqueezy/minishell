@@ -25,7 +25,7 @@ static int	key_checker(char *str)
 	return (1);
 }
 
-void	env_suppressone(t_env **env, char *key)
+void	env_suppressone(t_env **env, t_env **pdata_env, char *key)
 {
 	t_env	*curr;
 	t_env	*prev;
@@ -38,7 +38,10 @@ void	env_suppressone(t_env **env, char *key)
 			if (prev)
 				prev->next = curr->next;
 			else
+			{
 				*env = curr->next;
+				*pdata_env = curr->next;
+			}
 			env_lstdelone(curr, del);
 			break ;
 		}
@@ -64,7 +67,7 @@ int	unset(t_gdata *shell, char **ar)
 		}
 		if (permit)
 		{
-			env_suppressone(&shell->env, ar[i]);
+			env_suppressone(&shell->env, &shell->pdata->env, ar[i]);
 			shell->exit = 0;
 		}
 		i++;
