@@ -6,18 +6,17 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/15 22:00:17 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 22:58:59 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
-# include "../Libraries/Libft/libft.h"
+# include "../Libft/libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <termios.h>
 
 extern int						g_sigint;
 typedef struct s_redirections	t_red;
