@@ -6,21 +6,11 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 17:13:15 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/13 13:13:12 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 18:56:41 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-char	*set_newstr(char *dst, char *src, int n)
-{
-	char	*tmp;
-
-	tmp = dst;
-	dst = ft_strnjoin(dst, src, n);
-	free(tmp);
-	return (dst);
-}
 
 static char	*special_params_handler(const char *str, int *index, int exit_st)
 {

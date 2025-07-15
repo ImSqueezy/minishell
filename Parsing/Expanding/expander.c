@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 22:01:37 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/14 07:12:33 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 19:28:43 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,12 @@ static char	*expand(t_pdata *pdata, t_gdata *gdata, char *word)
 			i++;
 			afterd = getenv_value(pdata, &word[i], &i, gdata->exit);
 			if (afterd)
-			{
-				tmp = newstr;
-				newstr = ft_strnjoin(newstr, afterd, ft_strlen(afterd));
-				free(tmp);
-			}
+				newstr = str_setter(newstr, afterd, ft_strlen(afterd));
 			free(afterd);
 			i--;
 		}
 		else
-		{
-			tmp = newstr;
-			newstr = ft_strnjoin(newstr, &word[i], 1);
-			free(tmp);
-		}
+			newstr = str_setter(newstr, &word[i], 1);
 		i++;
 	}
 	return (newstr);

@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 20:13:03 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/14 00:17:08 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 18:33:52 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,12 @@ void	print_sortedenv(t_env *ptr)
 
 bool	key_setter(t_env *head, char *key, char *value, bool append)
 {
-	bool	found;
 	t_env	*curr;
-	int		i;	
+	bool	found;
 
-	(1) && (i = 0, found = false, curr = head);
+	(1) && (found = false, curr = head);
 	if (curr == NULL)
-	{
-		printf("herer\n");
 		env_addback(&head, env_addnew(key, value));
-	}
 	while (curr)
 	{
 		if (!ft_strcmp(curr->key, key) && append)
@@ -64,13 +60,12 @@ bool	key_setter(t_env *head, char *key, char *value, bool append)
 		}
 		else if (!ft_strcmp(curr->key, key) && !append && !found && !value)
 			found = true;
-		(1) && (i++, curr = curr->next);
+		curr = curr->next;
 	}
 	return (found);
 }
 
-
-int	append_env_value(t_env **head, char *key, char *value)
+void	append_env_value(t_env **head, char *key, char *value)
 {
 	bool	append;
 	t_env	*curr;
@@ -89,26 +84,20 @@ int	append_env_value(t_env **head, char *key, char *value)
 	else if (!key_setter(*head, new_key, value, append))
 		env_addback(head, env_addnew(new_key, value));
 	free(new_key);
-	return (0);
 }
 
 int	set_permit(char *arg, char *key, char *value, bool *permit)
 {
-	static int	last_res;
-
 	if (ft_isdigit(*key) || keychecker(arg, permit) || *arg == '=')
 	{
 		printf(EINVALID_IDENTIFIER, arg);
 		free(value);
-		last_res = 1;
 		return (1);
 	}
-	if (last_res == 1)
-		return (1);
 	return (0);
 }
 
-int	export(t_gdata *data, t_cmd *cmd, int i)
+int	export(t_gdata *data, t_cmd *cmd, int i, int exit)
 {
 	bool	permit;
 	char	**args;
@@ -118,19 +107,21 @@ int	export(t_gdata *data, t_cmd *cmd, int i)
 
 	(1) && (permit = false, args = cmd->cmd, res = 0);
 	if (args[1] == NULL)
-		return (print_sortedenv(data->pdata->env), 0);
+		return (print_sortedenv(data->env), 0);
 	while (args[++i])
 	{
 		key = get_key(args[i]);
 		value = get_value(args[i]);
 		res = set_permit(args[i], key, value, &permit);
+		if (res == 1)
+			exit = 1;
 		if (permit == true)
 		{
 			if (res == 0)
-				res = append_env_value(&data->pdata->env, key, value);
+				append_env_value(&data->pdata->env, key, value);
 			free(value);
 		}
 		free(key);
 	}
-	return (res);
+	return (exit);
 }

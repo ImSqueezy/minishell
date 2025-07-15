@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 20:50:12 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/14 00:43:46 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 18:30:03 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	execute_builtin(t_cmd *current, t_gdata *ptr)
 	if (!ft_strcmp(current->cmd[0], "echo"))
 		return (echo(current->cmd));
 	if (!ft_strcmp(current->cmd[0], "export"))
-		return (export(ptr, current, 0));
+		return (export(ptr, current, 0, 0));
 	if (!ft_strcmp(current->cmd[0], "env"))
 		return (env(ptr->env));
 	if (!ft_strcmp(current->cmd[0], "unset"))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asadkaou <asadkaou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 02:09:55 by asadkaou          #+#    #+#             */
-/*   Updated: 2025/07/15 02:09:57 by asadkaou         ###   ########.fr       */
+/*   Updated: 2025/07/15 18:56:09 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*try_paths(char **paths, char *cmd)
 		full = ft_strjoin(paths[i], "/");
 		if (!full)
 			break ;
-		full = set_newstr(full, cmd, ft_strlen(cmd));
+		full = str_setter(full, cmd, ft_strlen(cmd));
 		if (!full)
 			break ;
 		if (access(full, X_OK) == 0)

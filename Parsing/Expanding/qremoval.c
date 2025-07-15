@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:28:19 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/14 07:07:34 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 19:30:08 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,6 @@ char	*get_middlequoted(char target, char *str, int *index)
 	return (middlequoted);
 }
 
-int	check_mate(char *str, char c)
-{
-	int	i;
-
-	i = 1;
-	while (str[i])
-	{
-		if (str[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 char	*str_setter(char *str, char *addition, char n)
 {
 	char	*tmp;
@@ -71,8 +57,7 @@ char	*quote_removal(t_token *node, char *previous_address)
 	(1) && (new = NULL, mq = NULL, i = 0);
 	while (node->word[i])
 	{
-		if ((node->word[i] == '\'' || node->word[i] == '"')
-			&& check_mate(&node->word[i], node->word[i]) && node->quoting != -3)
+		if ((node->word[i] == '\'' || node->word[i] == '"'))
 		{
 			mq = get_middlequoted(node->word[i], &node->word[i + 1], &i);
 			if (mq)

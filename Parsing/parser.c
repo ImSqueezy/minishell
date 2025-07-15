@@ -102,19 +102,16 @@ int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
 	char	*newinput;
 	int		save_in;
 
-	add_history(input);
 	if (!lexer(pdata, input))
 		return (gdata->exit = 258, 0);
 	curr = pdata->token;
 	save_in = dup(STDIN_FILENO);
 	pdata->heredoc_count = 0;
-	pdata->heredoc_strs = get_heredoc_strings(pdata->token, pdata->env);
+	pdata->heredoc_strs = get_heredoc_strings(pdata->token, pdata->env, 0);
 	if (g_sigint)
 	{
-		g_sigint = 0;
-		gdata->exit = 1;
-		pdata->heredoc_strs = NULL;
-		pdata->heredoc_count = 0;
+		(1) && (g_sigint = 0, gdata->exit = 1
+			, pdata->heredoc_strs = 0, pdata->heredoc_count = 0);
 		dup2(save_in, STDIN_FILENO);
 		close(save_in);
 		return (0);
@@ -127,39 +124,3 @@ int	parser(char *input, t_pdata *pdata, t_gdata *gdata)
 	close(save_in);
 	return (1);
 }
-
-/* quick token debuger
-	t_token *curr;
-	curr = data->token;
-	while (curr)
-	{
-		print_tokens(curr->word, curr->type);
-		printf("- - - - -\n");
-		curr = curr->next;
-	}
-*/
-
-/* quick data
-	t_cmd	*curr1;
-	t_red	*curr2;
-	int		i;
-	curr1 = gdata->cmds;
-	while (curr1)
-	{
-		i = 0;
-		printf("command:\n");
-		while (curr1->cmd[i])
-		{
-			printf("%s\n", curr1->cmd[i]);
-			i++;
-		}
-		printf("redirect:\n");
-		curr2 = curr1->reds;
-		while (curr2)
-		{
-			printf("file name: %s am: %d\n", curr2->fname, curr2->ambiguous);
-			curr2 = curr2->next;
-		}
-		curr1 = curr1->next;
-	}
-*/

@@ -71,7 +71,7 @@ char *find_command_in_path(char *cmd, t_env *env)
 		full_path = ft_strjoin(paths[i], "/");
 		if (!full_path)
 			break;
-		full_path = set_newstr(full_path, cmd, ft_strlen(cmd));
+		full_path = str_setter(full_path, cmd, ft_strlen(cmd));
 		if (!full_path)
 			break;
 		if (access(full_path, X_OK) == 0)

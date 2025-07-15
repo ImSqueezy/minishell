@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asadkaou <asadkaou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:46:06 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/15 03:31:54 by asadkaou         ###   ########.fr       */
+/*   Updated: 2025/07/15 19:34:59 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int	minishell_executer(t_gdata *gdata, t_pdata *pdata)
 			free(read);
 			continue ;
 		}
+		add_history(read);
 		if (parser(read, pdata, gdata))
 			executer(gdata);
 		data_clear(gdata, pdata, read);

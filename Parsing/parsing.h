@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:39:54 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/14 07:18:04 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 19:37:31 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,18 @@
 # include <readline/history.h>
 # include <termios.h>
 
-extern int	g_sigint;
+extern int						g_sigint;
+typedef struct s_redirections	t_red;
+typedef struct s_gdata			t_gdata;
+typedef struct s_commands		t_cmd;
+typedef struct s_token			t_token;
+typedef struct s_env			t_env;
 
 # define EINVALID_IDENTIFIER "minishell: export: `%s': not a valid identifier\n"
 # define UINVALID_IDENTIFIER "minishell: unset: `%s': not a valid identifier\n"
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token"
 # define REDS_COUNT 1
 # define CMDS_COUNT 0
-
-typedef struct s_gdata			t_gdata;
-typedef struct s_redirections	t_red;
-typedef struct s_commands		t_cmd;
-typedef struct s_token			t_token;
-typedef struct s_env			t_env;
 
 typedef enum enum_token_type
 {
@@ -124,7 +123,7 @@ void	token_insert_after(t_token *current, t_token *new_node);
 t_token	*sub_token_addnew(char *word, t_token *prev);
 char	*getenv_value(t_pdata *ptr, const char *str, int *index, int exit_st);
 
-char	*set_newstr(char *dst, char *src, int n);
+char	*str_setter(char *str, char *addition, char n);
 char	*quote_removal(t_token *node, char *previous_address);
 
 void	cmd_addback(t_cmd **lst, t_cmd *new);
@@ -132,7 +131,7 @@ void	red_addback(t_red **lst, t_red *new);
 t_cmd	*cmd_addnew(t_token *lst, t_pdata *data);
 int		define_ftype(int type);
 int		cmds_reds_counter(t_token *cmd, int count_flag);
-char	**get_heredoc_strings(t_token *token, t_env *env);
+char	**get_heredoc_strings(t_token *token, t_env *env, int i);
 void	tcmd_lstclear(t_cmd *lst);
 
 #endif

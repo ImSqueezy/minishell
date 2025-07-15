@@ -6,7 +6,7 @@
 /*   By: aouaalla <aouaalla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 20:50:17 by aouaalla          #+#    #+#             */
-/*   Updated: 2025/07/14 07:06:27 by aouaalla         ###   ########.fr       */
+/*   Updated: 2025/07/15 19:36:09 by aouaalla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,12 @@ void	sigint_heredoc(int sig)
 	g_sigint = sig;
 }
 
-char	**get_heredoc_strings(t_token *token, t_env *env)
+char	**get_heredoc_strings(t_token *token, t_env *env, int i)
 {
 	char	**res;
 	int		count;
-	int		i;
 
 	signal(SIGINT, sigint_heredoc);
-	i = 0;
 	count = count_heredocs(token);
 	if (count == 0)
 		return (NULL);
