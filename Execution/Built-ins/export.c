@@ -41,9 +41,14 @@ bool	key_setter(t_env *head, char *key, char *value, bool append)
 {
 	bool	found;
 	t_env	*curr;
+	int		i;	
 
-	found = false;
-	curr = head;
+	(1) && (i = 0, found = false, curr = head);
+	if (curr == NULL)
+	{
+		printf("herer\n");
+		env_addback(&head, env_addnew(key, value));
+	}
 	while (curr)
 	{
 		if (!ft_strcmp(curr->key, key) && append)
@@ -59,12 +64,13 @@ bool	key_setter(t_env *head, char *key, char *value, bool append)
 		}
 		else if (!ft_strcmp(curr->key, key) && !append && !found && !value)
 			found = true;
-		curr = curr->next;
+		(1) && (i++, curr = curr->next);
 	}
 	return (found);
 }
 
-int	append_env_value(t_env *head, char *key, char *value)
+
+int	append_env_value(t_env **head, char *key, char *value)
 {
 	bool	append;
 	t_env	*curr;
@@ -78,8 +84,10 @@ int	append_env_value(t_env *head, char *key, char *value)
 	new_key = ft_strndup(key, i);
 	if (ft_strlen(key) != ft_strlen(new_key))
 		append = true;
-	if (!key_setter(head, new_key, value, append))
-		env_addback(&head, env_addnew(new_key, value));
+	if (*head == NULL)
+		env_addback(head, env_addnew(new_key, value));
+	else if (!key_setter(*head, new_key, value, append))
+		env_addback(head, env_addnew(new_key, value));
 	free(new_key);
 	return (0);
 }
@@ -110,7 +118,7 @@ int	export(t_gdata *data, t_cmd *cmd, int i)
 
 	(1) && (permit = false, args = cmd->cmd, res = 0);
 	if (args[1] == NULL)
-		return (print_sortedenv(data->env), 0);
+		return (print_sortedenv(data->pdata->env), 0);
 	while (args[++i])
 	{
 		key = get_key(args[i]);
@@ -119,7 +127,7 @@ int	export(t_gdata *data, t_cmd *cmd, int i)
 		if (permit == true)
 		{
 			if (res == 0)
-				res = append_env_value(data->env, key, value);
+				res = append_env_value(&data->pdata->env, key, value);
 			free(value);
 		}
 		free(key);
